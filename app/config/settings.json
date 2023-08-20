@@ -1,0 +1,31 @@
+{
+  "mode": "dev",
+  "namespaces": {
+    "users": "0a49b7e9-f9fe-4dd6-9e3d-12f78fade39c",
+    "settings": "f2856015-2c45-405d-bcb4-7b0f2f8459f3",
+    "tokens": "9c95b246-419f-4192-a08a-43bf8a123358"
+  },
+  "server": {
+    "port": "3000",
+    "url": "http://localhost",
+    "title": "Core",
+    "session": "Vw4hkItxvoxr12Hc5FAb4yZH43OINIFQGZJ5ETcsaFpB8UDri39PfnhpUyeDG98aDqpdVzL2DCkwHCB4J0c2phUD2DGDMt7WDMHXfbqcRvrcQAuIFbDn7riU61gmXxxb",
+    "refreshTokenSecret": "refreshToken_FcwXt4pJx3AJ8VfyXWi9bAgEjuVzirv2iiOiJLvEaAJOLxgFfvQ94T9NLQgxIfcdbF5Swz0Ydbve5GlDV9bqx0EytGgnk8ceJvB2kQTbDlgY3AxLZpZAxQ6Gq95oU0jG",
+    "accessTokenSecret": "accessToken_d6AIQ19P6HgublxxhnyqTJYsiUqDWLIkX2ClSyfKqSUibqYcLEYCGKvnWYnEjTriQ5oj04DgFYNKzWMDuFATswFnvMWMa8PBPzX6P0y2ozkBDVZqPhfc0y7yOvGVa81e",
+    "csrf": {
+      "cookie_secret": "8ZSOqcbWShEK4GgOhxVmN0LUJpez5jesyD3ESGd0ShZwJgyaz6L3iDRjo8e98DOS15nfHwa6WF8XPd0Gz1gkYyIcXtwhEn3ueZIWXweTENVPP1q5fdL85uxRxL3x3Oum",
+      "secret": "zF3OahYJSqXN4EDKyOwk6AzYd6TQzAFWtBO8WO7lFD5uBDJqYFSlD9v1HZLh2x4vXqn1dHkgj5DQFk1JMeVHmeRGVFmVVeoYFOEL7wR8A70CumcnxSlebtUwGagjHALt",
+      "samesite": false,
+      "secure": false,
+      "signed": false,
+      "size": 64,
+      "ignoreroutes": ""
+    },
+    "cors": {
+      "allowedroutes": "http://localhost:3000,http://localhost:80,http://localhost:8080,http://127.0.0.1,http://127.0.0.1:8080,http://127.0.0.1:80"
+    }
+  },
+  "database": {
+    "dialect": "sqlite"
+  }
+}

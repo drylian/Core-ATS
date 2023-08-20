@@ -1,0 +1,38 @@
+{
+  "name": "testapi",
+  "version": "1.0.0",
+  "main": "./dist/unix.js",
+  "scripts": {
+    "dev": "nodemon",
+    "preview": "rm -f ./dist && ts-node -r tsconfig-paths/register app/unix.ts",
+    "build": "tsc && tsc-alias",
+    "start": "tsc && tsc-alias && node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chokidar": "^3.5.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "inquirer": "^9.2.10",
+    "nodemon": "^3.0.1",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/inquirer": "^9.0.3",
+    "@types/uuid": "^9.0.2",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.7",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
+  }
+}
