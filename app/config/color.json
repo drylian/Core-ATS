@@ -1,0 +1,12 @@
+{
+  "primaria": "#3490dc",
+  "secundaria": "#0e0b16",
+  "background": {
+    "type": "img",
+    "value": "https://cdn.discordapp.com/attachments/1033486312956768336/1145133804156092556/xiInmjY-linux-wallpapers.png"
+  },
+  "logo": {
+    "type": "img",
+    "value": "https://cdn.discordapp.com/attachments/1033486312956768336/1153042151052169336/Alternight_Icon_light.png"
+  }
+}

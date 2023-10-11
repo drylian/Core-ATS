@@ -1,7 +1,7 @@
 // Função para gerar um valor aleatório de 128 caracteres
 const gen = (numero: number) => {
 	numero = numero || 128; // Define o valor padrão como '128' se não for fornecido nenhum valor ou se o valor fornecido for falsy
-	let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 	let valor = "";
 
@@ -15,7 +15,7 @@ const gen = (numero: number) => {
 
 const gex = (numero: number) => {
 	numero = numero || 128; // Define o valor padrão como '128' se não for fornecido nenhum valor ou se o valor fornecido for falsy
-	let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[]|:;<>,.?/~`";
+	const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[]|:;<>,.?/~`";
 
 	let valor = "";
 

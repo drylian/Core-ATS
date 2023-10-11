@@ -1,20 +1,20 @@
 {
   "mode": "dev",
   "namespaces": {
-    "users": "0a49b7e9-f9fe-4dd6-9e3d-12f78fade39c",
-    "settings": "f2856015-2c45-405d-bcb4-7b0f2f8459f3",
-    "tokens": "9c95b246-419f-4192-a08a-43bf8a123358"
+    "users": "c40aeaa3-71b5-4229-ba89-a32732c181a2",
+    "settings": "89c3ab3b-b43c-4d29-b8c9-bd94afd21a9c",
+    "tokens": "eef32397-f46f-4015-bb1d-b1968d578e00"
   },
   "server": {
     "port": "3000",
     "url": "http://localhost",
-    "title": "Core",
-    "session": "Vw4hkItxvoxr12Hc5FAb4yZH43OINIFQGZJ5ETcsaFpB8UDri39PfnhpUyeDG98aDqpdVzL2DCkwHCB4J0c2phUD2DGDMt7WDMHXfbqcRvrcQAuIFbDn7riU61gmXxxb",
-    "refreshTokenSecret": "refreshToken_FcwXt4pJx3AJ8VfyXWi9bAgEjuVzirv2iiOiJLvEaAJOLxgFfvQ94T9NLQgxIfcdbF5Swz0Ydbve5GlDV9bqx0EytGgnk8ceJvB2kQTbDlgY3AxLZpZAxQ6Gq95oU0jG",
-    "accessTokenSecret": "accessToken_d6AIQ19P6HgublxxhnyqTJYsiUqDWLIkX2ClSyfKqSUibqYcLEYCGKvnWYnEjTriQ5oj04DgFYNKzWMDuFATswFnvMWMa8PBPzX6P0y2ozkBDVZqPhfc0y7yOvGVa81e",
+    "title": "Alternight",
+    "session": "xQ1I5JiaOQpievjxFZEU8IhwfO3PpYCYezsQBNPV72vwb720yGRqYxkNGu8eySFLaFCdptvB1kAb73FgF4yftJhCO69tvBH5eHZl0FjdRR3hQUMn9rHn9g4dP60rWBEA",
+    "refreshTokenSecret": "refreshToken_6k5JXKkxtOFYDNtaRMY0dy0hr68ylaCh1hCx7peFH6s1kETxnWkU0mGkwR4YDau8KFcHvvCLtnase1OLxajZVsSKNcESZetq82LRVdKJHZbgqacRdJjlvna1z9hlrPPE",
+    "accessTokenSecret": "accessToken_HSGCFfnTuWLha040o2dzitdmGqqii7Y3Sj3XNJ0whnlEESgxARD5P67oY54bsM6XH1JdYNl0WFqERjR9Jj2TeCelJHvxqJuI8Q53K0p3MIwdZACMriFWPocJfv3ETqXS",
     "csrf": {
-      "cookie_secret": "8ZSOqcbWShEK4GgOhxVmN0LUJpez5jesyD3ESGd0ShZwJgyaz6L3iDRjo8e98DOS15nfHwa6WF8XPd0Gz1gkYyIcXtwhEn3ueZIWXweTENVPP1q5fdL85uxRxL3x3Oum",
-      "secret": "zF3OahYJSqXN4EDKyOwk6AzYd6TQzAFWtBO8WO7lFD5uBDJqYFSlD9v1HZLh2x4vXqn1dHkgj5DQFk1JMeVHmeRGVFmVVeoYFOEL7wR8A70CumcnxSlebtUwGagjHALt",
+      "cookie_secret": "NbAgKW4yvyOgxQDQUWXHM0vXaNk2vh58682CNmgYt0O4YYONCbbtlrgpf4jnGdQP5pmh911LFpGgx9EZsmoEPTC3wVO3gD6yQKmPjd8SsTovMMVJOJo1trXqfcHAibB9",
+      "secret": "IAbhh5Wf4ivrDnnTaa8oqvTvqrUvdjNqvTVEoMSNgD5aZgB3W8C0xBWM8GDeScgggCapqESgpuAVqxl4wpEYPP3u2YwixgBpwa2n2shb5qdEZT8aPno9XJJRh1tlobz8",
       "samesite": false,
       "secure": false,
       "signed": false,
@@ -27,5 +27,9 @@
   },
   "database": {
     "dialect": "sqlite"
+  },
+  "proxy": {
+    "pterodactyl": "http://br.alternight.com.br:60000",
+    "phpmyadmin": "http://br.alternight.com.br:55555"
   }
 }

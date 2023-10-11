@@ -8,7 +8,7 @@ import { resolve } from "path";
 const LOG_STORAGE_PATH = configuraction.loggingsPATH; // Path das logs
 
 export function registerlog(level: string, message:string, Sublevel:string) {
-	const logFileName = `${getTimestamp().dayTimer}_${level.toLowerCase()}.log.txt`;
+	const logFileName = `${getTimestamp().dayTimer}_${level.toLowerCase()}.log`;
 	const logFolderPath = resolve(LOG_STORAGE_PATH, level, Sublevel || "");
 	const logFilePath = path.join(logFolderPath, logFileName);
 

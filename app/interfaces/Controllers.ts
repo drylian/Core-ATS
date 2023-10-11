@@ -39,6 +39,10 @@ export interface SettingsJson {
         settings: string;
         tokens: string;
     };
+    proxy: {
+        pterodactyl:string;
+        phpmyadmin:string;
+    }
     server: {
         port: string;
         url: string;
