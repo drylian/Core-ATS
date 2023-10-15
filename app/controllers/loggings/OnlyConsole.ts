@@ -1,19 +1,21 @@
 import colors from "colors";
 import { getTimestamp } from "./getTimestamp";
+import { Colors } from "@/interfaces/Controllers";
 
-const cores: any = colors;
+const cores:Colors = colors;
+
 interface ConsoleLogs {
-	currentHour:string;
-	color:string;
-	controller:string;
-	levelColor:string;
-	message:string;
-	Type:string;
+	currentHour: string;
+	color: string;
+	controller: string;
+	levelColor: string;
+	message: string;
+	Type: string;
 }
-export function Console(controller: string, message: string, color: string, Type:string) {
+export function Console(controller: string, message: string, color: string, Type: string) {
 
 	const { currentHour } = getTimestamp();
-	const ConsoleLog:ConsoleLogs = {
+	const ConsoleLog: ConsoleLogs = {
 		currentHour,
 		color,
 		controller,

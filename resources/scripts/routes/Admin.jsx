@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import RequireAuth from '../components/elements/auth/RequireAuth.jsx';
 import Admin from '../pages/admin/Index.jsx';
 import Account from '../pages/admin/account/Index.jsx';
+import AccountEdit from "../pages/admin/account/Edit.jsx";
 
 const AdminController = () => {
   return (
@@ -13,6 +14,8 @@ const AdminController = () => {
       <Routes>
         <Route path="/" element={<RequireAuth Protected={2000} component={Admin} />} />
         <Route path="/account" element={<RequireAuth Protected={4000} component={Account} />} />
+        <Route path="/account/:id/edit" element={<RequireAuth Protected={4000} component={AccountEdit} />} />
+
         <Route path="/settings" element={<RequireAuth Protected={1} component={Admin} />} />
       </Routes>
     </>

@@ -1,7 +1,5 @@
-import sequelize from "controllers/sequelize/Connect";
-import Loggings from "controllers/Loggings";
-const core = new Loggings("Sequelize", "magenta");
-import User from "models/User";
+import sequelize from "@/controllers/sequelize/Connect";
+import User from "@/models/User";
 /**
  * Models importados
  */

@@ -1,4 +1,4 @@
-import { CsrfProtection } from "http/middlewares/CSRF";
+import { CsrfProtection } from "@/http/middlewares/CSRF";
 
 import { Application } from "express";
 

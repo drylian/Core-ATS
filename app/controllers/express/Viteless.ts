@@ -1,7 +1,8 @@
-import express, { Application } from "express";
-import configuractions from "controllers/settings/Default";
-import { json } from "utils/Json";
-import Loggings from "controllers/Loggings";
+import express from "express";
+import configuractions from "@/controllers/settings/Default";
+import { json } from "@/utils";
+import Loggings from "@/controllers/Loggings";
+import { ErrType } from "@/interfaces/Utils";
 const core = new Loggings("Express", "cyan");
 /**
  * 
@@ -27,8 +28,8 @@ try {
     core.log("React iniciado em modo [produção].blue.");
     app.use(express.static('public'));
   }
-} catch (err: any) {
-  core.error("Erro obtido ao tentar carregar o React: " + err.stack)
+} catch (e) {
+  core.error("Erro obtido ao tentar carregar o React: " + (e as ErrType).stack)
 }
 
 export { app }

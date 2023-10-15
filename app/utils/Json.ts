@@ -53,6 +53,7 @@ function jsonsv(local: string, data: any): void {
 
 	const jsonData = JSON.stringify(existingData, null, 2);
 	fs.writeFileSync(local, jsonData);
+	return existingData
 }
 
 

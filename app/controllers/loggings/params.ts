@@ -1,4 +1,4 @@
-import { Loggings } from "interfaces/Controllers";
+import { Loggings } from "@/interfaces/Controllers";
 
 export const loggings: Loggings = {
 	Error: {

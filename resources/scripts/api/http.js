@@ -3,12 +3,13 @@ import { getCookie, setCookie } from "../components/CookieController";
 import { delItem, getItem } from "../components/Storage";
 
 const http = axios.create({
+
 	withCredentials: true,
 	timeout: 20000,
 	headers: {
 		Accept: "application/json",
 		"Content-Type": "application/json",
-	},
+	}
 });
 
 http.interceptors.request.use(async (config) => {

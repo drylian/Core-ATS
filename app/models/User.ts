@@ -1,4 +1,4 @@
-import sequelize from "controllers/sequelize/Connect";
+import sequelize from "@/controllers/sequelize/Connect";
 import { DataTypes, Model } from "sequelize";
 
 export interface UserI {
@@ -12,7 +12,17 @@ export interface UserI {
     suspended: boolean | null;
     suspendedReason: string | null;
 }
-
+export interface UserE {
+    id: number | null;
+    username: string;
+    email: string;
+    password?: string;
+    permissions: number | null;
+    uuid: string;
+    remember: string | null;
+    suspended: boolean | null;
+    suspendedReason: string | null;
+}
 class User extends Model<UserI> implements UserI {
     public id!: number | null;
     public username!: string;

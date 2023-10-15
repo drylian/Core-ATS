@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { unlinkfolders } from "controllers/loggings/unlinkfolders";
-import { dirCR } from "utils/Folder";
-import configuraction from "controllers/settings/Default";
-import { getTimestamp } from "controllers/loggings/getTimestamp";
+import { unlinkfolders } from "@/controllers/loggings/unlinkfolders";
+import { dirCR } from "@/utils";
+import configuraction from "@/controllers/settings/Default";
+import { getTimestamp } from "@/controllers/loggings/getTimestamp";
 import { resolve } from "path";
 const LOG_STORAGE_PATH = configuraction.loggingsPATH; // Path das logs
 

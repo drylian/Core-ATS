@@ -1,6 +1,6 @@
-import configuractions from "controllers/settings/Default";
+import configuractions from "@/controllers/settings/Default";
 import { NextFunction, Request, Response } from "express";
-import { json } from "utils/Json";
+import { json } from "@/utils/Json";
 
 const credentials = (req: Request, res: Response, next: NextFunction) => {
 	const origin = req.headers.origin;

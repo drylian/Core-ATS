@@ -1,8 +1,8 @@
 import fs, { statSync } from "fs";
 import path, { join } from "path";
-import { json } from "utils/Json";
-import configuractions from "controllers/settings/Default";
-import { Console } from "controllers/loggings/OnlyConsole";
+import { json } from "@/utils";
+import configuractions from "@/controllers/settings/Default";
+import { Console } from "@/controllers/loggings/OnlyConsole";
 
 const core = (levelsss: string, message: string) => Console("Loggings", message, "green", levelsss);
 

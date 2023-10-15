@@ -1,9 +1,9 @@
 import express from "express";
-import User from "models/User"
+import User from "@/models/User"
 
 const router = express.Router();
 
-router.get("/admin/account", async (req, res) => {
+router.get("/account", async (req, res) => {
     try {
         // Consultar todos os usuários usando o modelo Sequelize User
         const users = await User.findAll();

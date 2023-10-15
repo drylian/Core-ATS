@@ -1,7 +1,7 @@
 import http from "../http"
 export default () => {
     return new Promise((resolve, reject) => {
-            http.get('/application/admin/account')
+            http.get('/api/admin/account')
             .then((response) => {
                 return resolve(response.data);
             })

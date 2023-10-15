@@ -1,5 +1,5 @@
 import express from "express";
-import account from "http/router/application/admin/account"
+import account from "@/http/router/api/admin/account"
 
 /**
  * #### Todas as rotas passadas dentro desse router requerem Auth,
@@ -7,6 +7,6 @@ import account from "http/router/application/admin/account"
  */
 const router = express.Router()
 
-router.use(account)
+router.use("/", account)
 
 export default router

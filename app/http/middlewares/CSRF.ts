@@ -1,9 +1,9 @@
 import cookieParser from "cookie-parser";
-import CsrfConfig from "http/middlewares/csrf-csrf/config";
-import configuractions from "controllers/settings/Default";
-import { json } from "utils/Json";
+import CsrfConfig from "@/http/middlewares/csrf-csrf/config";
+import configuractions from "@/controllers/settings/Default";
+import { json } from "@/utils";
 import { Application, NextFunction, Request, Response } from "express";
-import Loggings from "controllers/Loggings";
+import Loggings from "@/controllers/Loggings";
 
 const core = new Loggings("Segurança", "green");
 

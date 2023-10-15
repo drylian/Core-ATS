@@ -1,5 +1,5 @@
 {
-  "level": "Info",
+  "level": "Debug",
   "autodelete": 10,
   "activedelete": "on"
 }

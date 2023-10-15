@@ -1,6 +1,6 @@
 
 /**
- * Interface controllers/loggings/params
+ * Interface @/controllers/loggings/params
  */
 
 export interface LogType {
@@ -13,7 +13,57 @@ export interface Loggings {
 }
 
 /**
- * Interface controllers/loggings/logs
+ * Interface @/controllers/loggings
+ */
+
+export type Colors = {
+    enable(): void;
+    disable(): void;
+    setTheme(theme: any): void;
+    
+    strip(str: string): string;
+    stripColors(str: string): string;
+    
+    black(str: string): string;
+    red(str: string): string;
+    green(str: string): string;
+    yellow(str: string): string;
+    blue(str: string): string;
+    magenta(str: string): string;
+    cyan(str: string): string;
+    white(str: string): string;
+    gray(str: string): string;
+    grey(str: string): string;
+    
+    bgBlack(str: string): string;
+    bgRed(str: string): string;
+    bgGreen(str: string): string;
+    bgYellow(str: string): string;
+    bgBlue(str: string): string;
+    bgMagenta(str: string): string;
+    bgCyan(str: string): string;
+    bgWhite(str: string): string;
+    
+    reset(str: string): string;
+    bold(str: string): string;
+    dim(str: string): string;
+    italic(str: string): string;
+    underline(str: string): string;
+    inverse(str: string): string;
+    hidden(str: string): string;
+    strikethrough(str: string): string;
+    
+    rainbow(str: string): string;
+    zebra(str: string): string;
+    america(str: string): string;
+    trap(str: string): string;
+    random(str: string): string;
+    zalgo(str: string): string;
+    [key: string]: ((...args: string[]) => string) | any;
+};
+
+/**
+ * Interface @/controllers/loggings/logs
  */
 
 export interface ConsoleLog {
@@ -28,59 +78,9 @@ export interface ConsoleLog {
 export interface Cores {
     [key: string]: [string];
 }
-
+  
 /**
- * interface controllers/Settings
- */
-export interface SettingsJson {
-    mode: string;
-    namespaces: {
-        users: string;
-        settings: string;
-        tokens: string;
-    };
-    proxy: {
-        pterodactyl:string;
-        phpmyadmin:string;
-    }
-    server: {
-        port: string;
-        url: string;
-        title: string;
-        session: string;
-        refreshTokenSecret: string;
-        accessTokenSecret: string;
-        csrf: {
-            cookie_secret: string;
-            secret: string;
-            samesite: boolean;
-            secure: boolean;
-            signed: boolean;
-            size: number;
-            ignoreroutes: string;
-        };
-        cors: {
-            allowedroutes: string;
-        };
-    };
-    database: {
-        dialect: string;
-        storage: string;
-        port: string;
-        host: string;
-        password: string;
-        username: string;
-        database: string;
-    };
-}
-export interface LoggingsJson {
-    level: string;
-    autodelete: number;
-    activedelete: string;
-}
-
-/**
- * interface controllers/sequelize/models
+ * interface @/controllers/sequelize/models
  */
 
 export interface Model {

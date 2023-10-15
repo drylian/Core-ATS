@@ -12,7 +12,7 @@ if (file.endsWith(".js")) {
 	type = "Typescript";
 	root = "./app"; // Lógica para TypeScript (Desenvolvimento)
 }
-import { Console } from "controllers/loggings/OnlyConsole";
+import { Console } from "@/controllers/loggings/OnlyConsole";
 
 const core = (message: string) => Console("Principal", message, "blue", "Infomações");
 core(`Servidor está sendo executado em ["${type}"].green com a raiz ["${root}"].blue`);

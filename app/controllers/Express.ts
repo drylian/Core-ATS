@@ -1,21 +1,23 @@
 import * as path from "path";
-import express, { Application, Request, Response, application } from "express";
-import Loggings from "controllers/Loggings";
+import express, { Application, Request, Response } from "express";
+import Loggings from "@/controllers/Loggings";
 import ViteExpress from "vite-express";
 import fileUpload from "express-fileupload";
-import configuractions from "controllers/settings/Default";
-import { AppRouter as ApplicationBackend } from "http/Application";
-import { json } from "utils/Json";
-import credentials from "http/middlewares/credentials";
-import Cors from "http/middlewares/cors";
+import configuractions from "@/controllers/settings/Default";
+import { AppRouter as ApplicationBackend } from "@/http/Application";
+import { json } from "@/utils";
+import credentials from "@/http/middlewares/credentials";
+import Cors from "@/http/middlewares/cors";
 import cookieParser from "cookie-parser";
-// import { app as ApplicationFrontend } from "controllers/express/Viteless";
+import { ErrType } from "@/interfaces/Utils";
+import { SettingsJson } from "@/interfaces";
+// import { app as ApplicationFrontend } from "@/controllers/express/Viteless";
 
 const core = new Loggings("Express", "cyan");
 export const webpanel = async () => {
 	try {
 
-		const config = json(configuractions.configPATH + "/settings.json");
+		const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
 		const buildPath = path.join(configuractions.rootPATH + "/http/public");
 
 		core.log("Iniciando [conexões].blue do painel.");
@@ -66,8 +68,8 @@ export const webpanel = async () => {
 		if (config.mode !== "production") {
 			core.log("Aplicação em modo de desenvolvimento, iniciando...");
 
-			const server = app.listen(config.server.port, "0.0.0.0", () =>
-				core.log(`Servidor iniciado em ${config.server.url}:${config.server.port}.`)
+			const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
+				core.log(`Servidor iniciado em ${config?.server?.url}:${config?.server?.port}.`)
 			);
 
 			await ViteExpress.bind(app, server);
@@ -85,7 +87,7 @@ export const webpanel = async () => {
 
 			app.use('/', express.static(path.join(buildPath)));
 
-			const server = app.listen(config.server.port, "0.0.0.0", () =>
+			const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
 				core.log(`Servidor iniciado em ${config.server.url}:${config.server.port}.`)
 			);
 
@@ -106,12 +108,12 @@ export const webpanel = async () => {
 		// 		core.error(`Erro não tratado no servidor: [${error.stack}].red`);
 		// 	});
 
-	} catch (err: any) {
-		core.error(`Erro ao tentar carregar conexões do painel: [${err?.stack}].red`);
+	} catch (err) {
+		core.error(`Erro ao tentar carregar conexões do painel: [${(err as ErrType).stack}].red`);
 	}
 };
 
-async function ExtendExpress(app: Application, config: any) {
+async function ExtendExpress(app: Application, config: SettingsJson) {
 
 	app.all("*", (req, res) => {
 		res.status(404);
@@ -123,7 +125,7 @@ async function ExtendExpress(app: Application, config: any) {
 			res.type("txt").send("404 - Não encontrado");
 		}
 	});
-	app.all("*", (error: any, req: Request, res: Response) => {
+	app.all("*", (error: ErrType, req: Request, res: Response) => {
 		core.error(`Erro : [${error.stack}].red`);
 		res.status(500);
 		if (req.accepts("html")) {

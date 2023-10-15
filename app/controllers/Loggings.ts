@@ -1,4 +1,4 @@
-import { logs } from "controllers/loggings/logs";
+import { logs } from "@/controllers/loggings/logs";
 
 /**
  * Controlador de Logs, params
@@ -10,9 +10,9 @@ import { logs } from "controllers/loggings/logs";
  * 
  * Cores permitidas
  * @Array ["strip", "stripColors", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "gray", "grey",
-        "bgBlack", "bgRed", "bgGreen", "bgYellow", "bgBlue", "bgMagenta", "bgCyan", "bgWhite",
-        "reset", "bold", "dim", "italic", "underline", "inverse", "hidden", "strikethrough",
-        "rainbow", "zebra", "america", "trap", "random", "zalgo"]
+		"bgBlack", "bgRed", "bgGreen", "bgYellow", "bgBlue", "bgMagenta", "bgCyan", "bgWhite",
+		"reset", "bold", "dim", "italic", "underline", "inverse", "hidden", "strikethrough",
+		"rainbow", "zebra", "america", "trap", "random", "zalgo"]
  */
 class Loggings {
 	private title: string;
@@ -48,5 +48,36 @@ class Loggings {
 	}
 
 }
+
+/**
+ * #### Type LoggingsConstructor
+ * 
+ * ```ts
+ * import Loggings { LoggingsConstructor } from "@/controllers/Loggings"
+ * 
+ * const core:LoggingsConstructor = new Loggings("Exemplo", "blue")
+ * ```
+ */
+export type LoggingsConstructor = new (title: string, color: string) => Loggings;
+
+/**
+ * #### Type LoggingsMethods
+ * 
+ * ```ts
+ * import {LoggingsMethods} from "@/controllers/Loggings"
+ * function Core(core: LoggingsMethods) {
+ * core.log("Olá")		
+ * }
+ * ```
+ */
+export type LoggingsMethods = {
+	log: (message: string) => void;
+	error: (message: string) => void;
+	warn: (message: string) => void;
+	info: (message: string) => void;
+	debug: (message: string) => void;
+	sys: (message: string) => void;
+};
+
 
 export default Loggings;

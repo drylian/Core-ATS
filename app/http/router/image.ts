@@ -1,7 +1,7 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
-import configuractions from "controllers/settings/Default";
+import configuractions from "@/controllers/settings/Default";
 
 const router = express.Router();
 

@@ -1,11 +1,11 @@
-import { logs } from "controllers/loggings/logs";
-import { loggings } from "controllers/loggings/params";
+import { logs } from "@/controllers/loggings/logs";
+import { loggings } from "@/controllers/loggings/params";
 
-const logHistory: any = {}; // armazena o histórico de mensagens
+const logHistory: { [key: string]: boolean | string | number} = {}; // armazena o histórico de mensagens
 
 const core = (message: string) => logs("Loggings", message, "Warn", "green");
 
-export function CheckColors(color: string, type: string) {
+export function CheckColors(color: string, type: string): string {
 
 	const validColors = ["strip", "stripColors", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "gray", "grey",
 		"bgBlack", "bgRed", "bgGreen", "bgYellow", "bgBlue", "bgMagenta", "bgCyan", "bgWhite",

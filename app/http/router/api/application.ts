@@ -1,8 +1,7 @@
 import express from "express";
-import { json } from "utils/Json";
-import configuractions, { root, type, version } from "controllers/settings/Default";
-
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { ALTdcp, json } from "@/utils";
+import configuractions, { root, type, version } from "@/controllers/settings/Default";
+import { UserE } from "@/models/User";
 
 const router = express.Router();
 
@@ -14,11 +13,8 @@ router.get("/", (req, res) => {
 	const { alternightuser } = req.cookies;
 
 	if (alternightuser) {
-		jwt.verify(alternightuser, config.server.accessTokenSecret, async (err: jwt.VerifyErrors | null, decoded: JwtPayload | any) => {
-			if (decoded) {
-				user = decoded
-			}
-		});
+		const UserData = ALTdcp<UserE | null>(alternightuser, config.server.accessTokenSecret)
+		if (UserData !== null) { user = UserData }
 	}
 
 	const responseData: {
@@ -32,7 +28,7 @@ router.get("/", (req, res) => {
 			source: {
 				type: type,
 				dir: root,
-				version: version ? version : "development" 
+				version: version ? version : "development"
 			},
 			colors: { ...colors },
 		},

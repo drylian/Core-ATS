@@ -1,36 +1,49 @@
-import configuractions from "controllers/settings/Default";
 import { Application, NextFunction, Request, Response } from "express";
-import { json } from "utils/Json";
-
 import cors, { CorsOptions } from "cors";
+import { SettingsJson } from "@/interfaces";
+import configuractions from "@/controllers/settings/Default";
+import { json } from "@/utils";
+import CorsError from "../pages/errors/CorsError";
 
-async function Cors(app: Application) {
-
+async function configureCors(app: Application) {
 	function corsCheck(req: Request, res: Response, next: NextFunction) {
-		if (!req.headers["authorization"]) {
-			const cors_options: CorsOptions = {
-				origin: (origin, callback: Function) => {
-					const valores = json(configuractions.configPATH + "/settings.json") || [];
+		const valores: SettingsJson = json(configuractions.configPATH + "/settings.json") || [];
+
+		if (valores.server.cors.active) {
+			const corsOptions: CorsOptions = {
+				origin: (origin, callback) => {
 					if (valores?.server?.cors) {
 						if (!valores.server.cors.allowedroutes) {
 							valores.server.cors.allowedroutes = "";
 						}
 						valores.server.cors.allowedroutes += `,${valores.server.url}:${valores.server.port}`;
 					}
-					const allowedOrigins = valores?.server?.cors?.allowedroutes.split(",").map((route: any) => route.trim());
-					if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+
+					const allowedOrigins = valores?.server?.cors?.allowedroutes.split(",").map((route) => route.trim());
+					if (allowedOrigins.indexOf(origin || "") !== -1) {
 						callback(null, true);
 					} else {
-						callback("Não Permitido pelo CORS");
+						callback(new Error("Não Permitido pelo CORS"));
 					}
 				},
-				optionsSuccessStatus: 200
+
+				optionsSuccessStatus: 200,
 			};
-			cors(cors_options)(req, res, next);
+
+			cors(corsOptions)(req, res, (err) => {
+				if (err) {
+					// Se ocorrer um erro, a origem não é permitida
+					res.status(403).send(CorsError());
+				} else {
+					next();
+				}
+			});
 		} else {
 			next();
 		}
 	}
+
 	app.use(corsCheck);
 }
-export default Cors;
+
+export default configureCors;

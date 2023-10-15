@@ -1,11 +1,10 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
-import User from 'models/User';
-import Loggings from 'controllers/Loggings';
+import User, { UserE } from '@/models/User';
+import Loggings from '@/controllers/Loggings';
 const core = new Loggings("Refresh Token", "green")
-import { json } from 'utils/Json';
-import configuractions from 'controllers/settings/Default';
-import bcrypt from 'bcrypt';
+import { ALTcpt, ALTdcp, AlTexp, json } from '@/utils';
+import configuractions from '@/controllers/settings/Default';
+import { ErrType } from '@/interfaces';
 
 
 const router = express.Router();
@@ -16,36 +15,31 @@ router.post('/token', async (req, res) => {
     const { remember_token } = req.body;
     if (remember_token) {
         try {
-            remember_token
-            const decodedToken:any = jwt.verify(remember_token, config.server.refreshTokenSecret);
+            const decodedToken = ALTdcp<{ remember: string }>(remember_token, config.server.refreshTokenSecret)
 
-            // Procura o usuário pelo usuário ou email
-            const userRecord: any =
-                (await User.findOne({ where: { remember: decodedToken.remember } }));
-            if (userRecord) {
-                const expirestoken = 7 * 24 * 60 * 60
-                const AcessToken = jwt.sign(
-                    {
+            if (decodedToken?.remember) {
+                const rememberValue = decodedToken.remember;
+
+                const userRecord: UserE | null = await User.findOne({ where: { remember: rememberValue } });
+                if (userRecord) {
+                    const AcessToken = ALTcpt({
                         id: userRecord.id,
                         email: userRecord.email,
                         username: userRecord.username,
                         uuid: userRecord.uuid,
-                    },
-                    config.server.accessTokenSecret,
-                    { expiresIn: expirestoken }
-                );
+                    }, config.server.accessTokenSecret, { expires: "15m" })
 
-                // Não retorne a senha no objeto do usuário
-                if (userRecord.password) delete userRecord.password;
+                    delete userRecord.password;
 
-                const expirationTimeInSeconds = expirestoken;
-                const expirationDate = new Date(Date.now() + expirationTimeInSeconds * 1000);
-                return res.json({ complete: true, token: AcessToken, expire: expirationDate });
-            } else {
-                return res.status(400).json({ message: 'não foi possivel encontrar o usuário buscado' });
+                    const expirationTimeInSeconds = AlTexp("15m");
+                    const expirationDate = new Date(Date.now() + expirationTimeInSeconds * 1000);
+                    return res.json({ complete: true, token: AcessToken, expire: expirationDate });
+                } else {
+                    return res.status(400).json({ message: 'não foi possivel encontrar o usuário buscado' });
+                }
             }
-        } catch (error: any) {
-            core.error(`não foi possivel encontrar o usuário buscado : "${error.stack}"`)
+        } catch (error) {
+            core.error(`não foi possivel encontrar o usuário buscado : "${(error as ErrType).stack}"`)
             return res.status(500).json({ message: 'Erro ao registrar' });
         }
     }

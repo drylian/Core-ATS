@@ -1,9 +1,10 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import User from 'models/User';
-import Loggings from 'controllers/Loggings';
+import User from '@/models/User';
+import Loggings from '@/controllers/Loggings';
 const core = new Loggings("Registro", "green")
-import { genv5 } from 'utils/UuidGen';
+import { genv5 } from '@/utils';
+import { ErrType } from '@/interfaces';
 
 const router = express.Router();
 
@@ -34,8 +35,8 @@ router.post('/', async (req, res) => {
         core.log(`Novo usuário foi criado : "${newUser.username}"`)
 
         return res.json({ complete: true, message: "Sucesso ao criar o usuário" });
-    } catch (error: any) {
-        core.error(`Erro ao tentar registrar um usuário : "${error.stack}"`)
+    } catch (error) {
+        core.error(`Erro ao tentar registrar um usuário : "${(error as ErrType).stack}"`)
         return res.status(500).json({ message: 'Erro ao registrar' });
     }
 });

@@ -1,13 +1,13 @@
-import imagemRoute from "http/router/image";
-import ApplicationRoute from "http/router/api/application";
-import registerRoute from "http/router/auth/register";
-import refreshRoute from "http/router/auth/refresh";
-import changeRoute from "http/router/auth/change";
+import imagemRoute from "@/http/router/image";
+import ApplicationRoute from "@/http/router/api/application";
+import registerRoute from "@/http/router/auth/register";
+import refreshRoute from "@/http/router/auth/refresh";
+import changeRoute from "@/http/router/auth/change";
 
-import loginRoute from "http/router/auth/login";
+import loginRoute from "@/http/router/auth/login";
 import { Application } from "express";
-import Authenticator from "http/middlewares/auth/Authenticator";
-import Protected from "http/Protected"
+import Authenticator from "@/http/middlewares/auth/Authenticator";
+import Protected from "@/http/Protected"
 
 async function AppRouter(app: Application) {
     /**
@@ -15,6 +15,11 @@ async function AppRouter(app: Application) {
      */
     app.use("/api/", imagemRoute);
     app.use("/api/application", ApplicationRoute);
+      /**
+     * Rotas Protegidas
+     */
+    app.use("/api/admin", Authenticator, Protected)
+
 
     /**
      * Rotas de Auth
@@ -23,12 +28,6 @@ async function AppRouter(app: Application) {
     app.use("/auth/register", registerRoute)
     app.use("/auth/refresh", refreshRoute)
     app.use("/auth/change", changeRoute)
-
-
-    /**
-     * Rotas Protegidas
-     */
-    app.use("/application", Authenticator, Protected)
 }
 
 
