@@ -1,0 +1,8 @@
+{
+  "primaria": "#3490dc",
+  "secundaria": "#f39c12",
+  "background": {
+    "type": "color",
+    "value": "#ffffff"
+  }
+}

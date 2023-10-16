@@ -1,0 +1,38 @@
+{
+  "mode": "production",
+  "proxy": {
+    "pterodactyl": "localhost:3000",
+    "phpmyadmin": "localhost:55555"
+  },
+  "namespaces": {
+    "users": "314eb3c0-838d-48a8-8e8b-090891a25ddf",
+    "settings": "18e33144-1e31-469d-b26b-5da337a5d769",
+    "tokens": "d0dfef04-367c-4a79-9589-99e4088f799c"
+  },
+  "server": {
+    "port": "3000",
+    "url": "http://localhost",
+    "title": "Alternight",
+    "logo": "/img/favicon.png",
+    "session": "x6LA8iDYsQUvWO3ZfKBkSM3vYnr9sMj11RMdqs98Yy8cxPAMNYcwLdmXzMJK3LJVVXpd2IlzWTFBcpCrhexR9aVopi5xkZ0PMz4e4QuiGVsQ0K3SYNoXBSSUGLu63pIJ",
+    "refreshTokenSecret": "refreshToken_SI0TIoHlRsR02Po6eLgPCUdm6RWFh48SQ8B22LX6n1yHYJxylA1yixWNZadF4ntfVyRTfPlRTNdevcM81mFBi38eAcuXvgZiZpZbz7o2uguIYJ1OjByFWohtn9UOMEOe",
+    "accessTokenSecret": "accessToken_JJWdxerHROQPDvgj8veeLitMzu3jyfDuaV9aP0kk2wpC67W18Bixb5LjBlaVUFGYKAf4N42D8DHQUHu0hmEm1KFWKSzrRg9e8c7aPazj0ZMJlQS91w1VktSLyiGNm4F0",
+    "csrf": {
+      "cookie_secret": "MnmnNVQ5E4OXHc7KdBjkp9LZhhVPf1PANuObOOADdJWVkyloeWglRHHvzV61g5pOWGPgpOjUVPk3QXIIi45r5DMYhI5UDlBfUgbrKJXcm1yOvJk11moHdrR6sGQy8Bi3",
+      "secret": "5SU1QetotKyNKdfcsOhaRhF6agfDdCLL0tiOnICKgqP4puVYdXoCokfj3aYkyNn0AcOkTa9raFw28PWbvAQgpyPmFgUi7x6ZPLGAsnfHXH5bmTNHAG3cllLJTHstMkb6",
+      "samesite": false,
+      "secure": false,
+      "signed": false,
+      "size": 64,
+      "ignoreroutes": ""
+    },
+    "cors": {
+      "allowedroutes": "http://localhost:3000,http://localhost:80,http://localhost:8080,http://127.0.0.1,http://127.0.0.1:8080,http://127.0.0.1:80",
+      "active": true
+    }
+  },
+  "database": {
+    "dialect": "sqlite",
+    "storage": "./config/core.sqlite"
+  }
+}

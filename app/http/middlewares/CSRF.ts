@@ -1,5 +1,5 @@
 import cookieParser from "cookie-parser";
-import CsrfConfig from "@/http/middlewares/csrf-csrf/config";
+import CsrfConfig from "@/http/middlewares/csrf-csrf/Config";
 import configuractions from "@/controllers/settings/Default";
 import { json } from "@/utils";
 import { Application, NextFunction, Request, Response } from "express";

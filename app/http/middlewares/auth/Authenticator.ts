@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import { ALTdcp, json } from '@/utils';
 import configuractions from "@/controllers/settings/Default"
 import User, { UserE } from '@/models/User';
-import ForbiddenAccess from '@/http/pages/errors/401';
+import ForbiddenAccess from '@/http/pages/errors/401.html';
 
 // Middleware de verificação
 async function Authenticator(req: Request, res: Response, next: NextFunction) {
@@ -48,7 +48,8 @@ async function Authenticator(req: Request, res: Response, next: NextFunction) {
                     return res.status(406).send("Request invalida");
                 }
             }
-            req.user = UserCode;
+            // Carrega params de usuário
+            if (UserCode  !== null) req.user = UserCode;
             return next()
         } else {
             if (acceptHeader.includes("text/html")) {

@@ -3,7 +3,7 @@ import cors, { CorsOptions } from "cors";
 import { SettingsJson } from "@/interfaces";
 import configuractions from "@/controllers/settings/Default";
 import { json } from "@/utils";
-import CorsError from "../pages/errors/CorsError";
+import ErroNotFound from "../pages/errors/403.html";
 
 async function configureCors(app: Application) {
 	function corsCheck(req: Request, res: Response, next: NextFunction) {
@@ -13,31 +13,33 @@ async function configureCors(app: Application) {
 			const corsOptions: CorsOptions = {
 				origin: (origin, callback) => {
 					if (valores?.server?.cors) {
+						console.log(valores.server.cors.allowedroutes)
 						if (!valores.server.cors.allowedroutes) {
 							valores.server.cors.allowedroutes = "";
 						}
 						valores.server.cors.allowedroutes += `,${valores.server.url}:${valores.server.port}`;
 					}
 
-					const allowedOrigins = valores?.server?.cors?.allowedroutes.split(",").map((route) => route.trim());
-					if (allowedOrigins.indexOf(origin || "") !== -1) {
+					const allowedOrigins = (valores?.server?.cors?.allowedroutes || "").split(",").map((route) => route.trim());
+					if (typeof origin === "string" && allowedOrigins.includes(origin) || !origin) {
 						callback(null, true);
-					} else {
-						callback(new Error("Não Permitido pelo CORS"));
-					}
+					  } else {
+						return callback(new Error("Acesso não autorizado devido à política CORS."));
+					  }
 				},
 
 				optionsSuccessStatus: 200,
 			};
 
 			cors(corsOptions)(req, res, (err) => {
+				console.log(err)
 				if (err) {
 					// Se ocorrer um erro, a origem não é permitida
-					res.status(403).send(CorsError());
+					return res.status(403).send(ErroNotFound("Acesso não autorizado devido à política CORS."));
 				} else {
-					next();
+					return next();
 				}
-			});
+			});			
 		} else {
 			next();
 		}

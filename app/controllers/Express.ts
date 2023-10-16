@@ -6,11 +6,13 @@ import fileUpload from "express-fileupload";
 import configuractions from "@/controllers/settings/Default";
 import { AppRouter as ApplicationBackend } from "@/http/Application";
 import { json } from "@/utils";
-import credentials from "@/http/middlewares/credentials";
-import Cors from "@/http/middlewares/cors";
+import credentials from "@/http/middlewares/Credentials";
+import Cors from "@/http/middlewares/Cors";
 import cookieParser from "cookie-parser";
 import { ErrType } from "@/interfaces/Utils";
 import { SettingsJson } from "@/interfaces";
+import ErrorNotFound from "@/http/pages/errors/404.html";
+import ErrorInternal from "@/http/pages/errors/500.html";
 // import { app as ApplicationFrontend } from "@/controllers/express/Viteless";
 
 const core = new Loggings("Express", "cyan");
@@ -24,7 +26,6 @@ export const webpanel = async () => {
 		const app = express();
 
 		app.set("views", configuractions.rootPATH + "/http/pages");
-		app.set("view engine", "ejs");
 		// await ProxyConnects(app);
 
 		// Manipular opções de verificação de credenciais - antes do CORS!
@@ -98,16 +99,6 @@ export const webpanel = async () => {
 
 		}
 
-		// await ExtendExpress(app, config);		
-		// const server = app.listen(config.server.port, "0.0.0.0", () =>
-		// 		core.log(`Servidor iniciado em [${config.server.url}:${config.server.port}].magenta.`)
-		// 	);
-
-		// 	// Eventos de erros vindos do express
-		// 	server.on("error", (error) => {
-		// 		core.error(`Erro não tratado no servidor: [${error.stack}].red`);
-		// 	});
-
 	} catch (err) {
 		core.error(`Erro ao tentar carregar conexões do painel: [${(err as ErrType).stack}].red`);
 	}
@@ -118,7 +109,7 @@ async function ExtendExpress(app: Application, config: SettingsJson) {
 	app.all("*", (req, res) => {
 		res.status(404);
 		if (req.accepts("html")) {
-			res.render("errors/404", { title: config.server.title });
+			res.send(ErrorNotFound())
 		} else if (req.accepts("json")) {
 			res.json({ "error": "404 - Não encontrado" });
 		} else {
@@ -129,7 +120,7 @@ async function ExtendExpress(app: Application, config: SettingsJson) {
 		core.error(`Erro : [${error.stack}].red`);
 		res.status(500);
 		if (req.accepts("html")) {
-			res.render("errors/500", { title: config.server.title });
+			res.send(ErrorInternal())
 		} else if (req.accepts("json")) {
 			res.json({ "error": "500 - Erro interno" });
 		} else {
