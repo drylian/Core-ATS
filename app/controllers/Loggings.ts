@@ -23,19 +23,26 @@ export interface LoggingsOptions {
 	}
 }
 /**
- * Controlador de Logs, params
+ * ### Controlador de Logs, params
  * 
  * @class Loggings
  * @param {string} title - O título para os logs.
- * @param {string} color - A cor usada para formatar os logs.
+ * @param {LoggingsColors} color - A cor usada para o titulo na loggings.
  * 
- * uso > const core = new Loggings("Titulo", "green")
+ * @param {LoggingsOptions} options - Opções adicionais no loggings.
  * 
- * Cores permitidas
- * "strip" | "stripColors" | "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "gray" | "grey" |
-	"bgBlack" | "bgRed" | "bgGreen" | "bgYellow" | "bgBlue" | "bgMagenta" | "bgCyan" | "bgWhite" |
-	"reset" | "bold" | "dim" | "italic" | "underline" | "inverse" | "hidden" | "strikethrough" |
-	"rainbow" | "zebra" | "america" | "trap" | "random" | "zalgo"
+```ts
+const core = new Loggings("Titulo", "green", {options})
+```
+ ** #### Opções para configurar o comportamento da classe Loggings(opcional).
+
+ * @property {object} register - Opções relacionadas ao registro.
+ * @property {"default" | "timestamp"} register.timer - Define o formato do temporizador para os registros.
+ * @property {"log" | "json"} register.type - Define o tipo de registro para saída.
+ * @property {object} console - Opções relacionadas à saída no console.
+ * @property {"default" | "timestamp"} console.timer - Define o formato do temporizador para as saídas no console.
+ * 
+ *
  */
 class Loggings {
 	private title: string;

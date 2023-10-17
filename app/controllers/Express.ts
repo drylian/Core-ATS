@@ -26,7 +26,7 @@ export const webpanel = async () => {
 		const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
 		const buildPath = path.join(configuractions.rootPATH + "/http/public");
 
-		core.log("Iniciando [conexões].blue do painel. " + Date.now());
+		core.log("Iniciando [conexões].blue do painel.");
 		const app = express();
 
 		app.use((req, res, next) => {
