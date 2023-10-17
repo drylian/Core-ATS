@@ -27,7 +27,6 @@
     ],
     "outputPath": "build",
     "icon": "dist/http/static/img/favicon.png"
-
   },
   "keywords": [],
   "author": "",
@@ -52,6 +51,7 @@
     "http-proxy": "^1.18.1",
     "inquirer": "^9.2.10",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "pkg": "^5.8.1",
     "sequelize": "^6.32.1",
     "sqlite3": "^5.1.6",
@@ -67,6 +67,7 @@
     "@types/http-proxy": "^1.17.11",
     "@types/inquirer": "^9.0.3",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/morgan": "^1.9.6",
     "@types/node": "^20.5.9",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.4.1",

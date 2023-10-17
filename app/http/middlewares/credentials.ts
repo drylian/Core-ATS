@@ -5,7 +5,6 @@ import { SettingsJson } from "@/interfaces";
 
 const credentials = (req: Request, res: Response, next: NextFunction) => {
 	const origin = req.headers.origin;
-	console.log(req.headers.origin)
 	const valores:SettingsJson = json(configuractions.configPATH + "/settings.json") || [];
 	if (valores?.server?.cors) {
 		if (!valores.server.cors.allowedroutes) {

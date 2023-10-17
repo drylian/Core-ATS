@@ -6,9 +6,9 @@ import { Console } from "@/controllers/loggings/OnlyConsole";
 
 const core = (levelsss: string, message: string) => Console("Loggings", message, "green", levelsss);
 
-export function unlinkfolders(logFolderPath: string, level: string) {
+export function unlinkfolders(logFolderPath: string, level: string, logtype:string) {
 	const loggings = json(configuractions.configPATH + "/loggings.json");
-	const logFilesPattern = new RegExp(`.*_${level.toLowerCase()}.log`);
+	const logFilesPattern = new RegExp(`${logtype === "json" ? `.*_${level.toLowerCase()}.json` : `.*_${level.toLowerCase()}.log`}`);
 	const logFiles = fs.readdirSync(logFolderPath)
 		.filter(file => logFilesPattern.test(file))
 		.sort((a, b) => {

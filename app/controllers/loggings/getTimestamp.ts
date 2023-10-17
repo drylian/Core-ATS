@@ -10,5 +10,7 @@ export function getTimestamp() {
 	// Obter a data atual no formato [ DDD_MMM_AAAA ]
 	const dayTimer = `${String(now.getDate()).padStart(2, "0")}_${String(now.getMonth() + 1).padStart(2, "0")}_${now.getFullYear()}`;
 
-	return { currentHour, fulltimer, dayTimer };
+	const timestamp = Date.now();
+
+	return { currentHour, fulltimer, dayTimer, timestamp };
 }

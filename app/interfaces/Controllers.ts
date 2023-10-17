@@ -3,9 +3,11 @@
  * Interface @/controllers/loggings/params
  */
 
+import { LoggingsColors } from "@/controllers/Loggings";
+
 export interface LogType {
     level: number,
-    color: string
+    color: LoggingsColors
 }
 
 export interface Loggings {

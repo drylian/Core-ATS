@@ -13,18 +13,33 @@ import { ErrType } from "@/interfaces/Utils";
 import { SettingsJson } from "@/interfaces";
 import ErrorNotFound from "@/http/pages/errors/404.html";
 import ErrorInternal from "@/http/pages/errors/500.html";
+import morgan from "morgan";
 // import { app as ApplicationFrontend } from "@/controllers/express/Viteless";
 
 const core = new Loggings("Express", "cyan");
+// Logs para o simulador de apache
+const apache = new Loggings("Apache-Logs", "blue");
+
 export const webpanel = async () => {
 	try {
 
 		const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
 		const buildPath = path.join(configuractions.rootPATH + "/http/public");
 
-		core.log("Iniciando [conexões].blue do painel.");
+		core.log("Iniciando [conexões].blue do painel. " + Date.now());
 		const app = express();
 
+		app.use((req, res, next) => {
+			morgan('combined', {
+			  
+			  stream: {
+				write: (message: string) => {
+				    apache.txt(message);
+				},
+			  },
+			})(req, res, next);
+		  });
+		  
 		app.set("views", configuractions.rootPATH + "/http/pages");
 		// await ProxyConnects(app);
 
