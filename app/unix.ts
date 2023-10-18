@@ -10,6 +10,7 @@ const core = (message: string) => Console("Principal", message, "blue", "InfomaÃ
 core("Iniciando processos do painel.");
 
 async function __init() {
+
 	new Promise(async resolve => {
 		const { webpanel } = require("./controllers/Express");
 		/**

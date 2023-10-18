@@ -6,7 +6,7 @@ import { rcore as core } from "@/controllers/Express";
 
 const router = express.Router();
 
-export default router.get("/account", async (req, res) => {
+export default router.get("/teste", async (req, res) => {
     Authenticator(req, res, 2000)
         .then(async ({ res }) => {
             // Consultar todos os usuários usando o modelo Sequelize User
@@ -19,10 +19,12 @@ export default router.get("/account", async (req, res) => {
                 }
                 return res.json(users);
             } catch (e) {
-                core.error("Erro ao buscar usuários:" + e);
-                res.status(500).json({ message: "Erro interno do servidor" });
 
             }
         })
+        .catch((error) => {
+            console.error("Erro ao buscar usuários:", error);
+            res.status(500).json({ message: "Erro interno do servidor" });
+        });
 });
 

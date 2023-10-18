@@ -6,8 +6,8 @@ import changeRoute from "@/http/router/auth/change";
 
 import loginRoute from "@/http/router/auth/login";
 import { Application } from "express";
-import Authenticator from "@/http/middlewares/auth/Authenticator";
 import Protected from "@/http/Protected"
+import CheckRequest from "./middlewares/CheckRequest";
 
 async function AppRouter(app: Application) {
     /**
@@ -15,10 +15,10 @@ async function AppRouter(app: Application) {
      */
     app.use("/api/", imagemRoute);
     app.use("/api/application", ApplicationRoute);
-      /**
+    /**
      * Rotas Protegidas
      */
-    app.use("/api/admin", Authenticator, Protected)
+    app.use("/api", CheckRequest, Protected)
 
 
     /**
@@ -27,7 +27,7 @@ async function AppRouter(app: Application) {
     app.use("/auth/login", loginRoute)
     app.use("/auth/register", registerRoute)
     app.use("/auth/refresh", refreshRoute)
-    app.use("/auth/change", changeRoute)
+    app.use("/auth/change", CheckRequest,changeRoute)
 }
 
 

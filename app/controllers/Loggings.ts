@@ -22,6 +22,7 @@ export interface LoggingsOptions {
 		type: "log" | "json";
 	}
 }
+
 /**
  * ### Controlador de Logs, params
  * 

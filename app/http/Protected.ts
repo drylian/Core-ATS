@@ -1,5 +1,6 @@
 import express from "express";
 import account from "@/http/router/api/admin/account"
+import teste from "@/http/router/api/admin/teste"
 
 /**
  * #### Todas as rotas passadas dentro desse router requerem Auth,
@@ -7,6 +8,10 @@ import account from "@/http/router/api/admin/account"
  */
 const router = express.Router()
 
-router.use("/", account)
+/**
+ * Rotas aqui
+ */
+router.use("/admin", account)
+router.use("/admin", teste)
 
 export default router

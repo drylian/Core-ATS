@@ -16,10 +16,11 @@ import ErrorInternal from "@/http/pages/errors/500.html";
 import morgan from "morgan";
 // import { app as ApplicationFrontend } from "@/controllers/express/Viteless";
 
-const core = new Loggings("Express", "cyan");
+const core = new Loggings("Express", "green");
+
 // Logs para o simulador de apache
 const apache = new Loggings("Apache-Logs", "blue");
-
+export const rcore = new Loggings("Request", "gray");
 export const webpanel = async () => {
 	try {
 
