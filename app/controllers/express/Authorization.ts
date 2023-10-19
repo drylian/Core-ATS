@@ -7,8 +7,10 @@ import ForbiddenAccess from '@/http/pages/errors/401.html';
 
 export default async function Authenticator(req: Request, res: Response, permission: number): Promise<{ req: Request, res: Response }> {
     return new Promise(async (resolve) => {
+        /**
+         * Configurações Previas e que podem ser usadas em todos os casos
+         */
         const config = json(configuractions.configPATH + "/settings.json")
-
         const acceptHeader = req.headers.accept || "";
         let token: string;
 
@@ -48,7 +50,6 @@ export default async function Authenticator(req: Request, res: Response, permiss
                     return res.status(406).send("Request invalida");
                 }
             }
-
         } else if (req.checked === "authorization") {
             //Configuração para tokens, ainda não feita
 

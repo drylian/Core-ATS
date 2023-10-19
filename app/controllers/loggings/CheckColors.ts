@@ -3,7 +3,7 @@ import { loggings } from "@/controllers/loggings/params";
 
 const logHistory: { [key: string]: boolean | string | number} = {}; // armazena o histórico de mensagens
 
-const core = (message: string) => logs("Loggings", message, "Warn", "green");
+const core = (message: string) => logs("Loggings", message, "Warn", "green",{});
 
 export function CheckColors(color: string, type: string): string {
 

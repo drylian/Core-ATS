@@ -12,6 +12,7 @@ export interface UserI {
     suspended: boolean | null;
     suspendedReason: string | null;
 }
+
 export interface UserE {
     id: number | null;
     username: string;
@@ -23,6 +24,7 @@ export interface UserE {
     suspended: boolean | null;
     suspendedReason: string | null;
 }
+
 class User extends Model<UserI> implements UserI {
     public id!: number | null;
     public username!: string;

@@ -14,6 +14,7 @@ import { SettingsJson } from "@/interfaces";
 import ErrorNotFound from "@/http/pages/errors/404.html";
 import ErrorInternal from "@/http/pages/errors/500.html";
 import morgan from "morgan";
+import HtmlIndex from "@/http/pages/system/index.html";
 // import { app as ApplicationFrontend } from "@/controllers/express/Viteless";
 
 const core = new Loggings("Express", "green");
@@ -25,7 +26,7 @@ export const webpanel = async () => {
 	try {
 
 		const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
-		const buildPath = path.join(configuractions.rootPATH + "/http/public");
+		const buildPath = path.join(configuractions.rootPATH + "/http/public/assets");
 
 		core.log("Iniciando [conexões].blue do painel.");
 		const app = express();
@@ -100,11 +101,15 @@ export const webpanel = async () => {
 		} else {
 			core.log("Servidor esta inciando...");
 
+			app.use('/assets', express.static(path.join(buildPath)));
+
+			app.get("*", (req, res) => {
+				if (req.accepts("html")) {
+					res.send(HtmlIndex())
+				}
+			});
 			await ExtendExpress(app, config);
-
-			app.use('/', express.static(path.join(buildPath)));
-
-			const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
+				const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
 				core.log(`Servidor iniciado em ${config.server.url}:${config.server.port}.`)
 			);
 

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register app/unix.ts",
     "preview": "ts-node -r tsconfig-paths/register app/unix.ts",
-    "build": "node tools/compiler.js",
+    "build": "node tools/build.js",
+    "compiler": "node tools/compiler.js",
     "start": "tsc --project ./tsconfig.json && tsc-alias && node .",
     "eslint": "npx eslint . --fix"
   },
@@ -36,6 +37,7 @@
     "autoprefixer": "^10.4.15",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
+    "cheerio": "1.0.0-rc.12",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "copyfiles": "^2.4.1",
@@ -69,6 +71,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.5.9",
+    "@types/react-dom": "^18.2.14",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
