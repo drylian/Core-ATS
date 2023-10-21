@@ -1,6 +1,10 @@
 import { load } from "cheerio";
 
 /**
+ * primeira versão do Viteless, com o objetivo de ler o index.html.*s ao invez de index.html
+ */
+
+/**
  * Viteless, serve para obter os params do react usar em .html.ts
  * @param html html gerado pelo react
  * @returns

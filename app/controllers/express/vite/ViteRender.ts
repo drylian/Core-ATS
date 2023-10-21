@@ -1,3 +1,6 @@
+/**
+ * Versão dois do Viteless, com o objetivo de ler o index.html.*s ao invez de index.html
+ */
 import root from "@/controllers/settings/Default";
 import { json } from "@/utils";
 import * as fs from "fs";
@@ -36,7 +39,6 @@ function Assetsfiles(): AssetFiles {
 		});
 	} else {
 		if(json(root.configPATH + "/settings.json").mode === "pro") assetFiles.error = true;
-		
 	}
 
 	return assetFiles;

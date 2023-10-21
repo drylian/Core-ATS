@@ -11,6 +11,7 @@ export default defineConfig({
 	},
 	build: {
 		outDir: "../app/http/public",
+		manifest: true,
 	},
 },
 );

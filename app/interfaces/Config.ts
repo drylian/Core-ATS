@@ -9,14 +9,14 @@ export interface SettingsJson {
         tokens: string;
     };
     proxy: {
-        pterodactyl:string;
-        phpmyadmin:string;
+        pterodactyl: string;
+        phpmyadmin: string;
     }
     server: {
         port: string;
         url: string;
         title: string;
-        logo:string;
+        logo: string;
         session: string;
         refreshTokenSecret: string;
         accessTokenSecret: string;
@@ -44,7 +44,7 @@ export interface SettingsJson {
         database: string;
     };
 }
-  
+
 /**
  * interface do loggings.json
  */
@@ -54,19 +54,22 @@ export interface LoggingsJson {
     activedelete: string;
 }
 
-  
+
 /**
  * interface do color.json
  */
 export interface ColorJson {
-    primaria: string;
-    secundaria: string;
-    background: {
-      type: string;
-      value: string;
-    };
-    logo: {
-      type: string;
-      value: string;
-    };
-  }
+    [key: string]: {
+        color: {
+            primary: string;
+            secondary: string;
+            tertiary: string;
+        };
+        text: {
+            primary: string;
+            secondary: string;
+            tertiary: string;
+        };
+        background: string;
+    }
+}
