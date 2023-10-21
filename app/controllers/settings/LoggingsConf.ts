@@ -17,6 +17,6 @@ export default async function LoggingsConf(core: LoggingsMethods) {
 
 		core.sys("Loggings do painel - [OK].green ");
 	} catch (e) {
-		core.sys("[Erro na configuração das Loggings].red : " + (e as ErrType).message)
+		core.sys("[Erro na configuração das Loggings].red : " + (e as ErrType).message);
 	}
 }

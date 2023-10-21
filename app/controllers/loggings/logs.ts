@@ -11,7 +11,7 @@ import { LoggingsOptions } from "../Loggings";
 const cores: Colors = colors;
 
 export function logs(controller: string, message: string, level: string, color: string, options: LoggingsOptions) {
-	let ArchiveLog: string | RegisterLog = ""
+	let ArchiveLog: string | RegisterLog = "";
 
 	const valoressssss = json(configuraction.configPATH + "/loggings.json");
 	const CURRENT_LOG_LEVEL = valoressssss.level || "Debug"; // Altere o nível atual conforme necessário
@@ -31,7 +31,7 @@ export function logs(controller: string, message: string, level: string, color: 
 				time: options.register?.timer === "timestamp" ? timestamp.toString() : fulltimer,
 				controller,
 				message:formattedMessage
-			}
+			};
 		}
 		return registerlog(controller, ArchiveLog, level);
 	}
@@ -69,7 +69,7 @@ export function logs(controller: string, message: string, level: string, color: 
 				controller,
 				level,
 				message:formattedMessage
-			}
+			};
 		}
 		registerlog(controller, ArchiveLog, level);
 	}

@@ -1,11 +1,11 @@
-import { json } from '@/utils';
-import configuractions from "@/controllers/settings/Default"
-import { ColorJson, SettingsJson } from '@/interfaces';
-import ErrorCss from '../styles/Error.css';
+import { json } from "@/utils";
+import configuractions from "@/controllers/settings/Default";
+import { ColorJson, SettingsJson } from "@/interfaces";
+import ErrorCss from "../styles/Error.css";
 export default function NotAcceptable(message?: string) {
-    const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
-    const color: ColorJson = json(configuractions.configPATH + "/color.json");
-    return (`
+	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+	const color: ColorJson = json(configuractions.configPATH + "/color.json");
+	return (`
     <!DOCTYPE html>
       <html lang="en">
       <head>

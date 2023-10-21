@@ -9,13 +9,13 @@ const router = express.Router();
 router.get("/", (req, res) => {
 	const config = json(configuractions.configPATH + "/settings.json");
 	const colors = json(configuractions.configPATH + "/color.json");
-	let user
+	let user;
 
 	const { alternightuser } = req.cookies;
 
 	if (alternightuser) {
-		const UserData = ALTdcp<UserE | null>(alternightuser, config.server.accessTokenSecret)
-		if (UserData !== null) { user = UserData }
+		const UserData = ALTdcp<UserE | null>(alternightuser, config.server.accessTokenSecret);
+		if (UserData !== null) { user = UserData; }
 	}
 
 	const responseData: {
@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
 
 	const acceptHeader = req.headers.accept || "";
 	if (acceptHeader.includes("text/html")) {
-		res.send(JsonViewer<typeof responseData>(responseData))
+		res.send(JsonViewer<typeof responseData>(responseData));
 	} else {
 		// Caso contrário, envie o JSON como resposta normalmente
 		res.json(responseData);

@@ -1,14 +1,14 @@
-import { ColorJson } from "@/interfaces"
+import { ColorJson } from "@/interfaces";
 
 export default function ErrorCss(color: ColorJson) {
 
-    // Usar as configurações de cor
-    const primaryColor = color.primaria;
-    const secondaryColor = color.secundaria;
-    return `
+	// Usar as configurações de cor
+	const primaryColor = color.primaria;
+	const secondaryColor = color.secundaria;
+	return `
     <style>
     body {
-        background: url(${color.background.type === 'img' ? color.background.value : ''}) no-repeat;
+        background: url(${color.background.type === "img" ? color.background.value : ""}) no-repeat;
         background-attachment: fixed;
         background-size: cover;
         display: flex;
@@ -99,5 +99,5 @@ export default function ErrorCss(color: ColorJson) {
         }
       }
       </style>
-  `
+  `;
 }

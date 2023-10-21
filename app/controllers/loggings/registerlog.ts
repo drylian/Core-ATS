@@ -25,9 +25,9 @@ export function registerlog(level: string, ArchiveLog: string | RegisterLog, Sub
 	dirCR(logFolderPath);
 
 	if (typeof ArchiveLog === "object") {
-		logtype = "json"
+		logtype = "json";
 		logFileName = `${getTimestamp().dayTimer}_${level.toLowerCase()}.json`;
-		logFilePath = path.join(logFolderPath, logFileName)
+		logFilePath = path.join(logFolderPath, logFileName);
 
 		// Verifica se o arquivo já existe e lê seu conteúdo
 		if (fs.existsSync(logFilePath)) {
@@ -44,14 +44,14 @@ export function registerlog(level: string, ArchiveLog: string | RegisterLog, Sub
 		const logCounter = Object.keys(logData).length + 1;
 		logData[`case_${logCounter}`] = [logEntry];
 
-		fs.writeFileSync(logFilePath, JSON.stringify(logData, null, 2), { flag: 'w' });
+		fs.writeFileSync(logFilePath, JSON.stringify(logData, null, 2), { flag: "w" });
 		// Verifica e exclui o arquivo mais antigo
 		unlinkfolders(logFolderPath, level, logtype);
 	} else if (typeof ArchiveLog === "string") {
-		logtype = "log"
+		logtype = "log";
 
 		logFileName = `${getTimestamp().dayTimer}_${level.toLowerCase()}.log`;
-		logFilePath = path.join(logFolderPath, logFileName)
+		logFilePath = path.join(logFolderPath, logFileName);
 
 		fs.appendFileSync(logFilePath, ArchiveLog + "\n");
 

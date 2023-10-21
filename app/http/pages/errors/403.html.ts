@@ -1,13 +1,13 @@
-import { json } from '@/utils';
-import configuractions from "@/controllers/settings/Default"
-import { ColorJson, SettingsJson } from '@/interfaces';
-import ErrorCss from '@/http/pages/styles/Error.css';
+import { json } from "@/utils";
+import configuractions from "@/controllers/settings/Default";
+import { ColorJson, SettingsJson } from "@/interfaces";
+import ErrorCss from "@/http/pages/styles/Error.css";
 
 export default function Forbidden(message?: string) {
-    const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
-    const color: ColorJson = json(configuractions.configPATH + "/color.json");
+	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+	const color: ColorJson = json(configuractions.configPATH + "/color.json");
   
-    return (`
+	return (`
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -31,5 +31,5 @@ export default function Forbidden(message?: string) {
       </body>
       </html>
     `);
-  }
+}
   

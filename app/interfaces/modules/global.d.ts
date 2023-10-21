@@ -1,5 +1,5 @@
-import { LoggingsMethods } from '@/controllers/Loggings';
-import { UserE } from '@/models/User';
+import { LoggingsMethods } from "@/controllers/Loggings";
+import { UserE } from "@/models/User";
 
 declare global {
     namespace Express {

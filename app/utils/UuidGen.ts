@@ -1,5 +1,5 @@
 
-import { v4 as uuidv4, v5 as uuidv5, NIL as nilUUID, V4Options } from "uuid";
+import { v4 as uuidv4, v5 as uuidv5, NIL as nilUUID } from "uuid";
 import { json } from "@/utils";
 import configuractions from "@/controllers/settings/Default";
 

@@ -1,5 +1,5 @@
-export default function JsonJS(data:any){
-    return `
+export default function JsonJS<T>(data:T){
+	return `
     <script>
         // Função para colorir a sintaxe do JSON
         function syntaxHighlight(json) {
@@ -27,5 +27,5 @@ export default function JsonJS(data:any){
         // Carregando o JSON por ID
         document.getElementById('json').innerHTML = syntaxHighlight(JSON.stringify(${data}, null, 2));
     </script>
-`
+`;
 }

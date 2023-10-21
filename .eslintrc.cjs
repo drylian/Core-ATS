@@ -1,15 +1,41 @@
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
-	"env": {
+	root: true,
+	env: {
 		"browser": true,
 		"es2021": true,
 		"node": true
 	},
-	"extends": [
+	parserOptions: {
+		ecmaVersion: 6,
+		ecmaFeatures: {
+			jsx: true,
+		},
+		project: './tsconfig.json',
+		tsconfigRootDir: './',
+	},
+	settings: {
+        react: {
+            pragma: 'React',
+            version: 'detect',
+        },
+        linkComponents: [
+            { name: 'Link', linkAttribute: 'to' },
+            { name: 'NavLink', linkAttribute: 'to' },
+        ],
+    },
+    env: {
+        browser: true,
+        es6: true,
+    },
+    plugins: ['react', 'react-hooks', 'prettier', '@typescript-eslint'],
+	extends: [
 		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
 	],
-	"overrides": [
+	ignorePatterns: ['dist', '.eslintrc.cjs', 'app/http/public', "tools", "reactOlds"],
+	overrides: [
 		{
 			"env": {
 				"node": true
@@ -22,17 +48,21 @@ module.exports = {
 			}
 		}
 	],
-	"parserOptions": {
+	parserOptions: {
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
-	"parser": "@typescript-eslint/parser",
-	"plugins": [
-		"react",
+	parser: "@typescript-eslint/parser",
+	plugins: [
+		"react-refresh",
 		"@typescript-eslint"
 	],
-	"rules": {
-		"indent": [
+	rules: {
+		'react-refresh/only-export-components': [
+			'warn',
+			{ allowConstantExport: true },
+		],
+		indent: [
 			"error",
 			"tab"
 		],
@@ -40,14 +70,14 @@ module.exports = {
 			"error",
 			"unix"
 		],
-		"quotes": [
+		quotes: [
 			"error",
 			"double"
 		],
-		"semi": [
+		'react/react-in-jsx-scope': 'off', // Configuração da regra
+		semi: [
 			"error",
 			"always"
 		]
 	},
-	"root": true,
 };

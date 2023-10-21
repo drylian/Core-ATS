@@ -1,21 +1,21 @@
 import fs from "fs";
 
 function json(local: string): any {
-    let existingData: string;
+	let existingData: string;
 
-    try {
-        if (fs.existsSync(local)) {
-            existingData = fs.readFileSync(local, 'utf-8');
-        } else {
-            return {};
-        }
+	try {
+		if (fs.existsSync(local)) {
+			existingData = fs.readFileSync(local, "utf-8");
+		} else {
+			return {};
+		}
 
-        const parsedData = JSON.parse(existingData);
-        return parsedData;
-    } catch (err: any) {
-        console.error('Erro ao analisar o JSON:', err.message);
-        return {};
-    }
+		const parsedData = JSON.parse(existingData);
+		return parsedData;
+	} catch (err: any) {
+		console.error("Erro ao analisar o JSON:", err.message);
+		return {};
+	}
 }
 
 
@@ -53,7 +53,7 @@ function jsonsv(local: string, data: any): void {
 
 	const jsonData = JSON.stringify(existingData, null, 2);
 	fs.writeFileSync(local, jsonData);
-	return existingData
+	return existingData;
 }
 
 

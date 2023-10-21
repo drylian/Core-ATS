@@ -1,18 +1,18 @@
-import { json } from '@/utils';
-import configuractions from "@/controllers/settings/Default"
-import { ColorJson, SettingsJson } from '@/interfaces';
-import Loggings from '@/controllers/Loggings';
-import ErrorCss from '../styles/Error.css';
+import { json } from "@/utils";
+import configuractions from "@/controllers/settings/Default";
+import { ColorJson, SettingsJson } from "@/interfaces";
+import Loggings from "@/controllers/Loggings";
+import ErrorCss from "../styles/Error.css";
 export default function Unauthorized(message: string, decoded?: { username: string, id: number }) {
-  const core = new Loggings("Segurança", "red");
-  const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
-  const color: ColorJson = json(configuractions.configPATH + "/color.json");
+	const core = new Loggings("Segurança", "red");
+	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+	const color: ColorJson = json(configuractions.configPATH + "/color.json");
 
-  if (decoded) {
-    const { username, id } = decoded
-    core.warn("Alerta Acesso de conta sem privilegios administrativos na api protegida " + `[usuário:${username}].blue - [id:${id}].blue`)
-  }
-  return (`
+	if (decoded) {
+		const { username, id } = decoded;
+		core.warn("Alerta Acesso de conta sem privilegios administrativos na api protegida " + `[usuário:${username}].blue - [id:${id}].blue`);
+	}
+	return (`
     <!DOCTYPE html>
       <html lang="en">
       <head>

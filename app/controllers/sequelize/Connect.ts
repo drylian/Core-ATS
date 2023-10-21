@@ -9,7 +9,7 @@ const respose = json(Configuractions.configPATH + "/settings.json");
 
 if (!respose?.database) {
 	core.sys("[Configuração do dialect].bold não detectada, usando [Sqlite].blue como [padrão].green");
-};
+}
 
 const sequelizeMG = {
 	/**
@@ -19,7 +19,7 @@ const sequelizeMG = {
 	logging: (message: string) => {
 		core.debug(message);
 	},
-}
-const sequelize = new Sequelize(sequelizeMG)
+};
+const sequelize = new Sequelize(sequelizeMG);
 
 export default sequelize;

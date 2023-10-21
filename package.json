@@ -17,7 +17,7 @@
   "bin": "dist/unix.js",
   "pkg": {
     "targets": [
-      "node18-win-x64"
+      "latest-win-x64"
     ],
     "scripts": [
       "dist/**/*.js"
@@ -40,19 +40,15 @@
     "cheerio": "1.0.0-rc.12",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
-    "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "csrf-csrf": "^3.0.0",
     "easy-peasy": "^6.0.2",
-    "ejs": "^3.1.9",
-    "execa": "^8.0.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
-    "history": "^5.3.0",
+    "fs-extra": "^11.1.1",
     "http-proxy": "^1.18.1",
     "inquirer": "^9.2.10",
-    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pkg": "^5.8.1",
     "sequelize": "^6.32.1",
@@ -68,9 +64,9 @@
     "@types/express-fileupload": "^1.4.1",
     "@types/http-proxy": "^1.17.11",
     "@types/inquirer": "^9.0.3",
-    "@types/jsonwebtoken": "^9.0.2",
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.5.9",
+    "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.14",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
@@ -83,6 +79,8 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
     "formik": "^2.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

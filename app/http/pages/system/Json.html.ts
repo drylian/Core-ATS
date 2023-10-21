@@ -1,18 +1,18 @@
-import { json } from '@/utils';
+import { json } from "@/utils";
 import configuractions from "@/controllers/settings/Default";
-import { ColorJson, SettingsJson } from '@/interfaces';
-import JsonJS from '../javascript/Json.js';
-import JsonCss from '../styles/Json.css';
+import { ColorJson, SettingsJson } from "@/interfaces";
+import JsonJS from "../javascript/Json.js";
+import JsonCss from "../styles/Json.css";
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T) {
-  const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
-  const color: ColorJson = json(configuractions.configPATH + "/color.json");
+	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+	const color: ColorJson = json(configuractions.configPATH + "/color.json");
 
-  // Converte o objeto JSON em uma string JSON formatada
-  const formattedJSON = JSON.stringify(jsonData, null, 2);
+	// Converte o objeto JSON em uma string JSON formatada
+	const formattedJSON = JSON.stringify(jsonData, null, 2);
 
-  return `
+	return `
     <!DOCTYPE html>
     <html lang="en">
     <head>

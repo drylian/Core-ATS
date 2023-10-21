@@ -1,19 +1,19 @@
-import { ColorJson } from "@/interfaces"
+import { ColorJson } from "@/interfaces";
 
 export default function ImageCss(color: ColorJson, Imagem: any) {
-    // Usar as configurações de cor
-    const primaryColor = color.primaria;
-    const secondaryColor = color.secundaria;
+	// Usar as configurações de cor
+	const primaryColor = color.primaria;
+	const secondaryColor = color.secundaria;
 
-    // Limitar o tamanho máximo da imagem a 500x500
-    const maxSize = 150;
-    const width = Imagem.size > maxSize ? maxSize : Imagem.size;
-    const height = Imagem.size > maxSize ? maxSize : Imagem.size;
+	// Limitar o tamanho máximo da imagem a 500x500
+	const maxSize = 150;
+	const width = Imagem.size > maxSize ? maxSize : Imagem.size;
+	const height = Imagem.size > maxSize ? maxSize : Imagem.size;
 
-    return `
+	return `
     <style>
     body {
-        background: url(${color.background.type === 'img' ? color.background.value : ''}) no-repeat;
+        background: url(${color.background.type === "img" ? color.background.value : ""}) no-repeat;
         background-attachment: fixed;
         background-size: cover;
         display: flex;
@@ -117,5 +117,5 @@ export default function ImageCss(color: ColorJson, Imagem: any) {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
   </style>
-  `
+  `;
 }

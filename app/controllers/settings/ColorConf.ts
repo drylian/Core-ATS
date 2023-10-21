@@ -23,6 +23,6 @@ export default async function ColorConf(core: LoggingsMethods) {
 		core.sys("Configurações do painel forão verificadas e aprovadas.");
 		core.sys("Color([FrontEnd].blue) do painel - [OK].green ");
 	} catch (e) {
-		core.sys("[Erro nas principais do painel].red : " + (e as ErrType).message)
+		core.sys("[Erro nas principais do painel].red : " + (e as ErrType).message);
 	}
 }

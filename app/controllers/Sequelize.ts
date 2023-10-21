@@ -5,7 +5,7 @@ import User from "@/models/User";
  */
 async function init() {
 	await sequelize.authenticate();
-	await User.sync()
+	await User.sync();
 }
 
 interface Database {
@@ -16,6 +16,6 @@ interface Database {
 const db:Database = {
 	connection: sequelize,
 	init
-}
+};
 
 export { db };

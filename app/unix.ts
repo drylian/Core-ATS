@@ -1,7 +1,7 @@
 import Settings from "@/controllers/Settings";
 import { Console } from "@/controllers/loggings/OnlyConsole";
 import User from "@/models/User";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { genv5 } from "@/utils";
 import { ErrType } from "./interfaces/Utils";
 import { db } from "@/controllers/Sequelize";
@@ -18,16 +18,16 @@ async function __init() {
 		 */
 		await db.init();
 		const newUser = await User.create({
-			username: 'admin',
-			email: 'admin@gmail.com',
+			username: "admin",
+			email: "admin@gmail.com",
 			password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10)),
 			uuid: genv5("admin@gmail.com", "users"),
 			permissions: 10000
 		});
 
 		const ss = await User.create({
-			username: 'admins',
-			email: 'admins@gmail.com',
+			username: "admins",
+			email: "admins@gmail.com",
 			password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10)),
 			uuid: genv5("admins@gmail.com", "users"),
 			permissions: 10000,
@@ -35,19 +35,19 @@ async function __init() {
 			suspendedReason: "Nome improprio."
 		});
 
-		console.log(newUser, ss)
+		console.log(newUser, ss);
 		await webpanel();
 		// // core.log('Teste')
 		// // core.debug('teste')
 		// // core.err('teste')
 		// // core.warn('teste')
 		resolve(core("Todos os Sistemas foram iniciados com [sucesso].green."));
-	})
+	});
 }
 
 try {
 	Settings().then(()=>{
-		__init()
+		__init();
 	});
 } catch (e) {
 	core("Erro ao tentar configurar o painel: " + (e as ErrType).stack);

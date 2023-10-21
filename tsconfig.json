@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true, // Ignora a verificação de tipos em arquivos de declaração, no caso externas
     "target": "ES2017",
     "module": "NodeNext",
-    "lib": ["ESNext"],
-    "strict": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+
+    "strict": true, 
     "outDir": "dist",
     "baseUrl": "./",
     "paths": {
       "@/*": ["./app/*"],
     },
-    "types":[ "node"]
+    "types":[ "node"],
   },
   "include": ["app", "unix"],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"],
+  // "references": [{ "path": "resources" }]
 }
