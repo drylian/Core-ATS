@@ -6,7 +6,7 @@ import configuractions from "@/controllers/settings/Default";
 import { AppRouter as ApplicationBackend } from "@/http/Application";
 import { json } from "@/utils";
 import credentials from "@/http/middlewares/Credentials";
-import Cors from "@/http/middlewares/Cors";
+import configureCors from "@/http/middlewares/Cors";
 import cookieParser from "cookie-parser";
 import { ErrType } from "@/interfaces/Utils";
 import { SettingsJson } from "@/interfaces";
@@ -40,15 +40,12 @@ export const webpanel = async () => {
 			})(req, res, next);
 		});
 
-		app.set("views", configuractions.rootPATH + "/http/pages");
 		app.use(cookieParser(config.server.csrf.cookie_secret));
 
 		// await ProxyConnects(app);
 
 		// Manipular opções de verificação de credenciais - antes do CORS!
 		// e buscar requisitos de credenciais de cookies
-		app.use(credentials);
-
 
 		app.use("/", express.static(path.join(configuractions.rootPATH + "/http/static")));
 
@@ -61,8 +58,8 @@ export const webpanel = async () => {
 
 		// Configuração do express-fileupload
 		app.use(fileUpload());
-
-		await Cors(app);
+		app.use(credentials);
+		app.use(configureCors);
 
 		let callCount = 0;
 

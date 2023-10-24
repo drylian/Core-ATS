@@ -11,6 +11,9 @@ declare global {
         type: "user" | "token";
         uuid: string;
       }
+      alternative:{
+        origin:string;
+      }
       checked: "user" | "authorization";
       user: UserE;
     }

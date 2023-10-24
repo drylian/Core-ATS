@@ -20,6 +20,7 @@ export interface SettingsJson {
         title: string;
         logo: string;
         session: string;
+        protocol:"http" | "https" | "http/https";
         refreshTokenSecret: string;
         accessTokenSecret: string;
         csrf: {

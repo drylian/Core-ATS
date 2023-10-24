@@ -2,19 +2,29 @@ import configuractions from "@/controllers/settings/Default";
 import { NextFunction, Request, Response } from "express";
 import { json } from "@/utils/Json";
 import { SettingsJson } from "@/interfaces";
+import { SetAlowedRoutes } from "@/controllers/express/AllowedRoutes";
 
 const credentials = (req: Request, res: Response, next: NextFunction) => {
-	const origin = req.headers.origin;
-	const valores:SettingsJson = json(configuractions.configPATH + "/settings.json") || [];
+
+	const valores: SettingsJson = json(configuractions.configPATH + "/settings.json");
 	if (valores?.server?.cors) {
 		if (!valores.server.cors.allowedroutes) {
 			valores.server.cors.allowedroutes = "";
 		}
 		valores.server.cors.allowedroutes += `,${valores.server.url}:${valores.server.port}`;
 	}
-	const allowedOrigins = valores?.server?.cors?.allowedroutes.split(",").map((route) => route.trim());
-	if (typeof origin === "string" && allowedOrigins.includes(origin)) {
+	const origin = req.headers.origin ? req.headers.origin : req.headers.host ? SetAlowedRoutes(req.headers.host, valores.server.protocol) : undefined
+	const allowedOrigins = SetAlowedRoutes(valores.server.cors.allowedroutes, valores.server.protocol)
+
+	if (origin && typeof origin === "string" && allowedOrigins.indexOf(origin) !== -1) {
 		res.header("Access-Control-Allow-Credentials", "true");
+	} else if (Array.isArray(origin)) {
+		origin.forEach((originItem) => {
+			if (typeof originItem === 'string' && allowedOrigins.includes(originItem)) {
+				res.header("Access-Control-Allow-Credentials", "true");
+				return;
+			}
+		});
 	}
 	next();
 };
