@@ -1,14 +1,16 @@
 import { ColorJson } from "@/interfaces";
+import getBackground from "@/http/pages/scripts/GetBackground";
 
 export default function JsonCss(color: ColorJson) {
 
 	// Usar as configurações de cor 
-	const primaryColor = color.primaria;
-	const secondaryColor = color.secundaria;
+	const theme = color[color?.selected || "black"];
+	const primaryColor = theme.color.primary;
+	const secondaryColor = theme.color.secondary;
 	return `
     <style>
         body {
-          background: url(${color.background.type === "img" ? color.background.value : ""}) no-repeat;
+          background: ${getBackground(color)} no-repeat;
           background-attachment: fixed;
           background-size: cover;
           display: flex;
@@ -95,8 +97,6 @@ export default function JsonCss(color: ColorJson) {
           border-radius: 10px;
         }
         
-        
-
         .json-key {
           color: ${primaryColor};
         }

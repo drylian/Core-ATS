@@ -1,12 +1,13 @@
 import * as path from "path";
 import { Console } from "@/controllers/loggings/OnlyConsole";
 import { json } from "@/utils";
-export let root: string = "./dist", type: string = "", IsJavascript:boolean = false, version:string = "Canary";
-
+export let root: string = "./dist", type: string = "", IsJavascript: boolean = false, version: string = "Canary";
+type LogMessage = string | number | boolean | object;
+const core = (...message: LogMessage[]) => Console("Principal", "blue", "Infomações", message);
 
 const file = path.join(__filename);
 
-version = json("./package.json").version;
+version = json<{ version: "string" }>("./package.json").version;
 
 if (file.endsWith(".js")) {
 	IsJavascript = true;
@@ -17,8 +18,6 @@ if (file.endsWith(".js")) {
 	root = "./app"; // Lógica para TypeScript (Desenvolvimento)
 }
 
-
-const core = (message: string) => Console("Principal", message, "blue", "Infomações");
 core(`Servidor está sendo executado em ["${type}"].green com a raiz ["${root}"].blue`);
 
 export default {

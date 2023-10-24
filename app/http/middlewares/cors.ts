@@ -8,7 +8,6 @@ import Forbidden from "../pages/errors/403.html";
 async function configureCors(app: Application) {
 	app.use(async (req: Request, res: Response, next: NextFunction) => {
 		const valores: SettingsJson = json(configuractions.configPATH + "/settings.json") || [];
-
 		if (valores.server.cors.active) {
 			const corsOptions: CorsOptions = {
 				origin: (origin, callback) => {
@@ -33,14 +32,12 @@ async function configureCors(app: Application) {
 						callback(new Error("Acesso não autorizado devido à política CORS."));
 					}
 				},
-
-				optionsSuccessStatus: 200,
 			};
 
 			cors(corsOptions)(req, res, (err) => {
 				if (err) {
 					// Se ocorrer um erro, a origem não é permitida
-					res.status(403).send(Forbidden("Acesso não autorizado devido à política CORS."));
+					return res.status(403).send(Forbidden("Acesso não autorizado devido à política CORS."));
 				} else {
 					next();
 				}

@@ -8,21 +8,20 @@ import { Request, Response, NextFunction } from "express";
  * @param {NextFunction} next - A função para continuar o fluxo da solicitação.
  * @returns {void}
  */
-export default function CheckRequest(req: Request, res: Response, next: NextFunction) {
-	const acceptHeader = req.headers.accept || "";
-	const hasAlternightUserHeader = typeof req.headers.alternightuser === "string";
-	const hasAlternightUserCookie = req.cookies.alternightuser !== undefined;
-	const hasAuthorizationHeader = req.headers.authorization !== undefined;
+export default async function CheckRequest(req: Request, res: Response, next: NextFunction) {
+	const hasAuthorization = req.headers.authorization !== undefined && typeof req.headers.authorization === "string";
+	const hasAlternightCookie = req.cookies.authorization !== undefined && typeof req.cookies.authorization === "string";
 
-	if (hasAlternightUserHeader || hasAlternightUserCookie || hasAuthorizationHeader) {
-		if (hasAlternightUserHeader) req.checked = "user";
-		if (hasAlternightUserCookie) req.checked = "user";
-		if (hasAuthorizationHeader) req.checked = "authorization";
+	if (hasAuthorization || hasAlternightCookie) {
+		if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Bearer")) req.checked = "authorization";
+		else if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("UserAuth") || hasAlternightCookie) {
+			req.checked = "user";
+		}
 		next();
 	} else {
-		if (acceptHeader.includes("text/html")) return res.redirect("/auth/login");
-		if (acceptHeader.includes("application/json")) return res.status(401).json({ message: "O Token de autorização está ausente." });
-		if (acceptHeader.includes("text/plain")) return res.status(401).send("O Token de autorização está ausente.");
-		if (acceptHeader.includes("text/html")) return res.status(406).send("Request inválida.");
+		if (req.accepts("text/html")) return res.redirect("/auth/login");
+		if (req.accepts("application/json")) return res.status(401).json({ message: "O Token de autorização está ausente." });
+		if (req.accepts("text/plain")) return res.status(401).send("O Token de autorização está ausente.");
+		if (req.accepts("text/html")) return res.status(406).send("Request inválida.");
 	}
 }

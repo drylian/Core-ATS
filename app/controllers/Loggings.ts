@@ -22,6 +22,7 @@ export interface LoggingsOptions {
 		type: "log" | "json";
 	}
 }
+export type LogMessage = string | number | boolean | object;
 
 /**
  * ### Controlador de Logs, params
@@ -60,64 +61,64 @@ class Loggings {
 	/**
 	 * Registra uma mensagem de log.
 	 * 
-	 * @param {string} message - A mensagem de log.
+	 * @param {LogMessage} args - A mensagem de log.
 	 */
-	log(message: string): void {
-		logs(this.title, message, "Info", this.color, this.options);
+	log(...args: LogMessage[]): void {
+		logs(this.title, "Info", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem de erro.
 	 * 
-	 * @param {string} message - A mensagem de erro.
+	 * @param {LogMessage} args - A mensagem de erro.
 	 */
-	error(message: string): void {
-		logs(this.title, message, "Error", this.color, this.options);
+	error(...args: LogMessage[]): void {
+		logs(this.title, "Error", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem de aviso.
 	 * 
-	 * @param {string} message - A mensagem de aviso.
+	 * @param {LogMessage} args - A mensagem de aviso.
 	 */
-	warn(message: string): void {
-		logs(this.title, message, "Warn", this.color, this.options);
+	warn(...args: LogMessage[]): void {
+		logs(this.title, "Warn", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem de informação.
 	 * 
-	 * @param {string} message - A mensagem de informação.
+	 * @param {LogMessage} args - A mensagem de informação.
 	 */
-	info(message: string): void {
-		logs(this.title, message, "Info", this.color, this.options);
+	info(...args: LogMessage[]): void {
+		logs(this.title, "Info", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem de depuração.
 	 * 
-	 * @param {string} message - A mensagem de depuração.
+	 * @param {LogMessage} args - A mensagem de depuração.
 	 */
-	debug(message: string): void {
-		logs(this.title, message, "Debug", this.color, this.options);
+	debug(...args: LogMessage[]): void {
+		logs(this.title, "Debug", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem no console sem salvá-la em um arquivo de log.
 	 * 
-	 * @param {string} message - A mensagem a ser registrada no console.
+	 * @param {LogMessage} args - A mensagem a ser registrada no console.
 	 */
-	sys(message: string): void {
-		logs(this.title, message, "OnlyConsole", this.color, this.options);
+	sys(...args: LogMessage[]): void {
+		logs(this.title, "OnlyConsole", this.color, this.options,args);
 	}
 
 	/**
 	 * Registra uma mensagem diretamente no arquivo de logs, não aparecendo no console.
 	 * 
-	 * @param {string} logtext - A mensagem a ser registrada no arquivo de log.
+	 * @param {LogMessage} logtext - A mensagem a ser registrada no arquivo de log.
 	 */
-	txt(logtext: string): void {
-		logs(this.title, logtext, "OnlyLog", this.color, this.options);
+	txt(...args: LogMessage[]): void {
+		logs(this.title, "OnlyLog", this.color, this.options,args);
 	}
 }
 
@@ -143,13 +144,13 @@ export type LoggingsConstructor = new (title: string, color: string) => Loggings
  * ```
  */
 export type LoggingsMethods = {
-	log: (message: string) => void;
-	error: (message: string) => void;
-	warn: (message: string) => void;
-	info: (message: string) => void;
-	debug: (message: string) => void;
-	sys: (message: string) => void;
-	txt: (logtext: string) => void;
+	log: (...args: LogMessage[]) => void;
+	error: (...args: LogMessage[]) => void;
+	warn: (...args: LogMessage[]) => void;
+	info: (...args: LogMessage[]) => void;
+	debug: (...args: LogMessage[]) => void;
+	sys: (...args: LogMessage[]) => void;
+	txt: (...args: LogMessage[]) => void;
 };
 
 

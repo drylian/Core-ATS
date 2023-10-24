@@ -10,6 +10,7 @@ const core = new Loggings("Settings", "magenta");
 
 const Settings = async () => {
 	core.sys("Iniciando verificações das pastas do painel.");
+	core.sys("Iniciando verificações das pastas do painel.",[ "teste", "teste" ],{teste:"teste"});
 
 	if (!dirEX(root.loggingsPATH)) {
 		core.sys("Pasta de loggings não existe, criando uma.");

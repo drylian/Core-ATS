@@ -2,6 +2,7 @@
  * Versão dois do Viteless, com o objetivo de ler o index.html.*s ao invez de index.html
  */
 import root from "@/controllers/settings/Default";
+import { SettingsJson } from "@/interfaces";
 import { json } from "@/utils";
 import * as fs from "fs";
 import * as path from "path";
@@ -38,7 +39,7 @@ function Assetsfiles(): AssetFiles {
 			}
 		});
 	} else {
-		if(json(root.configPATH + "/settings.json").mode === "pro") assetFiles.error = true;
+		if(json<SettingsJson>(root.configPATH + "/settings.json").mode === "pro") assetFiles.error = true;
 	}
 
 	return assetFiles;

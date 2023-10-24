@@ -14,7 +14,7 @@ export default async function DatabaseConf(core: LoggingsMethods) {
 			}
 			if (config === "port") {
 				core.sys("Configuração de porta do banco de dados ainda não foi configurado.");
-				return await question({ type: "input", message: `Qual é a porta usada pelo banco de dados? (${config}) :`, default: "3000" });
+				return parseInt(await question({ type: "input", message: `Qual é a porta usada pelo banco de dados? (${config}) :`, default: "3000" }));
 			}
 			if (config === "database") {
 				core.sys("O banco de dados(database) ainda não foi configurado.");

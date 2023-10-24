@@ -4,14 +4,14 @@ import Loggings from "@/controllers/Loggings";
 const core = new Loggings("Refresh Token", "green");
 import { ALTcpt, ALTdcp, AlTexp, json } from "@/utils";
 import configuractions from "@/controllers/settings/Default";
-import { ErrType } from "@/interfaces";
+import { ErrType, SettingsJson } from "@/interfaces";
 
 
 const router = express.Router();
 
 // Rota de registro
 router.post("/token", async (req, res) => {
-	const config = json(configuractions.configPATH + "/settings.json");
+	const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
 	const { remember_token } = req.body;
 	if (remember_token) {
 		try {

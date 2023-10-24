@@ -3,11 +3,12 @@ import path, { join } from "path";
 import { json } from "@/utils";
 import configuractions from "@/controllers/settings/Default";
 import { Console } from "@/controllers/loggings/OnlyConsole";
-
-const core = (levelsss: string, message: string) => Console("Loggings", message, "green", levelsss);
+import { LoggingsJson } from "@/interfaces";
+type LogMessage = string | number | boolean | object;
+const core = (levelsss: string, ...message: LogMessage[]) => Console("Loggings", "green", levelsss, message);
 
 export function unlinkfolders(logFolderPath: string, level: string, logtype:string) {
-	const loggings = json(configuractions.configPATH + "/loggings.json");
+	const loggings:LoggingsJson = json(configuractions.configPATH + "/loggings.json");
 	const logFilesPattern = new RegExp(`${logtype === "json" ? `.*_${level.toLowerCase()}.json` : `.*_${level.toLowerCase()}.log`}`);
 	const logFiles = fs.readdirSync(logFolderPath)
 		.filter(file => logFilesPattern.test(file))

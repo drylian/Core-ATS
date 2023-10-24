@@ -5,14 +5,14 @@ import { ALTcpt, AlTexp, json } from "@/utils";
 import configuractions from "@/controllers/settings/Default";
 import Loggings from "@/controllers/Loggings";
 import { v4 as uuidv4 } from "uuid"; // Importa a função uuidv4 para gerar UUIDs
-import { ErrType } from "@/interfaces";
+import { ErrType, SettingsJson } from "@/interfaces";
 
 const core = new Loggings("Login", "green");
 const router = express.Router();
 
 // Rota de autenticação
 router.post("/", async (req: Request, res: Response) => {
-	const config = json(configuractions.configPATH + "/settings.json");
+	const config:SettingsJson = json(configuractions.configPATH + "/settings.json");
 	try {
 		// Verifique se os campos necessários estão presentes no corpo da solicitação
 		const { username, password, remember_me = false } = req.body;

@@ -7,13 +7,20 @@ import { RegisterLog, registerlog } from "@/controllers/loggings/registerlog";
 import { Colors, ConsoleLog as ConsoleLogger, LogType } from "@/interfaces/Controllers";
 import { CheckColors } from "@/controllers/loggings/CheckColors";
 import { LoggingsOptions } from "../Loggings";
+import { LoggingsJson } from "@/interfaces";
+import { WhiteColors, WhiteLogs } from "@/controllers/loggings/Colors";
 
 const cores: Colors = colors;
+type LogMessage = string | number | boolean | object;
 
-export function logs(controller: string, message: string, level: string, color: string, options: LoggingsOptions) {
+// eslint-disable-line no-console, max-len
+export function logs(controller: string, level: string, color: string, options: LoggingsOptions, args: LogMessage[]) {
+
+	const message = WhiteColors(args);
+	// const message = msg + args.join(); // converte os args em uma string separando por " "
 	let ArchiveLog: string | RegisterLog = "";
 
-	const valoressssss = json(configuraction.configPATH + "/loggings.json");
+	const valoressssss: LoggingsJson = json(configuraction.configPATH + "/loggings.json");
 	const CURRENT_LOG_LEVEL = valoressssss.level || "Debug"; // Altere o nível atual conforme necessário
 	// carrega o codigo
 	const levelConfig: LogType = loggings[level];
@@ -23,17 +30,19 @@ export function logs(controller: string, message: string, level: string, color: 
 	const SelectedColor = !levelConfig.color ? "white" : CheckColors(levelConfig?.color, level);
 	if (level === "OnlyLog") {
 		const { fulltimer, timestamp } = getTimestamp();
-		const formattedMessage = RemoveColorsParams(message); // remove o parametro de cores 
+		const formattedMessage = WhiteLogs(args); // remove o parametro de cores 
 		if (options.register?.type === "log") {
 			ArchiveLog = `[ ${options.register?.timer === "timestamp" ? timestamp : fulltimer} ] [ ${controller} ] ${formattedMessage}`;
 		} else if (options.register?.type === "json") {
 			ArchiveLog = {
 				time: options.register?.timer === "timestamp" ? timestamp.toString() : fulltimer,
 				controller,
-				message:formattedMessage
+				message: formattedMessage
 			};
+		} else {
+			ArchiveLog = `[ ${options.register?.timer === "timestamp" ? timestamp : fulltimer} ] [ ${controller} ] ${formattedMessage}`;
 		}
-		return registerlog(controller, ArchiveLog, level);
+		return registerlog(controller, ArchiveLog, "Register");
 	}
 
 	if (level === "OnlyConsole") {
@@ -60,7 +69,7 @@ export function logs(controller: string, message: string, level: string, color: 
 			message
 		};
 		MakeLog(ConsoleLog);
-		const formattedMessage = RemoveColorsParams(message); // remove o parametro de cores 
+		const formattedMessage = message; // remove o parametro de cores 
 		if (options.register?.type === "log") {
 			ArchiveLog = `[ ${options.register?.timer === "timestamp" ? timestamp : fulltimer} ] [ ${controller} ] ${formattedMessage}`;
 		} else if (options.register?.type === "json") {
@@ -68,34 +77,13 @@ export function logs(controller: string, message: string, level: string, color: 
 				time: options.register?.timer === "timestamp" ? timestamp.toString() : fulltimer,
 				controller,
 				level,
-				message:formattedMessage
+				message: formattedMessage
 			};
+		} else {
+			ArchiveLog = `[ ${options.register?.timer === "timestamp" ? timestamp : fulltimer} ] [ ${controller} ] ${formattedMessage}`;
 		}
 		registerlog(controller, ArchiveLog, level);
 	}
-}
-
-// Função para remover o padrão de cores na log
-function RemoveColorsParams(message: string): string {
-	const colorTagPattern = /\[([^\]]+)\]\.(\w+)/g;
-	return message.replace(colorTagPattern, (_, text) => {
-		const message = `"${text}"`;
-		return message; // Retornar o texto original se a cor não for encontrada
-	});
-}
-
-
-// Função para substituir os padrões de cor na mensagem
-function applyColorTags(message: string): string {
-	const colorTagPattern = /\[([^\]]+)\]\.(\w+)/g;
-	return message.replace(colorTagPattern, (_, text, color) => {
-		const colorFunction = cores[CheckColors(color, `[${text}]`)];
-		if (colorFunction) {
-			return colorFunction(text);
-		} else {
-			return text; // Retornar o texto original se a cor não for encontrada
-		}
-	});
 }
 
 
@@ -104,7 +92,7 @@ function MakeLog(ConsoleLog: ConsoleLogger) {
 	const { currentHour, color, controller, levelColor, level, message } = ConsoleLog;
 	const formattedController = cores[color](controller);
 	const formattedLevel = cores[levelColor](level);
-	const formattedMessage = applyColorTags(message); // Aplicar cores à mensagem
+	const formattedMessage = message; // Aplicar cores à mensagem
 
 	console.log(`| ${currentHour} | ${formattedController} - ${formattedLevel} | ${formattedMessage}`);
 }

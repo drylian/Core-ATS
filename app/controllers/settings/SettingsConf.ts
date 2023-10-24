@@ -40,8 +40,7 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		if (!c?.server?.port) jsonsv(root.configPATH + "/settings.json", { server: { port: await qprefix("server_port") } });
 		if (!c?.server?.url) jsonsv(root.configPATH + "/settings.json", { server: { url: await qprefix("server_url") } });
 		if (!c?.server?.title) jsonsv(root.configPATH + "/settings.json", { server: { title: await qprefix("server_title") } });
-		if (!c?.server?.logo) jsonsv(root.configPATH + "/settings.json", { server: { logo: "/img/favicon.png" } });
-
+		
 		if (!c?.server?.session) jsonsv(root.configPATH + "/settings.json", { server: { session: gen(128) } });
 		if (!c?.server?.refreshTokenSecret) jsonsv(root.configPATH + "/settings.json", { server: { refreshTokenSecret: `refreshToken_${gen(128)}` } });
 		if (!c?.server?.accessTokenSecret) jsonsv(root.configPATH + "/settings.json", { server: { accessTokenSecret: `accessToken_${gen(128)}` } });

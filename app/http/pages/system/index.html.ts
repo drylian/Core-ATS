@@ -8,13 +8,14 @@ import ErrorInternal from "../errors/500.html";
  * 
  * @returns Html principal do sistema, usado para rederizar o React
  */
-export default function HtmlIndex(dev?: string) {
-	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
-	const { scriptTags, linkTags, scssLinkTags, error} = ViteRender(); // Chama a função ViteRender aqui.
+export default function HtmlIndex(csrftoken: string, dev?: string) {
 
-    if(error) {
-        return ErrorInternal("Erro interno ao tentar carregar o compilado do react, o vite foi buildado?.");
-    } else return `
+	const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+	const { scriptTags, linkTags, scssLinkTags, error } = ViteRender(); // Chama a função ViteRender aqui.
+
+	if (error) {
+		return ErrorInternal("Erro interno ao tentar carregar o compilado do react, o vite foi buildado?");
+	} else return `
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -23,13 +24,11 @@ export default function HtmlIndex(dev?: string) {
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <style>
-        body {
-            background-color: #000;
-        }
-    </style>
+    <!-- Server Params-->
+    <script>
+        window.CsrfToken = ${csrftoken}
+    </script>
     ${dev ? "<!-- Modo Desenvolvedor -->" : "<!-- Modo Produção --> \n" + linkTags + scriptTags + scssLinkTags}
-
 </head>
 
 <body>

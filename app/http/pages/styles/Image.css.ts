@@ -1,19 +1,20 @@
 import { ColorJson } from "@/interfaces";
+import getBackground from "@/http/pages/scripts/GetBackground";
 
-export default function ImageCss(color: ColorJson, Imagem: any) {
-	// Usar as configurações de cor
-	const primaryColor = color.primaria;
-	const secondaryColor = color.secundaria;
+export default function ImageCss<T>(color: ColorJson, Imagem: T) {
+	const theme = color[color?.selected || "black"];
+	const primaryColor = theme.color.primary;
+	const secondaryColor = theme.color.secondary;
 
 	// Limitar o tamanho máximo da imagem a 500x500
 	const maxSize = 150;
-	const width = Imagem.size > maxSize ? maxSize : Imagem.size;
-	const height = Imagem.size > maxSize ? maxSize : Imagem.size;
+	const width = (Imagem as {size:number}).size > maxSize ? maxSize : (Imagem as {size:number}).size;
+	const height = (Imagem as {size:number}).size > maxSize ? maxSize : (Imagem as {size:number}).size;
 
 	return `
     <style>
     body {
-        background: url(${color.background.type === "img" ? color.background.value : ""}) no-repeat;
+        background: ${getBackground(color)} no-repeat;
         background-attachment: fixed;
         background-size: cover;
         display: flex;

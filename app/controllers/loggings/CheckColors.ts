@@ -1,9 +1,6 @@
-import { logs } from "@/controllers/loggings/logs";
 import { loggings } from "@/controllers/loggings/params";
 
-const logHistory: { [key: string]: boolean | string | number} = {}; // armazena o histórico de mensagens
-
-const core = (message: string) => logs("Loggings", message, "Warn", "green",{});
+const logHistory: { [key: string]: boolean | string | number } = {}; // armazena o histórico de mensagens
 
 export function CheckColors(color: string, type: string): string {
 
@@ -15,12 +12,12 @@ export function CheckColors(color: string, type: string): string {
 
 	if (!validColors.includes(color)) {
 		const errorMessage: string = type ? `A cor "${color}" usada no "${type}" é ínvalida, usando cor padrão(${loggings.Alternative.color}).` : `A cor "${color}"é ínvalida , usando cor padrão(${loggings.Alternative.color}).`;
-        
+
 		if (!logHistory[errorMessage]) {
 			logHistory[errorMessage] = true;
-			core(errorMessage);
+			console.log(`${errorMessage}`);
 		}
-        
+
 		return loggings.Alternative.color;
 	}
 

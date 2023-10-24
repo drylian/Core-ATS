@@ -1,7 +1,9 @@
 import HtmlIndex from "@/http/pages/system/index.html";
 import { Application } from "express";
+import { generateCsrfToken } from "@/http/middlewares/CSRF";
 
 async function ViteInjector(app: Application) {
+
 	// Import necessary functions and modules
 	const { createServer } = await import("vite");
 
@@ -16,7 +18,7 @@ async function ViteInjector(app: Application) {
 
 	app.use("*", async (req, res) => {
 		// Transform and send the index HTML
-		vite.transformIndexHtml(req.originalUrl, HtmlIndex("dev")).then((html) => {
+		vite.transformIndexHtml(req.originalUrl, HtmlIndex(generateCsrfToken()(req, res, true), "dev")).then((html) => {
 			res.status(200).send(html);
 		});
 	});

@@ -1,5 +1,3 @@
-import { UserE } from "@/models/User";
-
 /**
  * Interface @/utils/question
  */

@@ -17,15 +17,16 @@ export interface Loggings {
 /**
  * Interface @/controllers/loggings
  */
-
+// esse type foi retirado do colors, os any n é culpa minha
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export type Colors = {
     enable(): void;
     disable(): void;
     setTheme(theme: any): void;
-    
+
     strip(str: string): string;
     stripColors(str: string): string;
-    
+
     black(str: string): string;
     red(str: string): string;
     green(str: string): string;
@@ -36,7 +37,7 @@ export type Colors = {
     white(str: string): string;
     gray(str: string): string;
     grey(str: string): string;
-    
+
     bgBlack(str: string): string;
     bgRed(str: string): string;
     bgGreen(str: string): string;
@@ -45,7 +46,7 @@ export type Colors = {
     bgMagenta(str: string): string;
     bgCyan(str: string): string;
     bgWhite(str: string): string;
-    
+
     reset(str: string): string;
     bold(str: string): string;
     dim(str: string): string;
@@ -54,7 +55,7 @@ export type Colors = {
     inverse(str: string): string;
     hidden(str: string): string;
     strikethrough(str: string): string;
-    
+
     rainbow(str: string): string;
     zebra(str: string): string;
     america(str: string): string;
@@ -63,7 +64,6 @@ export type Colors = {
     zalgo(str: string): string;
     [key: string]: ((...args: string[]) => string) | any;
 };
-
 /**
  * Interface @/controllers/loggings/logs
  */
@@ -80,7 +80,7 @@ export interface ConsoleLog {
 export interface Cores {
     [key: string]: [string];
 }
-  
+
 /**
  * interface @/controllers/sequelize/models
  */

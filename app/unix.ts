@@ -5,24 +5,24 @@ import bcrypt from "bcrypt";
 import { genv5 } from "@/utils";
 import { ErrType } from "./interfaces/Utils";
 import { db } from "@/controllers/Sequelize";
-const core = (message: string) => Console("Principal", message, "blue", "Infomações");
+import { webpanel } from "@/controllers/Express";
+type LogMessage = string | number | boolean | object;
+
+const core = (...args: LogMessage[]) => Console("Principal", "blue", "Infomações", args);
 
 core("Iniciando processos do painel.");
 
-async function __init() {
-
-	new Promise(async resolve => {
-		const { webpanel } = require("./controllers/Express");
-		/**
-		 * Carrega as configurações do banco de dados
-		 */
+async function init() {
+	try {
+		// Carrega as configurações do banco de dados
 		await db.init();
+
 		const newUser = await User.create({
 			username: "admin",
 			email: "admin@gmail.com",
 			password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10)),
 			uuid: genv5("admin@gmail.com", "users"),
-			permissions: 10000
+			permissions: 10000,
 		});
 
 		const ss = await User.create({
@@ -32,23 +32,21 @@ async function __init() {
 			uuid: genv5("admins@gmail.com", "users"),
 			permissions: 10000,
 			suspended: true,
-			suspendedReason: "Nome improprio."
+			suspendedReason: "Nome impróprio.",
 		});
 
 		console.log(newUser, ss);
-		await webpanel();
-		// // core.log('Teste')
-		// // core.debug('teste')
-		// // core.err('teste')
-		// // core.warn('teste')
-		resolve(core("Todos os Sistemas foram iniciados com [sucesso].green."));
+		core("Todos os Sistemas foram iniciados com [sucesso].green.");
+	} catch (e) {
+		core("Erro ao tentar configurar o painel: " + (e as ErrType).stack);
+	}
+}
+
+async function run() {
+	await Settings().then(async () => {
+		await init();
+		await webpanel(); // Carrega o webpanel após as configurações e init
 	});
 }
 
-try {
-	Settings().then(()=>{
-		__init();
-	});
-} catch (e) {
-	core("Erro ao tentar configurar o painel: " + (e as ErrType).stack);
-}
+run();

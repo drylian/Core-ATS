@@ -1,3 +1,5 @@
+import { Dialect } from "sequelize";
+
 /**
  * interface do settings.json
  */
@@ -35,9 +37,9 @@ export interface SettingsJson {
         };
     };
     database: {
-        dialect: string;
+        dialect: Dialect;
         storage: string;
-        port: string;
+        port: number;
         host: string;
         password: string;
         username: string;
@@ -58,18 +60,21 @@ export interface LoggingsJson {
 /**
  * interface do color.json
  */
+interface ColorValues {
+    color: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+    };
+    text: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+    };
+    background: string;
+}
 export interface ColorJson {
-    [key: string]: {
-        color: {
-            primary: string;
-            secondary: string;
-            tertiary: string;
-        };
-        text: {
-            primary: string;
-            secondary: string;
-            tertiary: string;
-        };
-        background: string;
-    }
+    selected: "black" | "white"; // Apenas "black" ou "white" são permitidos
+    black: ColorValues;
+    white: ColorValues
 }

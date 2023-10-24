@@ -15,6 +15,7 @@ import ErrorInternal from "@/http/pages/errors/500.html";
 import morgan from "morgan";
 import HtmlIndex from "@/http/pages/system/index.html";
 import ViteInjector from "./express/vite/ViteInjector";
+import { generateCsrfToken } from "@/http/middlewares/CSRF";
 const core = new Loggings("Express", "green");
 
 // Logs para o simulador de apache
@@ -40,6 +41,8 @@ export const webpanel = async () => {
 		});
 
 		app.set("views", configuractions.rootPATH + "/http/pages");
+		app.use(cookieParser(config.server.csrf.cookie_secret));
+
 		// await ProxyConnects(app);
 
 		// Manipular opções de verificação de credenciais - antes do CORS!
@@ -53,6 +56,7 @@ export const webpanel = async () => {
 		app.use(express.json()); // Equivalente ao bodyParser.json()
 		app.use(express.urlencoded({ extended: true })); // Equivalente ao bodyParser.urlencoded({ extended: true })
 		app.use(cookieParser());
+		app.use(cookieParser(config.server.csrf.cookie_secret));
 
 
 		// Configuração do express-fileupload
@@ -100,7 +104,7 @@ export const webpanel = async () => {
 
 			app.get("*", (req, res) => {
 				if (req.accepts("html")) {
-					res.send(HtmlIndex());
+					res.send(HtmlIndex(generateCsrfToken()(req, res, true)));
 				}
 			});
 			await ExtendExpress(app);

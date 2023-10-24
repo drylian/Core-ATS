@@ -10,10 +10,11 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./app/*"],
+      
     },
     "types":[ "node"],
   },
   "include": ["app", "unix"],
   "exclude": ["node_modules", "**/*.spec.ts", "dist"],
-  "references": [{ "path": "resources" }]
+  "references": [{ "path": "./resources/tsconfig.json" }]
 }

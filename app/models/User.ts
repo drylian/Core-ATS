@@ -1,28 +1,34 @@
+/**
+ * @module User
+ * @description Este módulo define o modelo de "User" usando Sequelize.
+ * Representa as propriedades e configurações do modelo "User".
+ */
+
 import sequelize from "@/controllers/sequelize/Connect";
 import { DataTypes, Model } from "sequelize";
 
 export interface UserI {
-    id: number | null;
-    username: string;
-    email: string;
-    password: string;
-    permissions: number | null;
-    uuid: string;
-    remember: string | null;
-    suspended: boolean | null;
-    suspendedReason: string | null;
+	id: number | null;
+	username: string;
+	email: string;
+	password: string;
+	permissions: number | null;
+	uuid: string;
+	remember: string | null;
+	suspended: boolean | null;
+	suspendedReason: string | null;
 }
 
 export interface UserE {
-    id: number | null;
-    username: string;
-    email: string;
-    password?: string;
-    permissions: number | null;
-    uuid: string;
-    remember: string | null;
-    suspended: boolean | null;
-    suspendedReason: string | null;
+	id: number | null;
+	username: string;
+	email: string;
+	password?: string;
+	permissions: number | null;
+	uuid: string;
+	remember: string | null;
+	suspended: boolean | null;
+	suspendedReason: string | null;
 }
 
 class User extends Model<UserI> implements UserI {
@@ -57,7 +63,7 @@ User.init({
 	},
 	permissions: {
 		type: DataTypes.NUMBER,
-		defaultValue: 1542,
+		defaultValue: 1000,
 	},
 	uuid: {
 		type: DataTypes.STRING,
@@ -66,10 +72,10 @@ User.init({
 	remember: {
 		type: DataTypes.STRING,
 	},
-	suspended:{
+	suspended: {
 		type: DataTypes.BOOLEAN,
 	},
-	suspendedReason:{
+	suspendedReason: {
 		type: DataTypes.STRING,
 	}
 }, {

@@ -1,61 +1,52 @@
+import { ErrType } from "@/interfaces";
 import fs from "fs";
+import lodash from "lodash";
 
-function json(local: string): any {
+function json<T>(local: string): T {
 	let existingData: string;
 
 	try {
 		if (fs.existsSync(local)) {
 			existingData = fs.readFileSync(local, "utf-8");
 		} else {
-			return {};
+			return ({} as T);
 		}
 
-		const parsedData = JSON.parse(existingData);
+		const parsedData: T = JSON.parse(existingData);
 		return parsedData;
-	} catch (err: any) {
-		console.error("Erro ao analisar o JSON:", err.message);
-		return {};
+	} catch (err) {
+		console.error("Erro ao analisar o JSON:", (err as ErrType).message);
+		return ({} as T);
 	}
 }
 
 
-function jsonsv(local: string, data: any): void {
-	function mergeObjects(target: any, source: any): any {
-		for (const key in source) {
-			if (Object.prototype.hasOwnProperty.call(source, key)) {
+function jsonsv<Datatype>(local: string, data: Datatype): void {
+	try {
+		let existingData: Datatype;
 
-				if (source[key] instanceof Object && !Array.isArray(source[key])) {
-					target[key] = mergeObjects(target[key] || {}, source[key]);
-				} else {
-					target[key] = source[key];
-				}
-			}
+		// Verifica se o arquivo já existe
+		if (fs.existsSync(local)) {
+			// Se existir, lê o conteúdo do arquivo e o converte em objeto JSON
+			const fileContent = fs.readFileSync(local, "utf-8");
+			existingData = JSON.parse(fileContent);
+		} else {
+			// Se o arquivo não existir, cria um objeto vazio
+			existingData = {} as Datatype;
 		}
-		return target;
+
+		// Mescla os dados existentes com os novos dados (mesclagem profunda)
+		const mergedData = lodash.merge(existingData, data);
+
+		// Converte o objeto mesclado em uma string JSON
+		const jsonData = JSON.stringify(mergedData, null, 2); // O terceiro argumento define a formatação com espaços (2 espaços, por exemplo)
+
+		// Escreve a string JSON no arquivo
+		fs.writeFileSync(local, jsonData, "utf-8");
+	} catch (error) {
+		console.error("Erro ao salvar o arquivo:", error);
 	}
-
-	let existingData;
-
-	if (fs.existsSync(local)) {
-		const valores = fs.readFileSync(local, "utf-8");
-		try {
-			existingData = JSON.parse(valores);
-		} catch (err) {
-			// Se ocorrer um erro na análise do JSON, limpar o arquivo
-			fs.writeFileSync(local, JSON.stringify(data, null, 2));
-			return;
-		}
-	} else {
-		existingData = {};
-	}
-
-	mergeObjects(existingData, data);
-
-	const jsonData = JSON.stringify(existingData, null, 2);
-	fs.writeFileSync(local, jsonData);
-	return existingData;
 }
-
 
 
 export { json, jsonsv };

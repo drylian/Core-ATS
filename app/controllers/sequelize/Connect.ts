@@ -1,25 +1,31 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, Options } from "sequelize";
 import { json } from "@/utils";
 import Configuractions from "@/controllers/settings/Default";
 import Loggings from "@/controllers/Loggings";
+import { SettingsJson } from "@/interfaces";
 
 const core = new Loggings("Sequelize", "magenta");
 
-const respose = json(Configuractions.configPATH + "/settings.json");
+const response: SettingsJson = json(Configuractions.configPATH + "/settings.json");
 
-if (!respose?.database) {
-	core.sys("[Configuração do dialect].bold não detectada, usando [Sqlite].blue como [padrão].green");
+let sequelizeMG: Options;
+
+if (response?.database) {
+	sequelizeMG = {
+		...response.database,
+		logging: (message: string) => {
+			core.debug(message);
+		},
+	};
+} else {
+	sequelizeMG = {
+		dialect: "sqlite",
+		logging: (message: string) => {
+			core.debug(message);
+		},
+	};
 }
 
-const sequelizeMG = {
-	/**
-	 * Configuração do sequelize
-	 */
-	...respose?.database ? respose.database : {dialect: "sqlite"},
-	logging: (message: string) => {
-		core.debug(message);
-	},
-};
 const sequelize = new Sequelize(sequelizeMG);
 
 export default sequelize;

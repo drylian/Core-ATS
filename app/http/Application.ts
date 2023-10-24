@@ -8,26 +8,28 @@ import loginRoute from "@/http/router/auth/login";
 import { Application } from "express";
 import Protected from "@/http/Protected";
 import CheckRequest from "./middlewares/CheckRequest";
+import { ConnectionsCheck } from "./middlewares/CSRF";
+
 
 async function AppRouter(app: Application) {
 	/**
-     * Rotas da Api
-     */
+	 * Rotas da Api
+	 */
 	app.use("/api/", imagemRoute);
 	app.use("/api/application", ApplicationRoute);
 	/**
-     * Rotas Protegidas
-     */
-	app.use("/api", CheckRequest, Protected);
+	 * Rotas Protegidas
+	 */
+	app.use("/api", CheckRequest, ConnectionsCheck, Protected);
 
 
 	/**
-     * Rotas de Auth
-     */
+	 * Rotas de Auth
+	 */
 	app.use("/auth/login", loginRoute);
 	app.use("/auth/register", registerRoute);
 	app.use("/auth/refresh", refreshRoute);
-	app.use("/auth/change", CheckRequest,changeRoute);
+	app.use("/auth/change", CheckRequest, ConnectionsCheck, changeRoute);
 }
 
 

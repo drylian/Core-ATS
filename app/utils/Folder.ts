@@ -13,8 +13,18 @@ export function dirEX(folderPath: string) {
 	}
 }
 
-export function dirSC(folderPath: string) {
-	const scannedFiles: Array<any> = [];
+interface FileInfo {
+	name: string;
+	path: string;
+	isDirectory: boolean;
+	size: number;
+	createdAt: Date;
+	modifiedAt: Date;
+	accessedAt: Date;
+}
+
+export function dirSC(folderPath: string): FileInfo[] {
+	const scannedFiles: FileInfo[] = [];
 
 	function scanDir(directory: string) {
 		const files = fs.readdirSync(directory);
@@ -23,7 +33,7 @@ export function dirSC(folderPath: string) {
 			const filePath = path.join(directory, file);
 			const stat = fs.statSync(filePath);
 
-			const fileInfo: object = {
+			const fileInfo: FileInfo = {
 				name: file,
 				path: filePath,
 				isDirectory: stat.isDirectory(),
@@ -31,23 +41,6 @@ export function dirSC(folderPath: string) {
 				createdAt: stat.birthtime,
 				modifiedAt: stat.mtime,
 				accessedAt: stat.atime,
-				//   permissions: {
-				// 	owner: {
-				// 	  read: !!(stat.mode & 0o400),
-				// 	  write: !!(stat.mode & 0o200),
-				// 	  execute: !!(stat.mode & 0o100),
-				// 	},
-				// 	group: {
-				// 	  read: !!(stat.mode & 0o40),
-				// 	  write: !!(stat.mode & 0o20),
-				// 	  execute: !!(stat.mode & 0o10),
-				// 	},
-				// 	others: {
-				// 	  read: !!(stat.mode & 0o4),
-				// 	  write: !!(stat.mode & 0o2),
-				// 	  execute: !!(stat.mode & 0o1),
-				// 	},
-				//   },
 			};
 
 			scannedFiles.push(fileInfo);

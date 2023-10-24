@@ -12,13 +12,35 @@ export default async function ColorConf(core: LoggingsMethods) {
 		}
 
 		/**
-		 * Cores do painel(Frontend)
+		 * Cores do painel(Frontend) - Black White do painel
 		 */
-		const color: ColorJson = json(root.configPATH + "/color.json"); // Rele o json e atualiza os valores atuais
-		if (!color?.primaria) jsonsv(root.configPATH + "/color.json", { primaria: "#3490dc" });
-		if (!color?.secundaria) jsonsv(root.configPATH + "/color.json", { secundaria: "#f39c12" });
-		if (!color?.background?.type) jsonsv(root.configPATH + "/color.json", { background: { type: "color" } });
-		if (!color?.background?.value) jsonsv(root.configPATH + "/color.json", { background: { value: "#ffffff" } });
+		const vars: ColorJson = json(root.configPATH + "/color.json");
+		if (!vars?.selected) jsonsv(root.configPATH + "/color.json", { selected: "black" });
+
+		/**
+		 * Black
+		 */
+		const black = vars?.black; // prefix Black
+		if (!black?.color?.primary) jsonsv(root.configPATH + "/color.json", { black: { color: { primary: "#000" } } });
+		if (!black?.color?.secondary) jsonsv(root.configPATH + "/color.json", { black: { color: { secondary: "#1d5285" } } });
+		if (!black?.color?.tertiary) jsonsv(root.configPATH + "/color.json", { black: { color: { tertiary: "#808080" } } });
+		if (!black?.text?.primary) jsonsv(root.configPATH + "/color.json", { black: { text: { primary: "#ffffff" } } });
+		if (!black?.text?.secondary) jsonsv(root.configPATH + "/color.json", { black: { text: { secondary: "#051322" } } });
+		if (!black?.text?.tertiary) jsonsv(root.configPATH + "/color.json", { black: { text: { tertiary: "#808080" } } });
+		if (!black?.background) jsonsv(root.configPATH + "/color.json", { black: { background: "#000" } });
+
+		/**
+		 * White
+		 */
+		const white = vars?.white; // prefix White
+		if (!white?.color?.primary) jsonsv(root.configPATH + "/color.json", { white: { color: { primary: "#fff" } } });
+		if (!white?.color?.secondary) jsonsv(root.configPATH + "/color.json", { white: { color: { secondary: "#1d5285" } } });
+		if (!white?.color?.tertiary) jsonsv(root.configPATH + "/color.json", { white: { color: { tertiary: "#808080" } } });
+		if (!white?.text?.primary) jsonsv(root.configPATH + "/color.json", { white: { text: { primary: "#fff" } } });
+		if (!white?.text?.secondary) jsonsv(root.configPATH + "/color.json", { white: { text: { secondary: "#1d5285" } } });
+		if (!white?.text?.tertiary) jsonsv(root.configPATH + "/color.json", { white: { text: { tertiary: "#808080" } } });
+		if (!white?.background) jsonsv(root.configPATH + "/color.json", { white: { background: "#fff" } });
+
 
 		core.sys("Configurações do painel forão verificadas e aprovadas.");
 		core.sys("Color([FrontEnd].blue) do painel - [OK].green ");
