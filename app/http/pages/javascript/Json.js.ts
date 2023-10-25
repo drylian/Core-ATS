@@ -1,7 +1,7 @@
 export default function JsonJS<T>(data: T) {
-	// essa função não é usada pelo backend, é usada para um html
-	/* eslint-disable no-useless-escape */
-	return `
+    // essa função não é usada pelo backend, é usada para um html
+    /* eslint-disable no-useless-escape */
+    return `
     <script>
         // Função para colorir a sintaxe do JSON
         function syntaxHighlight(json) {

@@ -1,5 +1,5 @@
-import { ErrType } from "@/interfaces";
-import * as CryptoJS from "crypto-js";
+import { ErrType } from '@/interfaces';
+import CryptoJS from 'crypto-js';
 
 /**
  * ### Criptografa os dados e gera um token hexadecimal.
@@ -9,38 +9,38 @@ import * as CryptoJS from "crypto-js";
  * @returns {string} - O token criptografado em formato hexadecimal.
  */
 export function ALTcpt(data: object, cryptKey: string, options?: { expires?: string }): string {
-	try {
-		// Verificar se a opção "expires" foi fornecida
-		if (options && options.expires) {
-			// Calcular o tempo de expiração em milissegundos
-			const expirationTime = AlTexp(options.expires);
+    try {
+        // Verificar se a opção "expires" foi fornecida
+        if (options && options.expires) {
+            // Calcular o tempo de expiração em milissegundos
+            const expirationTime = AlTexp(options.expires);
 
-			// Calcular a data de expiração
-			const expirationDate = new Date(Date.now() + expirationTime);
+            // Calcular a data de expiração
+            const expirationDate = new Date(Date.now() + expirationTime);
 
-			// Converter a data de expiração em uma string no formato ISO
-			const expires = expirationDate.toISOString();
-			options.expires = expires;
-		}
+            // Converter a data de expiração em uma string no formato ISO
+            const expires = expirationDate.toISOString();
+            options.expires = expires;
+        }
 
-		const expectedValidToken = CryptoJS.SHA256(data.toString() + cryptKey).toString();
+        const expectedValidToken = CryptoJS.SHA256(data.toString() + cryptKey).toString();
 
-		// Adicionar o UUID gerado às opções
-		const tokenOptions = { hashed:expectedValidToken, ...options };
+        // Adicionar o UUID gerado às opções
+        const tokenOptions = { hashed: expectedValidToken, ...options };
 
-		// Combine os dados e a opção "validtoken" em um único objeto
-		const tokenData = { data, options: { ...tokenOptions } };
+        // Combine os dados e a opção "validtoken" em um único objeto
+        const tokenData = { data, options: { ...tokenOptions } };
 
-		// Criptografar
-		const encrypted = CryptoJS.AES.encrypt(JSON.stringify(tokenData), cryptKey).toString();
+        // Criptografar
+        const encrypted = CryptoJS.AES.encrypt(JSON.stringify(tokenData), cryptKey).toString();
 
-		// Converter o token criptografado em hexadecimal
-		const hexData = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Utf8.parse(encrypted));
-		return hexData;
-	} catch (error) {
-		console.error("Erro ao gerar o token:", error);
-		throw error;
-	}
+        // Converter o token criptografado em hexadecimal
+        const hexData = CryptoJS.enc.Hex.stringify(CryptoJS.enc.Utf8.parse(encrypted));
+        return hexData;
+    } catch (error) {
+        console.error('Erro ao gerar o token:', error);
+        throw error;
+    }
 }
 
 /**
@@ -49,24 +49,26 @@ export function ALTcpt(data: object, cryptKey: string, options?: { expires?: str
  * @returns {number} - O tempo de expiração em milissegundos.
  */
 export function AlTexp(expires: string): number {
-	const match = expires.match(/^(\d+)([hmd])$/);
-	if (!match) {
-		throw new Error("Formato de expiração inválido. Use \"1h\" para uma hora, \"30m\" para 30 minutos ou \"2d\" para dois dias, por exemplo.");
-	}
+    const match = expires.match(/^(\d+)([hmd])$/);
+    if (!match) {
+        throw new Error(
+            'Formato de expiração inválido. Use "1h" para uma hora, "30m" para 30 minutos ou "2d" para dois dias, por exemplo.',
+        );
+    }
 
-	const value = parseInt(match[1]);
-	const unit = match[2];
+    const value = parseInt(match[1]);
+    const unit = match[2];
 
-	switch (unit) {
-	case "h":
-		return value * 60 * 60 * 1000; // horas em milissegundos
-	case "m":
-		return value * 60 * 1000; // minutos em milissegundos
-	case "d":
-		return value * 24 * 60 * 60 * 1000; // dias em milissegundos
-	default:
-		throw new Error("Unidade de expiração inválida. Use \"h\" para horas, \"m\" para minutos ou \"d\" para dias.");
-	}
+    switch (unit) {
+        case 'h':
+            return value * 60 * 60 * 1000; // horas em milissegundos
+        case 'm':
+            return value * 60 * 1000; // minutos em milissegundos
+        case 'd':
+            return value * 24 * 60 * 60 * 1000; // dias em milissegundos
+        default:
+            throw new Error('Unidade de expiração inválida. Use "h" para horas, "m" para minutos ou "d" para dias.');
+    }
 }
 
 /**
@@ -76,33 +78,33 @@ export function AlTexp(expires: string): number {
  * @returns {T | null} - Os dados descriptografados ou `false` se o token expirou.
  */
 export function ALTdcp<T>(token: string, cryptKey: string): T {
-	try {
-		// Decodificar o token hexadecimal
-		const wordArray = CryptoJS.enc.Hex.parse(token);
-		const base64 = CryptoJS.enc.Utf8.stringify(wordArray);
-		// Descriptografar o token
-		const bytes = CryptoJS.AES.decrypt(base64, cryptKey);
-		const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    try {
+        // Decodificar o token hexadecimal
+        const wordArray = CryptoJS.enc.Hex.parse(token);
+        const base64 = CryptoJS.enc.Utf8.stringify(wordArray);
+        // Descriptografar o token
+        const bytes = CryptoJS.AES.decrypt(base64, cryptKey);
+        const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-		// Verificar se o hash (validtoken) está correto
-		const expectedValidToken = CryptoJS.SHA256(decryptedData.data.toString() + cryptKey).toString();
-		if (expectedValidToken !== decryptedData.options.hashed) {
-			throw new Error("Token inválido: hash não corresponde");
-		}
+        // Verificar se o hash (validtoken) está correto
+        const expectedValidToken = CryptoJS.SHA256(decryptedData.data.toString() + cryptKey).toString();
+        if (expectedValidToken !== decryptedData.options.hashed) {
+            throw new Error('Token inválido: hash não corresponde');
+        }
 
-		// Verificar se o token expirou (se a opção "expires" estiver presente)
-		let expired = false;
-		if (decryptedData.options.expires) {
-			const now = new Date().getTime();
-			const expirationTime = new Date(decryptedData.options.expires).getTime();
-			if (now >= expirationTime) {
-				expired = true;
-			}
-		}
+        // Verificar se o token expirou (se a opção "expires" estiver presente)
+        let expired = false;
+        if (decryptedData.options.expires) {
+            const now = new Date().getTime();
+            const expirationTime = new Date(decryptedData.options.expires).getTime();
+            if (now >= expirationTime) {
+                expired = true;
+            }
+        }
 
-		const data = expired ? (null as T) : (decryptedData.data as T);
-		return data;
-	} catch (error) {
-		throw new Error("Erro na verificação e descriptografia do token: " + (error as ErrType).message);
-	}
+        const data = expired ? (null as T) : (decryptedData.data as T);
+        return data;
+    } catch (error) {
+        throw new Error('Erro na verificação e descriptografia do token: ' + (error as ErrType).message);
+    }
 }

@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "./dist/unix.js",
   "scripts": {
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register app/unix.ts",
     "preview": "ts-node -r tsconfig-paths/register app/unix.ts",
     "build": "node tools/build.js",
     "compiler": "node tools/compiler.js",
     "start": "tsc --project ./tsconfig.json && tsc-alias && node .",
-    "eslint": "npx eslint . --fix"
+    "eslint": "npx eslint . --fix",
+    "format":"node tools/format.js"
   },
   "targets": [
     "node18-linux-x64",
@@ -78,6 +80,7 @@
     "@vitejs/plugin-react": "^4.1.0",
     "boxicons": "^2.1.4",
     "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-n": "^16.2.0",
@@ -86,6 +89,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "formik": "^2.4.5",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",

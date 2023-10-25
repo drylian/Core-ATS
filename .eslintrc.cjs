@@ -30,9 +30,11 @@ module.exports = {
     },
     plugins: ['react', 'react-hooks', 'prettier', '@typescript-eslint'],
 	extends: [
+		"eslint-config-prettier",
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/recommended",
+		"prettier",
 	],
 	ignorePatterns: ['dist', '.eslintrc.cjs', 'app/http/public', "tools", "reactOlds"],
 	overrides: [

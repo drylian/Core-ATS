@@ -1,13 +1,12 @@
-
 /**
  * Interface @/controllers/loggings/params
  */
 
-import { LoggingsColors } from "@/controllers/Loggings";
+import { LoggingsColors } from '@/controllers/Loggings';
 
 export interface LogType {
-    level: number,
-    color: LoggingsColors
+    level: number;
+    color: LoggingsColors;
 }
 
 export interface Loggings {
@@ -90,5 +89,5 @@ export interface Model {
 }
 
 export interface Models {
-    [key: string]: Model
+    [key: string]: Model;
 }

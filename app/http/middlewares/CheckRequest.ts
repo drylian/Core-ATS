@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Middleware para verificar a presença de alternightuser, cookie alternightuser ou autorização na solicitação.
@@ -9,19 +9,25 @@ import { Request, Response, NextFunction } from "express";
  * @returns {void}
  */
 export default async function CheckRequest(req: Request, res: Response, next: NextFunction) {
-	const hasAuthorization = req.headers.authorization !== undefined && typeof req.headers.authorization === "string";
-	const hasAlternightCookie = req.cookies.authorization !== undefined && typeof req.cookies.authorization === "string";
+    const hasAuthorization = req.headers.authorization !== undefined && typeof req.headers.authorization === 'string';
+    const hasAlternightCookie =
+        req.cookies.authorization !== undefined && typeof req.cookies.authorization === 'string';
 
-	if (hasAuthorization || hasAlternightCookie) {
-		if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Bearer")) req.checked = "authorization";
-		else if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("UserAuth") || hasAlternightCookie) {
-			req.checked = "user";
-		}
-		next();
-	} else {
-		if (req.accepts("text/html")) return res.redirect("/auth/login");
-		if (req.accepts("application/json")) return res.status(401).json({ message: "O Token de autorização está ausente." });
-		if (req.accepts("text/plain")) return res.status(401).send("O Token de autorização está ausente.");
-		if (req.accepts("text/html")) return res.status(406).send("Request inválida.");
-	}
+    if (hasAuthorization || hasAlternightCookie) {
+        if (req.headers.authorization !== undefined && req.headers.authorization.startsWith('Bearer'))
+            req.checked = 'authorization';
+        else if (
+            (req.headers.authorization !== undefined && req.headers.authorization.startsWith('UserAuth')) ||
+            hasAlternightCookie
+        ) {
+            req.checked = 'user';
+        }
+        next();
+    } else {
+        if (req.accepts('text/html')) return res.redirect('/auth/login');
+        if (req.accepts('application/json'))
+            return res.status(401).json({ message: 'O Token de autorização está ausente.' });
+        if (req.accepts('text/plain')) return res.status(401).send('O Token de autorização está ausente.');
+        if (req.accepts('text/html')) return res.status(406).send('Request inválida.');
+    }
 }
