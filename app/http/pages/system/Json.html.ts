@@ -3,6 +3,7 @@ import configuractions from '@/controllers/settings/Default';
 import { ColorJson, SettingsJson } from '@/interfaces';
 import JsonJS from '@/http/pages/javascript/Json.js';
 import JsonCss from '@/http/pages/styles/Json.css';
+import i18next from '@/controllers/express/LanguageLoader';
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T) {
@@ -14,12 +15,12 @@ export default function JsonViewer<T>(jsonData: T) {
 
     return `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="pt-BR">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
-      <title>${config.server.title || 'Core'} - Visualizador de JSON</title>
+      <title>${config.server.title || 'Core'} - ${i18next.t('PagesTitles.JsonViewerTitle', {ns:'backend'})}</title>
       ${JsonCss(color)}
     </head>
     <body>
@@ -27,10 +28,10 @@ export default function JsonViewer<T>(jsonData: T) {
         <div class="container">
           <div class="rounded-image">
             <img src="${config.server.logo || '/img/favicon.png'}" alt="Imagem Redonda" />
-            <h1 style="margin-left: 10px;">Visualizador de JSON</h1>
+            <h1 style="margin-left: 10px;">${i18next.t('PagesTitles.JsonViewerTitle', {ns:'backend'})}</h1>
           </div>
           <pre><code id="json"></code></pre>
-          <a href="/">Voltar à página inicial</a>
+          <a href="/">${i18next.t('messages.BackToMainPage', {ns:'backend'})}</a>
         </div>
       </div>
       ${JsonJS(formattedJSON)}

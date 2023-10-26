@@ -10,7 +10,7 @@
     "compiler": "node tools/compiler.js",
     "start": "tsc --project ./tsconfig.json && tsc-alias && node .",
     "eslint": "npx eslint . --fix",
-    "format":"node tools/format.js"
+    "format": "node tools/format.js"
   },
   "targets": [
     "node18-linux-x64",
@@ -51,6 +51,9 @@
     "fs-extra": "^11.1.1",
     "http-errors": "^2.0.0",
     "http-proxy": "^1.18.1",
+    "i18next": "^23.6.0",
+    "i18next-fs-backend": "^2.2.0",
+    "i18next-http-middleware": "^3.4.1",
     "inquirer": "^9.2.11",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",

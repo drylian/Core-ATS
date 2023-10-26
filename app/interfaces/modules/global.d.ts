@@ -1,5 +1,9 @@
 import { UserE } from '@/models/User';
-
+interface Params<T> {
+    message?: string;
+    json?: T;
+    err?: ErrType;
+}
 declare global {
     namespace Express {
         interface Request {
@@ -16,6 +20,9 @@ declare global {
             };
             checked: 'user' | 'authorization';
             user: UserE;
+        }
+        interface Response {
+            sender<T>(params: Params<T>): void;
         }
     }
 }

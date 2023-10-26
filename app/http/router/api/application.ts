@@ -36,13 +36,7 @@ router.get('/', (req, res) => {
         },
     };
 
-    const acceptHeader = req.headers.accept || '';
-    if (acceptHeader.includes('text/html')) {
-        res.send(JsonViewer<typeof responseData>({ ...responseData, ...(user ? { User: user } : {}) }));
-    } else {
-        // Caso contrário, envie o JSON como resposta normalmente
-        res.json({ responseData, ...(user ? { User: user } : {}) });
-    }
+    res.sender({json:responseData, ...(user ? { User: user } : {})})
 });
 
 export default router;

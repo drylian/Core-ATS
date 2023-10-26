@@ -16,7 +16,9 @@ import morgan from 'morgan';
 import HtmlIndex from '@/http/pages/system/index.html';
 import ViteInjector from '@/controllers/express/vite/ViteInjector';
 import { generateCsrfToken } from '@/http/middlewares/CSRF';
-import Forbidden from '@/http/pages/errors/403.html';
+import i18next, { i18nextMiddleware } from '@/controllers/express/LanguageLoader';
+import ResponseSender from './express/ResponseSender';
+
 const core = new Loggings('Express', 'green');
 
 // Logs para o simulador de apache
@@ -42,25 +44,33 @@ export const webpanel = async () => {
 
         app.use('/', express.static(path.join(configuractions.rootPATH + '/http/static')));
 
+        // Configurações do express e middlewares
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        app.use(i18nextMiddleware.handle(i18next));
+        app.use((req, res, next) => {
+            res.sender = (params) => {
+                ResponseSender(req, res, params);
+            };
+            next();
+        });
+
         app.use((req, res, next) => {
             const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
 
             if (config.server.protocol === req.protocol || config.server.protocol === 'http/https') {
                 next();
             } else {
-                res.status(403);
-                if (req.accepts('html')) {
-                    res.send(Forbidden(`Apenas conexões ${config.server.protocol.toUpperCase()} são permitidas.`));
-                } else if (req.accepts('json')) {
-                    res.json({ message: `Apenas conexões ${config.server.protocol.toUpperCase()} são permitidas.` });
-                } else {
-                    res.type('txt').send(`Apenas conexões ${config.server.protocol.toUpperCase()} são permitidas.`);
-                }
+                console.log(req.language, req.languages)
+                res.status(403).sender({
+                    message: req.t('ErrorProtocol', {
+                        protocol: config.server.protocol.toUpperCase(),
+                        ns: 'backend',
+                    }),
+                });
             }
         });
-        // Configurações do express e middlewares
-        app.use(express.json()); // Equivalente ao bodyParser.json()
-        app.use(express.urlencoded({ extended: true })); // Equivalente ao bodyParser.urlencoded({ extended: true })
+
         app.use(cookieParser());
         app.use(cookieParser(config.server.csrf.cookie_secret));
 

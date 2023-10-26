@@ -16,11 +16,10 @@ export default function HtmlIndex(csrftoken: string, dev?: string) {
         return ErrorInternal('Erro interno ao tentar carregar o compilado do react, o vite foi buildado?');
     } else
         return `
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
-    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
