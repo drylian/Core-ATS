@@ -7,35 +7,47 @@ import i18next from '@/controllers/express/LanguageLoader';
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T) {
-    const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-    const color: ColorJson = json(configuractions.configPATH + '/color.json');
+  const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
+  const color: ColorJson = json(configuractions.configPATH + '/color.json');
 
-    // Converte o objeto JSON em uma string JSON formatada
-    const formattedJSON = JSON.stringify(jsonData, null, 2);
+  // Converte o objeto JSON em uma string JSON formatada
+  const formattedJSON = JSON.stringify(jsonData, null, 2);
 
-    return `
+  return `
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
       <meta charset="UTF-8">
+      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
-      <title>${config.server.title || 'Core'} - ${i18next.t('PagesTitles.JsonViewerTitle', {ns:'backend'})}</title>
+      <title>${config.server.title || 'Core'} - ${i18next.t('backend:PagesTitles.JsonViewerTitle')}</title>
       ${JsonCss(color)}
     </head>
-    <body>
-      <div class="blur">
-        <div class="container">
-          <div class="rounded-image">
-            <img src="${config.server.logo || '/img/favicon.png'}" alt="Imagem Redonda" />
-            <h1 style="margin-left: 10px;">${i18next.t('PagesTitles.JsonViewerTitle', {ns:'backend'})}</h1>
+      <body>
+      <div class="pricor min-h-screen flex items-center justify-center min-w-screen">
+          <!-- Container principal com margens -->
+          <div class="seccor p-6 rounded-lg shadow-lg m-5 box">
+              <!-- Título e descrição -->
+              <div class="border-b mb-4 pb-4 flex items-center">
+                  <img src="${config.server.logo || '/img/favicon.png'}" alt="Imagem"
+                      style="max-width: 70px; max-height: 70px; margin-right: 10px;" class="ml-4">
+
+                  <div class="border-b mb-4 pb-4">
+                      <h1 class="pritext text-2xl font-bold">${config.server.title || 'Core'} - ${i18next.t('backend:PagesTitles.JsonViewerTitle')}</h1>
+                      <p class="sectext text-sm">${i18next.t('backend:messages.JsonViewerApi', { title: `${config.server.title || 'Core'}` })}</p>
+                  </div>
+              </div>
+
+              <!-- JSON Container -->
+              <div class="tercor border mt-4 p-4 overflow-x-auto max-h-screen max-w-screen prebox">
+                  <pre class="code" id="codeOutput"></pre>
+              </div>
           </div>
-          <pre><code id="json"></code></pre>
-          <a href="/">${i18next.t('messages.BackToMainPage', {ns:'backend'})}</a>
-        </div>
       </div>
-      ${JsonJS(formattedJSON)}
-    </body>
+    ${JsonJS(formattedJSON)}
+  </body>
+
     </html>
   `;
 }

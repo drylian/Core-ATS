@@ -11,6 +11,7 @@ export interface UserI {
     id: number | null;
     username: string;
     email: string;
+    lang: string | null;
     password: string;
     permissions: number | null;
     uuid: string;
@@ -23,6 +24,7 @@ export interface UserE {
     id: number | null;
     username: string;
     email: string;
+    lang: string;
     password?: string;
     permissions: number | null;
     uuid: string;
@@ -35,6 +37,7 @@ class User extends Model<UserI> implements UserI {
     public id!: number | null;
     public username!: string;
     public email!: string;
+    public lang!: string | null;
     public password!: string;
     public permissions!: number | null;
     public uuid!: string;
@@ -57,6 +60,11 @@ User.init(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        lang: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue:"pt-BR"
         },
         password: {
             type: DataTypes.STRING,

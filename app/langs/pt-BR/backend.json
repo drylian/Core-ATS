@@ -5,6 +5,10 @@
     "JsonViewerTitle":"Visualizador de JSON",
     "VisualizerImage":"Visualizador de Imagem"
   },
+  "messages":{
+    "BackToMainPage":"Voltar à página inicial.",
+    "JsonViewerApi":"Resposta recebida da api na {{title}}"
+  },
   "httpStatus": {
     "400": {
       "code": "400 Requisição Inválida",
@@ -37,9 +41,6 @@
     "500": {
       "code": "500 Erro Interno do Servidor",
       "title": "Erro Interno do Servidor"
-    },
-    "messages":{
-      "BackToMainPage":"Voltar à página inicial."
     }
   }
 }
