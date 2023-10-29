@@ -1,13 +1,24 @@
 {
   "Comment": "Destinado para erros do painel",
   "ErrorProtocol": "Apenas conexões {{protocol}} são permitidas",
-  "PagesTitles":{
-    "JsonViewerTitle":"Visualizador de JSON",
-    "VisualizerImage":"Visualizador de Imagem"
+  "PagesTitles": {
+    "JsonViewerTitle": "Visualizador de JSON",
+    "VisualizerImage": "Visualizador de Imagem"
   },
-  "messages":{
-    "BackToMainPage":"Voltar à página inicial.",
-    "JsonViewerApi":"Resposta recebida da api na {{title}}"
+  "messages": {
+    "api": {
+      "Listtype":"Lista",
+      "ResourcesNotFound":"Recurso não encontrado.",
+      "meta": {
+        "pagenotfound": "Página não existe",
+        "selectOnePage":"tente a primeira",
+        "pageResult": "Resultados",
+        "pageTotal": "Total de Páginas",
+        "pageCurrent": "Pagina Atual"
+      }
+    },
+    "BackToMainPage": "Voltar à página inicial.",
+    "JsonViewerApi": "Resposta recebida da api na {{title}}"
   },
   "httpStatus": {
     "400": {

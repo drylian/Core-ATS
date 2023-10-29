@@ -61,7 +61,7 @@ export const webpanel = async () => {
             if (config.server.protocol === req.protocol || config.server.protocol === 'http/https') {
                 next();
             } else {
-                console.log(req.language, req.languages)
+                console.log(req.language, req.languages);
                 res.status(403).sender({
                     message: req.t('ErrorProtocol', {
                         protocol: config.server.protocol.toUpperCase(),

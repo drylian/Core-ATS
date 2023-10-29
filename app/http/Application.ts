@@ -1,5 +1,7 @@
 import imagemRoute from '@/http/router/image';
 import ApplicationRoute from '@/http/router/api/application';
+import testeRoutes from '@/http/router/api/teste';
+
 import registerRoute from '@/http/router/auth/register';
 import refreshRoute from '@/http/router/auth/refresh';
 import changeRoute from '@/http/router/auth/change';
@@ -16,6 +18,7 @@ async function AppRouter(app: Application) {
      */
     app.use('/api/', imagemRoute);
     app.use('/api/application', ApplicationRoute);
+    app.use('/test', testeRoutes);
     /**
      * Rotas Protegidas
      */

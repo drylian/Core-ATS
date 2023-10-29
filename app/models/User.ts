@@ -64,7 +64,7 @@ User.init(
         lang: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue:"pt-BR"
+            defaultValue: 'pt-BR',
         },
         password: {
             type: DataTypes.STRING,

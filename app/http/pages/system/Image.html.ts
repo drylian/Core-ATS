@@ -6,10 +6,10 @@ import i18next from '@/controllers/express/LanguageLoader';
 
 // Função para criar um visualizador de imagem
 export default function ImageViewer<T>(Imagem: T) {
-  const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-  const color: ColorJson = json(configuractions.configPATH + '/color.json');
+    const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
+    const color: ColorJson = json(configuractions.configPATH + '/color.json');
 
-  return `
+    return `
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
@@ -25,8 +25,9 @@ export default function ImageViewer<T>(Imagem: T) {
         <div class="container">
           <h1>${i18next.t('PagesTitles.VisualizerImage', { ns: 'backend' })}</h1>
           <div class="imagem">
-            <img src="data:image/png;base64, ${(Imagem as { data: string }).data}" alt="${(Imagem as { name: string }).name
-    }">
+            <img src="data:image/png;base64, ${(Imagem as { data: string }).data}" alt="${
+                (Imagem as { name: string }).name
+            }">
           </div>
           <p>${Imagem as { name: string }}</p>
           <a href="/">${i18next.t('messages.BackToMainPage', { ns: 'backend' })}</a>

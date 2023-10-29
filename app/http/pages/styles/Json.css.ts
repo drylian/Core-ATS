@@ -2,20 +2,23 @@ import { ColorJson } from '@/interfaces';
 import getBackground from '@/http/pages/scripts/GetBackground';
 
 export default function JsonCss(color: ColorJson) {
-  // Usar as configurações de cor
-  const theme = color[color?.selected || 'black'];
-  const primaryColor = theme.color.primary;
-  const secondaryColor = theme.color.secondary;
-  const tertiaryColor = theme.color.tertiary;
-  const primaryText = theme.text.primary;
-  const secondaryText = theme.text.secondary;
-  const tertiaryText = theme.text.tertiary;
-  return `
+    // Usar as configurações de cor
+    const theme = color[color?.selected || 'black'];
+    const primaryColor = theme.color.primary;
+    const secondaryColor = theme.color.secondary;
+    const tertiaryColor = theme.color.tertiary;
+    const primaryText = theme.text.primary;
+    const secondaryText = theme.text.secondary;
+    const tertiaryText = theme.text.tertiary;
+    return `
     <style>
     body {
       background: ${getBackground(color)} no-repeat;
       background-attachment: fixed;
       background-size: cover;
+    }
+    .icons {
+      font-size: 30px;
     }
 
         .box {

@@ -3,6 +3,7 @@ interface Params<T> {
     message?: string;
     json?: T;
     err?: ErrType;
+    list?: object[];
 }
 declare global {
     namespace Express {

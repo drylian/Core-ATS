@@ -2,7 +2,6 @@ import express from 'express';
 import { ALTdcp, json } from '@/utils';
 import configuractions, { root, type, version } from '@/controllers/settings/Default';
 import { UserE } from '@/models/User';
-import JsonViewer from '@/http/pages/system/Json.html';
 import { ColorJson, SettingsJson } from '@/interfaces';
 
 const router = express.Router();
@@ -36,7 +35,7 @@ router.get('/', (req, res) => {
         },
     };
 
-    res.sender({json:responseData, ...(user ? { User: user } : {})})
+    res.sender({ json: responseData, ...(user ? { User: user } : {}) });
 });
 
 export default router;
