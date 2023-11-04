@@ -4,8 +4,8 @@
  * Representa as propriedades e configurações do modelo "Token".
  */
 
-import sequelize from '@/controllers/sequelize/Connect';
-import { DataTypes, Model } from 'sequelize';
+import sequelize from "@/controllers/sequelize/Connect";
+import { DataTypes, Model } from "sequelize";
 
 /**
  * @interface TokenI
@@ -34,10 +34,10 @@ export interface TokenI {
  * @property {number} uuid - Não foi encontrado um "comment" sobre oque é essa propriedade
  */
 class Token extends Model<TokenI> implements TokenI {
-    public id!: number | null;
-    public token!: string;
-    public permissions!: number | null;
-    public uuid!: string;
+	public id!: number | null;
+	public token!: string;
+	public permissions!: number | null;
+	public uuid!: string;
 }
 
 /**
@@ -45,31 +45,31 @@ class Token extends Model<TokenI> implements TokenI {
  *
  */
 Token.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        token: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        permissions: {
-            type: DataTypes.NUMBER,
-            allowNull: false,
-            defaultValue: 1000,
-        },
-        uuid: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize, // sequelize configurado
-        modelName: 'Token', // sequelize configurado
-        tableName: 'tokens', // Tabela do banco de dados (sempre em letras minúsculas).
-    },
+	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true,
+		},
+		token: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		permissions: {
+			type: DataTypes.NUMBER,
+			allowNull: false,
+			defaultValue: 1000,
+		},
+		uuid: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+	},
+	{
+		sequelize, // sequelize configurado
+		modelName: "Token", // sequelize configurado
+		tableName: "tokens", // Tabela do banco de dados (sempre em letras minúsculas).
+	},
 );
 
 /**

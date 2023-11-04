@@ -1,0 +1,19 @@
+{
+    "user": "用户",
+    "token": "令牌",
+    "guest": "访客",
+    "authentication": "认证",
+    "JsonViewerTitle": "JSON查看器",
+    "VisualizerImage": "图像查看器",
+    "api": {
+        "Listtype": "列表",
+        "ResourcesNotFound": "未找到资源。",
+        "meta": {
+            "pagenotfound": "页面不存在",
+            "selectOnePage": "尝试第一个",
+            "pageResult": "结果",
+            "pageTotal": "总页数",
+            "pageCurrent": "当前页"
+        }
+    }
+}

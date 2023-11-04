@@ -1,0 +1,19 @@
+{
+    "NotAcceptableAccess": "Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde",
+    "NotHaveAccessForRoute": "Você não possui autoridade o suficiente para usar esta rota.",
+    "NotHaveTypeAcessForRoute": "{{type}} não encontrado, como você chegou até aqui?.",
+    "NotHaveTypeAccessToken": "{{type}} ínvalido",
+    "BackToMainPage": "Voltar à página inicial.",
+    "JsonViewerApi": "Resposta recebida da api na {{title}}",
+    "api": {
+        "Listtype": "Lista",
+        "ResourcesNotFound": "Recurso não encontrado.",
+        "meta": {
+            "pagenotfound": "Página não existe",
+            "selectOnePage": "tente a primeira",
+            "pageResult": "Resultados",
+            "pageTotal": "Total de Páginas",
+            "pageCurrent": "Pagina Atual"
+        }
+    }
+}

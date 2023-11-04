@@ -1,12 +1,12 @@
-import { ColorJson } from '@/interfaces';
-import getBackground from '@/http/pages/scripts/GetBackground';
+import { ColorJson } from "@/interfaces";
+import getBackground from "@/http/pages/scripts/GetBackground";
 
 export default function ErrorCss(color: ColorJson) {
-    const theme = color[color?.selected || 'black'];
-    const primaryColor = theme.color.primary;
-    // const secondaryColor = theme.color.secondary;
+	const theme = color[color?.selected || "black"];
+	const primaryColor = theme.color.primary;
+	// const secondaryColor = theme.color.secondary;
 
-    return `
+	return `
     <style>
       body {
         background: ${getBackground(color)} no-repeat;

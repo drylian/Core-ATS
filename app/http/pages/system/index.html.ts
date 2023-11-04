@@ -1,25 +1,26 @@
-import { json } from '@/utils';
-import configuractions from '@/controllers/settings/Default';
-import { SettingsJson } from '@/interfaces';
-import ViteRender from '@/controllers/express/vite/ViteRender';
-import ErrorInternal from '@/http/pages/errors/500.html';
+import { SettingsJson } from "@/interfaces";
+import ViteRender from "@/controllers/express/vite/ViteRender";
+import SenderError from "@/http/pages/errors/Error.html";
+import I18alt from "@/controllers/Language";
+import storage from "@/controllers/Storage";
 
 /**
  *
  * @returns Html principal do sistema, usado para rederizar o React
  */
 export default function HtmlIndex(csrftoken: string, dev?: string) {
-    const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-    const { scriptTags, linkTags, scssLinkTags, error } = ViteRender(); // Chama a função ViteRender aqui.
+	const i18n = new I18alt();
+	const config: SettingsJson = storage.get("config");
+	const { scriptTags, linkTags, scssLinkTags, error } = ViteRender(); // Chama a função ViteRender aqui.
 
-    if (error) {
-        return ErrorInternal('Erro interno ao tentar carregar o compilado do react, o vite foi buildado?');
-    } else
-        return `
+	if (error) {
+		return SenderError({ status: 500, message: i18n.t("http:errors.ReactResourcesNotFound") });
+	} else
+		return `
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
+    <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
@@ -27,7 +28,7 @@ export default function HtmlIndex(csrftoken: string, dev?: string) {
     <script>
         window.CsrfToken = ${csrftoken}
     </script>
-    ${dev ? '<!-- Modo Desenvolvedor -->' : '<!-- Modo Produção --> \n' + linkTags + scriptTags + scssLinkTags}
+    ${dev ? "<!-- Modo Desenvolvedor -->" : "<!-- Modo Produção --> \n" + linkTags + scriptTags + scssLinkTags}
 </head>
 
 <body>

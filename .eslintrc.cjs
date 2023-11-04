@@ -6,6 +6,7 @@ module.exports = {
 		"es2021": true,
 		"node": true
 	},
+	reportUnusedDisableDirectives: true,
 	parserOptions: {
 		ecmaVersion: 6,
 		ecmaFeatures: {

@@ -1,36 +1,36 @@
-import { json } from '@/utils';
-import configuractions from '@/controllers/settings/Default';
-import { ColorJson, SettingsJson } from '@/interfaces';
-import ImageCss from '@/http/pages/styles/Image.css';
-import i18next from '@/controllers/express/LanguageLoader';
+import { ColorJson, SettingsJson } from "@/interfaces";
+import ImageCss from "@/http/pages/styles/Image.css";
+import I18alt from "@/controllers/Language";
+import storage from "@/controllers/Storage";
 
 // Função para criar um visualizador de imagem
 export default function ImageViewer<T>(Imagem: T) {
-    const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-    const color: ColorJson = json(configuractions.configPATH + '/color.json');
+	const i18n = new I18alt();
+	const config: SettingsJson = storage.get("config");
+	const color: ColorJson = storage.get("color");
 
-    return `
+	return `
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="robots" content="noindex">
-      <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
-      <title>${config.server.title || 'Core'} - ${i18next.t('PagesTitles.VisualizerImage', { ns: 'backend' })}</title>
+      <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
+      <title>${config.server.title || "Core"} - ${i18n.t("attributes.VisualizerImage")}</title>
       ${ImageCss(color, Imagem)}
     </head>
     <body>
       <div class="blur">
         <div class="container">
-          <h1>${i18next.t('PagesTitles.VisualizerImage', { ns: 'backend' })}</h1>
+          <h1>${i18n.t("attributes.VisualizerImage")}</h1>
           <div class="imagem">
             <img src="data:image/png;base64, ${(Imagem as { data: string }).data}" alt="${
-                (Imagem as { name: string }).name
-            }">
+	(Imagem as { name: string }).name
+}">
           </div>
           <p>${Imagem as { name: string }}</p>
-          <a href="/">${i18next.t('messages.BackToMainPage', { ns: 'backend' })}</a>
+          <a href="/">${i18n.t("http:messages.BackToMainPage")}</a>
         </div>
       </div>
     </body>

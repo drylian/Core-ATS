@@ -1,74 +1,75 @@
-import { json } from '@/utils';
-import configuractions from '@/controllers/settings/Default';
-import { ColorJson, SettingsJson } from '@/interfaces';
-import ErrorCss from '@/http/pages/styles/Error.css';
-import i18next from '@/controllers/express/LanguageLoader';
+import { ColorJson, SettingsJson } from "@/interfaces";
+import ErrorCss from "@/http/pages/styles/Error.css";
+import i18alt from "@/controllers/Language";
+import { Request } from "express";
+import storage from "@/controllers/Storage";
 interface Params {
+    req?: Request;
     message?: string;
     status: number;
-    lang: string;
+    lang?: string;
 }
 export default function SenderError(params: Params) {
-    let code: string, title: string;
-    const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-    const color: ColorJson = json(configuractions.configPATH + '/color.json');
+	let code: string, title: string;
+	const config: SettingsJson = storage.get("config");
+	const color: ColorJson = storage.get("color");
+	const i18n = new i18alt();
+	switch (params.status) {
+	case 400:
+		code = i18n.t("http:errors.400.code");
+		title = i18n.t("http:errors.400.title");
+		break;
+	case 401:
+		code = i18n.t("http:errors.401.code");
+		title = i18n.t("http:errors.401.title");
+		break;
+	case 402:
+		code = i18n.t("http:errors.402.code");
+		title = i18n.t("http:errors.402.title");
+		break;
+	case 403:
+		code = i18n.t("http:errors.403.code");
+		title = i18n.t("http:errors.403.title");
+		break;
+	case 404:
+		code = i18n.t("http:errors.404.code");
+		title = i18n.t("http:errors.404.title");
+		break;
+	case 405:
+		code = i18n.t("http:errors.405.code");
+		title = i18n.t("http:errors.405.title");
+		break;
+	case 406:
+		code = i18n.t("http:errors.406.code");
+		title = i18n.t("http:errors.406.title");
+		break;
+	case 500:
+		code = i18n.t("http:errors.500.code");
+		title = i18n.t("http:errors.500.title");
+		break;
+	default:
+		code = i18n.t("http:errors.500.code");
+		title = i18n.t("http:errors.500.title");
+	}
 
-    switch (params.status) {
-        case 400:
-            code = i18next.t('HTTPErrors.400.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.400.title', { ns: 'backend' });
-            break;
-        case 401:
-            code = i18next.t('httpStatus.401.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.401.title', { ns: 'backend' });
-            break;
-        case 402:
-            code = i18next.t('httpStatus.402.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.402.title', { ns: 'backend' });
-            break;
-        case 403:
-            code = i18next.t('httpStatus.403.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.403.title', { ns: 'backend' });
-            break;
-        case 404:
-            code = i18next.t('httpStatus.404.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.404.title', { ns: 'backend' });
-            break;
-        case 405:
-            code = i18next.t('httpStatus.405.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.405.title', { ns: 'backend' });
-            break;
-        case 406:
-            code = i18next.t('httpStatus.406.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.406.title', { ns: 'backend' });
-            break;
-        case 500:
-            code = i18next.t('httpStatus.500.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.500.title', { ns: 'backend' });
-            break;
-        default:
-            code = i18next.t('httpStatus.500.code', { ns: 'backend' });
-            title = i18next.t('httpStatus.500.title', { ns: 'backend' });
-    }
-
-    return `
+	return `
     <!DOCTYPE html>
-      <html lang="pt-BR">
+      <html>
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" href="${config.server.logo || '/img/favicon.png'}" />
-        <title>${config.server.title || 'Core'} - ${title}</title>
+        <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
+        <title>${config.server.title || "Core"} - ${title}</title>
         ${ErrorCss(color)}
       </head>
       <body>
         <div class="blur">
           <div class="error-container">
             <div class="rounded-image">
-                <img src="${config.server.logo || '/img/favicon.png'}" alt="--" />
+                <img src="${config.server.logo || "/img/favicon.png"}" alt="--" />
             </div>
             <h1>${code}</h1>
-            <p>${params.message ? params.message : 'Algo desconhecido aconteceu.'}</p>
+            <p>${params.message ? params.message : "Algo desconhecido aconteceu."}</p>
           </div>
         </div>
       </body>

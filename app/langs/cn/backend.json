@@ -1,58 +1,67 @@
 {
-    "Comment": "用于仪表板错误",
-    "ErrorProtocol": "仅允许{{protocol}}连接",
-    "PagesTitles": {
-      "JsonViewerTitle": "JSON查看器",
-      "VisualizerImage": "图像查看器"
-    },
-    "messages": {
-      "api": {
-        "Listtype": "列表",
-        "ResourcesNotFound": "资源未找到",
-        "meta": {
-          "pagenotfound": "页面不存在",
-          "selectOnePage": "尝试第一页",
-          "pageResult": "结果",
-          "pageTotal": "总页数",
-          "pageCurrent": "当前页"
-        }
-      },
-      "BackToMainPage": "返回主页。",
-      "JsonViewerApi": "从{{title}}的API收到响应"
-    },
-    "httpStatus": {
-      "400": {
-        "code": "400 无效请求",
-        "title": "无效请求"
-      },
-      "401": {
-        "code": "401 未授权",
-        "title": "未授权"
-      },
-      "402": {
-        "code": "402 需要付款",
-        "title": "需要付款"
-      },
-      "403": {
-        "code": "403 禁止访问",
-        "title": "禁止访问"
-      },
-      "404": {
-        "code": "404 未找到资源",
-        "title": "未找到资源"
-      },
-      "405": {
-        "code": "405 不允许的方法",
-        "title": "不允许的方法"
-      },
-      "406": {
-        "code": "406 不可接受",
-        "title": "不可接受"
-      },
-      "500": {
-        "code": "500 服务器内部错误",
-        "title": "服务器内部错误"
+  "Comment": "用于面板错误",
+  "ErrorProtocol": "仅允许{{protocol}}连接",
+  "PagesTitles": {
+    "JsonViewerTitle": "JSON查看器",
+    "VisualizerImage": "图像查看器"
+  },
+  "AccessTypes": {
+    "user": "用户",
+    "token": "令牌",
+    "guest": "访客",
+    "authentication": "已验证"
+  },
+  "messages": {
+    "NotAcceptableAccess": "无法正确验证您的请求，请稍后重试",
+    "NotHaveAccessForRoute": "您没有足够的权限使用此路由。",
+    "NotHaveTypeAcessForRoute": "{{type}}未找到，您是怎么到这里的？",
+    "NotHaveTypeAccessToken": "{{type}} 无效",
+    "api": {
+      "Listtype": "列表",
+      "ResourcesNotFound": "未找到资源。",
+      "meta": {
+        "pagenotfound": "页面不存在",
+        "selectOnePage": "尝试第一个",
+        "pageResult": "结果",
+        "pageTotal": "总页数",
+        "pageCurrent": "当前页"
       }
+    },
+    "BackToMainPage": "返回到主页。",
+    "JsonViewerApi": "从{{title}}的API接收的响应"
+  },
+  "httpStatus": {
+    "400": {
+      "code": "400 请求无效",
+      "title": "请求无效"
+    },
+    "401": {
+      "code": "401 未授权",
+      "title": "未授权"
+    },
+    "402": {
+      "code": "402 需要付款",
+      "title": "需要付款"
+    },
+    "403": {
+      "code": "403 禁止访问",
+      "title": "禁止访问"
+    },
+    "404": {
+      "code": "404 未找到资源",
+      "title": "未找到资源"
+    },
+    "405": {
+      "code": "405 方法不允许",
+      "title": "方法不允许"
+    },
+    "406": {
+      "code": "406 不可接受",
+      "title": "不可接受"
+    },
+    "500": {
+      "code": "500 服务器内部错误",
+      "title": "服务器内部错误"
     }
   }
-  
+}

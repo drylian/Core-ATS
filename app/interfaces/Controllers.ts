@@ -2,7 +2,7 @@
  * Interface @/controllers/loggings/params
  */
 
-import { LoggingsColors } from '@/controllers/Loggings';
+import { LoggingsColors } from "@/controllers/Loggings";
 
 export interface LogType {
     level: number;

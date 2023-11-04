@@ -1,0 +1,39 @@
+{
+    "400": {
+        "code": "400 Requisição Inválida",
+        "title": "Requisição Inválida"
+    },
+    "401": {
+        "code": "401 Não Autorizado",
+        "title": "Não Autorizado"
+    },
+    "402": {
+        "code": "402 Pagamento Necessário",
+        "title": "Pagamento Necessário"
+    },
+    "403": {
+        "code": "403 Acesso Proibido",
+        "title": "Acesso Proibido"
+    },
+    "404": {
+        "code": "404 Recurso Não Encontrado",
+        "title": "Recurso Não Encontrado"
+    },
+    "405": {
+        "code": "405 Método Não Permitido",
+        "title": "Método Não Permitido"
+    },
+    "406": {
+        "code": "406 Não Aceitável",
+        "title": "Não Aceitável",
+        "desc":"Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde"
+    },
+    "500": {
+        "code": "500 Erro Interno do Servidor",
+        "title": "Erro Interno do Servidor"
+    },
+    "ErrorCSRF":"Erro de validação Csrf, impossivel de continuar",
+    "AccessCSRFError":"Pela segurança do CSRF Usuários sem autenticação não podem acessar aréas privadas",
+    "corsError":"Acesso não autorizado devido à política CORS.",
+    "ReactResourcesNotFound":"Erro interno ao tentar carregar o compilado do react, o vite foi buildado?"
+}

@@ -1,0 +1,6 @@
+{
+    "Comment":"Destinado para erros dentro da langs do sistema",
+    "LangNotFound":"A linguagem escolhida não foi encontrada,'{{SelectedLang}}'",
+    "NamespaceResourcesNotFound":"Recursos do Namespace expecificado não poderam ser encontrados. lang:{{SelectedLang}}, namespace:{{Selectednamespace}}",
+    "NamespaceKeyNotFound":"A chave procurada no Namespace expecificado não pode ser encontrada. lang:{{SelectedLang}}, namespace:{{Selectednamespace}}"
+}

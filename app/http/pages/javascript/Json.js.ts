@@ -1,12 +1,12 @@
 export default function JsonJS<T>(data: T) {
-    // essa função não é usada pelo backend, é usada para um html
-    /* eslint-disable no-useless-escape */
-    return `
+	// essa função não é usada pelo backend, é usada para um html
+	/* eslint-disable no-useless-escape */
+	return `
     <script>
     function navigateToPage(page) {
         // Obtenha a parte da URL atual que não inclui a consulta (query) - Pode variar de acordo com o ambiente
         const currentURLWithoutQuery = window.location.origin + window.location.pathname;
-        window.location.href = ${'`${currentURLWithoutQuery}?page=${page}`'};
+        window.location.href = ${"`${currentURLWithoutQuery}?page=${page}`"};
     };
     function syntaxHighlight(json) {
       json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');

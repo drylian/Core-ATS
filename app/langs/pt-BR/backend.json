@@ -5,7 +5,17 @@
     "JsonViewerTitle": "Visualizador de JSON",
     "VisualizerImage": "Visualizador de Imagem"
   },
+  "AccessTypes": {
+    "user":"Usuário",
+    "token":"Token",
+    "guest":"Visitante",
+    "authentication":"Autenticado"
+  },
   "messages": {
+    "NotAcceptableAccess":"Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde",
+    "NotHaveAccessForRoute":"Você não possui autoridade o suficiente para usar esta rota.",
+    "NotHaveTypeAcessForRoute":"{{type}} não encontrado, como você chegou até aqui?.",
+    "NotHaveTypeAccessToken":"{{type}} ínvalido",
     "api": {
       "Listtype":"Lista",
       "ResourcesNotFound":"Recurso não encontrado.",

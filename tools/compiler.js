@@ -40,7 +40,7 @@ async function main() {
 			if (err) {
 				console.error('Erro ao copiar pública:', err);
 			} else {
-				console.log('pública copiados com sucesso.');
+				console.log('pasta pública copiados com sucesso.');
 			}
 		});
 		console.log("Pasta pública copia com sucesso.".green);
@@ -53,11 +53,31 @@ async function main() {
 			if (err) {
 				console.error('Erro ao copiar static:', err);
 			} else {
-				console.log('static copiados com sucesso.');
+				console.log('pasta static copiados com sucesso.');
 			}
 		});
 		console.log("Pasta static copia com sucesso.".green);
 
+		// 5. Mover a pasta ./app/langs para ./dist/langs.
+		const sourceLangsDirectory = "./app/langs";
+		const destinationLangsDirectory = "./dist/langs";
+		console.log(`Copiando a pasta ${sourceLangsDirectory} para ${destinationLangsDirectory}...`.cyan);
+		fss.copy(sourceLangsDirectory, destinationLangsDirectory, (err) => {
+			if (err) {
+				console.error('Erro ao copiar pública:', err);
+			} else {
+				console.log('langs copiados com sucesso.');
+			}
+		});
+
+		console.log("Iniciando Limpeza dos arquivos.".green);
+
+		if (fs.existsSync("./app/http/public")) {
+			console.log("[ Trash ] Limpando public...".red);
+			await fss.rm('./app/http/public', { recursive: true });
+		}
+
+		console.log("Pasta de traduções copiada com sucesso.".green);
 
 		console.log("Iniciando Compilação do Aplicativo".cyan);
 		childProcess.execSync("pkg --compress GZip .", { stdio: "inherit" });

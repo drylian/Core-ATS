@@ -1,193 +1,125 @@
-import NotAcceptable from '@/http/pages/errors/406.html';
-import { ALTdcp, json } from '@/utils';
-import configuractions from '@/controllers/settings/Default';
-import User, { UserE } from '@/models/User';
-import { Request, Response } from 'express';
-import ForbiddenAccess from '@/http/pages/errors/401.html';
-import { ErrType, SettingsJson } from '@/interfaces';
-import ErrorInternal from '@/http/pages/errors/500.html';
-import Loggings from '@/controllers/Loggings';
-import Token, { TokenI } from '@/models/Token';
+import { ALTdcp } from "@/utils";
+import User, { UserE } from "@/models/User";
+import { Request, Response } from "express";
+import { ErrType, SettingsJson } from "@/interfaces";
+import Loggings from "@/controllers/Loggings";
+import Token, { TokenI } from "@/models/Token";
+import i18alt from "@/controllers/Language";
+import storage from "@/controllers/Storage";
 
 export default function Authenticator(
-    req: Request,
-    res: Response,
-    permission: number,
+	req: Request,
+	res: Response,
+	permission: number,
 ): Promise<{ req: Request; res: Response }> {
-    const core = new Loggings('Authorization', 'cyan');
-    // é necessario await para o User e o Token
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve) => {
-        /**
+	const i18n = new i18alt();
+	const core = new Loggings("Authorization", "cyan");
+	// é necessario await para o User e o Token
+	// eslint-disable-next-line no-async-promise-executor
+	return new Promise(async (resolve) => {
+		/**
          * Configurações Previas e que podem ser usadas em todos os casos
          */
-        const config: SettingsJson = json(configuractions.configPATH + '/settings.json');
-        const acceptHeader = req.headers.accept || '';
+		const config: SettingsJson = storage.get("config");
 
-        try {
-            if (req.checked === 'user') {
-                let token: string;
+		try {
+			if (req.checked === "user") {
+				let token: string;
 
-                if (req.headers.authorization !== null && typeof req.headers.authorization === 'string') {
-                    token = req.headers.authorization.split(' ')[1]; // configura o token de usuário por UserAuth
-                } else if (req.cookies.authorization !== undefined && typeof req.cookies.authorization === 'string') {
-                    token = req.cookies.authorization; // configura o token de usuário por cookie, caso o Bearer não esteja presente
-                } else {
-                    return res
-                        .status(406)
-                        .send(
-                            NotAcceptable(
-                                'Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde.',
-                            ),
-                        ); // não sei se é possivel mas...
-                }
+				if (req.headers.authorization !== null && typeof req.headers.authorization === "string") {
+					token = req.headers.authorization.split(" ")[1]; // configura o token de usuário por UserAuth
+				} else if (req.cookies.authorization !== undefined && typeof req.cookies.authorization === "string") {
+					token = req.cookies.authorization; // configura o token de usuário por cookie, caso o Bearer não esteja presente
+				} else {
+					return res.status(406).sender({ message: i18n.t("http:messages.NotAcceptableAccess") });
+				}
 
-                const TokenData = ALTdcp<UserE | null>(token, config.server.accessTokenSecret);
-                if (TokenData) {
-                    const DatabaseUser: UserE | null = await User.findOne({ where: { uuid: TokenData.uuid } });
-                    if (DatabaseUser && DatabaseUser.permissions !== null && DatabaseUser.permissions < permission) {
-                        if (acceptHeader.includes('text/html')) {
-                            return res.status(401).send(
-                                ForbiddenAccess('Você não possui autoridade o suficiente para usar esta rota.', {
-                                    id: TokenData?.id || 0,
-                                    username: TokenData?.username,
-                                }),
-                            );
-                        } else if (acceptHeader.includes('application/json')) {
-                            return res
-                                .status(401)
-                                .json({ message: 'Você não possui autoridade o suficiente para usar esta rota' });
-                        } else if (acceptHeader.includes('text/plain')) {
-                            return res.status(401).send('Você não possui autoridade o suficiente para usar esta rota');
-                        } else {
-                            return res.status(406).send('Request invalida');
-                        }
-                    }
-                    // Carrega params de usuário
-                    if (DatabaseUser !== null) {
-                        req.user = DatabaseUser;
-                        req.access.permissions = DatabaseUser.permissions !== null ? DatabaseUser.permissions : 0;
-                        req.access.type = 'user';
-                        req.access.uuid = DatabaseUser.uuid;
-                    } else {
-                        if (acceptHeader.includes('text/html')) {
-                            return res.status(401).send(
-                                ForbiddenAccess('Usuário não encontrado, como você chegou até aqui?.', {
-                                    id: TokenData?.id || 0,
-                                    username: TokenData?.username,
-                                }),
-                            );
-                        } else if (acceptHeader.includes('application/json')) {
-                            return res
-                                .status(401)
-                                .json({ message: 'Usuário não encontrado, como você chegou até aqui?' });
-                        } else if (acceptHeader.includes('text/plain')) {
-                            return res.status(401).send('Usuário não encontrado, como você chegou até aqui?');
-                        } else {
-                            return res.status(406).send('Request invalida');
-                        }
-                    }
-                    resolve({ req, res });
-                } else {
-                    if (acceptHeader.includes('text/html')) {
-                        return res.status(401).send(ForbiddenAccess('Token inválido.'));
-                    } else if (acceptHeader.includes('application/json')) {
-                        return res.status(401).json({ message: 'Token inválido' });
-                    } else if (acceptHeader.includes('text/plain')) {
-                        return res.status(401).send('Token inválido');
-                    } else {
-                        return res.status(406).send('Request invalida');
-                    }
-                }
-            } else if (req.checked === 'authorization') {
-                let token: string;
+				const TokenData = ALTdcp<UserE | null>(token, config.server.accessTokenSecret);
+				if (TokenData) {
+					const DatabaseUser: UserE | null = await User.findOne({ where: { uuid: TokenData.uuid } });
+					if (DatabaseUser && DatabaseUser.permissions !== null && DatabaseUser.permissions < permission) {
+						return res.status(401).sender({ message: i18n.t("http:messages.NotHaveAccessForRoute") });
+					}
+					// Carrega params de usuário
+					if (DatabaseUser !== null) {
+						req.user = DatabaseUser;
+						req.access.permissions = DatabaseUser.permissions !== null ? DatabaseUser.permissions : 0;
+						req.access.type = "user";
+						req.access.uuid = DatabaseUser.uuid;
+						req.access.lang =
+                            DatabaseUser.lang !== null
+                            	? DatabaseUser.lang
+                            	: config.server.lang
+                            		? config.server.lang
+                            		: "pt-BR";
+					} else {
+						return res.status(401).sender({
+							message: i18n.t("http:messages.NotHaveTypeAcessForRoute", {
+								type: i18n.t("attributes.user"),
+							}),
+						});
+					}
+					resolve({ req, res });
+				} else {
+					return res.status(401).sender({
+						message: i18n.t("http:messages.NotHaveTypeAccessToken", {
+							type: i18n.t("attributes.user"),
+						}),
+					});
+				}
+			} else if (req.checked === "authorization") {
+				let token: string;
 
-                if (req.headers.authorization !== null && typeof req.headers.authorization === 'string')
-                    token = req.headers.authorization.split(' ')[1]; // configura o token de usuário por Bearer
-                else return res.status(401).json({ message: 'Token inválido' });
+				if (req.headers.authorization !== null && typeof req.headers.authorization === "string")
+					token = req.headers.authorization.split(" ")[1]; // configura o token de usuário por Bearer
+				else
+					return res.status(401).sender({
+						message: i18n.t("http:messages.NotHaveTypeAccessToken", {
+							type: i18n.t("attributes.token"),
+						}),
+					});
 
-                const TokenData = ALTdcp<TokenI | null>(token, config.server.accessTokenSecret);
-                if (TokenData) {
-                    const DatabaseToken: TokenI | null = await Token.findOne({ where: { uuid: TokenData.uuid } });
-                    if (DatabaseToken && DatabaseToken.permissions !== null && DatabaseToken.permissions < permission) {
-                        if (acceptHeader.includes('application/json')) {
-                            return res
-                                .status(401)
-                                .json({ message: 'Você não possui autoridade o suficiente para usar esta rota' });
-                        } else if (acceptHeader.includes('text/plain')) {
-                            return res.status(401).send('Você não possui autoridade o suficiente para usar esta rota');
-                        } else {
-                            return res.status(406).send('Request invalida');
-                        }
-                    }
-                    // Carrega params de usuário
-                    if (DatabaseToken !== null) {
-                        req.access.permissions = DatabaseToken.permissions !== null ? DatabaseToken.permissions : 0;
-                        req.access.type = 'token';
-                        req.access.uuid = DatabaseToken.uuid;
-                    } else {
-                        if (acceptHeader.includes('text/html')) {
-                            return res
-                                .status(401)
-                                .send(ForbiddenAccess('Token não encontrado, como você chegou até aqui?.'));
-                        } else if (acceptHeader.includes('application/json')) {
-                            return res
-                                .status(401)
-                                .json({ message: 'Token não encontrado, como você chegou até aqui?' });
-                        } else if (acceptHeader.includes('text/plain')) {
-                            return res.status(401).send('Token não encontrado, como você chegou até aqui?');
-                        } else {
-                            return res.status(406).send('Request invalida');
-                        }
-                    }
-                    resolve({ req, res });
-                } else {
-                    if (acceptHeader.includes('text/html')) {
-                        return res.status(401).send(ForbiddenAccess('Token inválido.'));
-                    } else if (acceptHeader.includes('application/json')) {
-                        return res.status(401).json({ message: 'Token inválido' });
-                    } else if (acceptHeader.includes('text/plain')) {
-                        return res.status(401).send('Token inválido');
-                    } else {
-                        return res.status(406).send('Request invalida');
-                    }
-                }
-            } else {
-                if (acceptHeader.includes('text/html')) {
-                    return res
-                        .status(406)
-                        .send(
-                            NotAcceptable(
-                                'Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde.',
-                            ),
-                        );
-                } else if (acceptHeader.includes('application/json')) {
-                    return res.status(406).json({
-                        message: 'Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde.',
-                    });
-                } else {
-                    return res
-                        .status(406)
-                        .send('Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde');
-                }
-            }
-        } catch (e) {
-            core.error('Erro ao tentar processar o Authorization : ' + (e as ErrType).message);
-            if (acceptHeader.includes('text/html')) {
-                return res
-                    .status(406)
-                    .send(
-                        ErrorInternal('Ocorreu um erro ao tentar processar a verificação, tente novamente mais tarde.'),
-                    );
-            } else if (acceptHeader.includes('application/json')) {
-                return res.status(406).json({
-                    message: 'Ocorreu um erro ao tentar processar a verificação, tente novamente mais tarde.',
-                });
-            } else {
-                return res
-                    .status(406)
-                    .send('Ocorreu um erro ao tentar processar a verificação, tente novamente mais tarde');
-            }
-        }
-    });
+				const TokenData = ALTdcp<TokenI | null>(token, config.server.accessTokenSecret);
+				if (TokenData) {
+					const DatabaseToken: TokenI | null = await Token.findOne({ where: { uuid: TokenData.uuid } });
+					if (DatabaseToken && DatabaseToken.permissions !== null && DatabaseToken.permissions < permission) {
+						return res.status(401).sender({
+							message: i18n.t("http:messages.NotHaveTypeAcessForRoute", {
+								type: i18n.t("attributes.token"),
+							}),
+						});
+					}
+					// Carrega params de usuário
+					if (DatabaseToken !== null) {
+						req.access.permissions = DatabaseToken.permissions !== null ? DatabaseToken.permissions : 0;
+						req.access.type = "token";
+						req.access.uuid = DatabaseToken.uuid;
+						req.access.lang = config.server.lang ? config.server.lang : "pt-BR";
+					} else {
+						return res.status(401).sender({
+							message: i18n.t("http:messages.NotHaveTypeAcessForRoute", {
+								type: i18n.t("attributes.token"),
+							}),
+						});
+					}
+					resolve({ req, res });
+				} else {
+					return res.status(401).sender({
+						message: i18n.t("http:messages.NotHaveTypeAccessToken", {
+							type: i18n.t("attributes.token"),
+						}),
+					});
+				}
+			} else {
+				return res.status(406).json({
+					message: req.t("http:errors.406.desc"),
+				});
+			}
+		} catch (e) {
+			core.error("Erro ao tentar processar o Authorization : " + (e as ErrType).message);
+			return res.status(406).json({
+				message: req.t("http:errors.406.desc"),
+			});
+		}
+	});
 }

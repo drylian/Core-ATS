@@ -1,4 +1,4 @@
-import { Dialect } from 'sequelize';
+import { Dialect } from "sequelize";
 
 /**
  * interface do settings.json
@@ -20,7 +20,8 @@ export interface SettingsJson {
         title: string;
         logo: string;
         session: string;
-        protocol: 'http' | 'https' | 'http/https';
+        protocol: "http" | "https" | "http/https";
+        lang: string;
         refreshTokenSecret: string;
         accessTokenSecret: string;
         csrf: {
@@ -74,7 +75,7 @@ interface ColorValues {
     background: string;
 }
 export interface ColorJson {
-    selected: 'black' | 'white'; // Apenas "black" ou "white" são permitidos
+    selected: "black" | "white"; // Apenas "black" ou "white" são permitidos
     black: ColorValues;
     white: ColorValues;
 }

@@ -1,39 +1,39 @@
-import { logs } from '@/controllers/loggings/logs';
+import { logs } from "@/controllers/loggings/logs";
 export type LoggingsColors =
-    | 'strip'
-    | 'stripColors'
-    | 'black'
-    | 'red'
-    | 'green'
-    | 'yellow'
-    | 'blue'
-    | 'magenta'
-    | 'cyan'
-    | 'white'
-    | 'gray'
-    | 'grey'
-    | 'bgBlack'
-    | 'bgRed'
-    | 'bgGreen'
-    | 'bgYellow'
-    | 'bgBlue'
-    | 'bgMagenta'
-    | 'bgCyan'
-    | 'bgWhite'
-    | 'reset'
-    | 'bold'
-    | 'dim'
-    | 'italic'
-    | 'underline'
-    | 'inverse'
-    | 'hidden'
-    | 'strikethrough'
-    | 'rainbow'
-    | 'zebra'
-    | 'america'
-    | 'trap'
-    | 'random'
-    | 'zalgo';
+    | "strip"
+    | "stripColors"
+    | "black"
+    | "red"
+    | "green"
+    | "yellow"
+    | "blue"
+    | "magenta"
+    | "cyan"
+    | "white"
+    | "gray"
+    | "grey"
+    | "bgBlack"
+    | "bgRed"
+    | "bgGreen"
+    | "bgYellow"
+    | "bgBlue"
+    | "bgMagenta"
+    | "bgCyan"
+    | "bgWhite"
+    | "reset"
+    | "bold"
+    | "dim"
+    | "italic"
+    | "underline"
+    | "inverse"
+    | "hidden"
+    | "strikethrough"
+    | "rainbow"
+    | "zebra"
+    | "america"
+    | "trap"
+    | "random"
+    | "zalgo";
 
 /**
  * Opções para configurar o comportamento da classe Loggings.
@@ -47,8 +47,8 @@ export type LoggingsColors =
  */
 export interface LoggingsOptions {
     register?: {
-        timer: 'default' | 'timestamp';
-        type: 'log' | 'json';
+        timer: "default" | "timestamp";
+        type: "log" | "json";
     };
 }
 export type LogMessage = string | number | boolean | object;
@@ -76,78 +76,78 @@ const core = new Loggings("Titulo", "green", {options})
  *
  */
 class Loggings {
-    private title: string;
-    private color: LoggingsColors;
-    private options: LoggingsOptions;
+	private title: string;
+	private color: LoggingsColors;
+	private options: LoggingsOptions;
 
-    constructor(title: string = 'Core', color: LoggingsColors = 'blue', options: LoggingsOptions = {}) {
-        this.title = title;
-        this.color = color;
-        this.options = options;
-    }
+	constructor(title: string = "Core", color: LoggingsColors = "blue", options: LoggingsOptions = {}) {
+		this.title = title;
+		this.color = color;
+		this.options = options;
+	}
 
-    /**
+	/**
      * Registra uma mensagem de log.
      *
      * @param {LogMessage} args - A mensagem de log.
      */
-    log(...args: LogMessage[]): void {
-        logs(this.title, 'Info', this.color, this.options, args);
-    }
+	log(...args: LogMessage[]): void {
+		logs(this.title, "Info", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem de erro.
      *
      * @param {LogMessage} args - A mensagem de erro.
      */
-    error(...args: LogMessage[]): void {
-        logs(this.title, 'Error', this.color, this.options, args);
-    }
+	error(...args: LogMessage[]): void {
+		logs(this.title, "Error", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem de aviso.
      *
      * @param {LogMessage} args - A mensagem de aviso.
      */
-    warn(...args: LogMessage[]): void {
-        logs(this.title, 'Warn', this.color, this.options, args);
-    }
+	warn(...args: LogMessage[]): void {
+		logs(this.title, "Warn", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem de informação.
      *
      * @param {LogMessage} args - A mensagem de informação.
      */
-    info(...args: LogMessage[]): void {
-        logs(this.title, 'Info', this.color, this.options, args);
-    }
+	info(...args: LogMessage[]): void {
+		logs(this.title, "Info", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem de depuração.
      *
      * @param {LogMessage} args - A mensagem de depuração.
      */
-    debug(...args: LogMessage[]): void {
-        logs(this.title, 'Debug', this.color, this.options, args);
-    }
+	debug(...args: LogMessage[]): void {
+		logs(this.title, "Debug", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem no console sem salvá-la em um arquivo de log.
      *
      * @param {LogMessage} args - A mensagem a ser registrada no console.
      */
-    sys(...args: LogMessage[]): void {
-        logs(this.title, 'OnlyConsole', this.color, this.options, args);
-    }
+	sys(...args: LogMessage[]): void {
+		logs(this.title, "OnlyConsole", this.color, this.options, args);
+	}
 
-    /**
+	/**
      * Registra uma mensagem diretamente no arquivo de logs, não aparecendo no console.
      *
      * @param {LogMessage} logtext - A mensagem a ser registrada no arquivo de log.
      */
-    txt(...args: LogMessage[]): void {
-        logs(this.title, 'OnlyLog', this.color, this.options, args);
-    }
+	txt(...args: LogMessage[]): void {
+		logs(this.title, "OnlyLog", this.color, this.options, args);
+	}
 }
 
 /**
