@@ -1,144 +1,30 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <!-- Inclua o CSS do Tailwind CSS (ou use um CDN) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .box {
-            width: 91vw;
-        }
+  <title>Página de Erro</title>
+  <style>
+    /* Seu código CSS aqui */
 
-        .selected {
-            background-color: #f0e68c;
-        }
-
-        .prebox {
-            background-color: #f0e68c;
-            border-radius: 10px;
-            max-height: 400px;
-        }
-
-        .json-string {
-            color: #d17600;
-        }
-
-        .json-number {
-            color: #00ff00;
-        }
-
-        .json-boolean {
-            color: #0b0bba;
-        }
-
-        .json-key {
-            color: blue;
-        }
-
-        .json-null {
-            color: #8B0000;
-        }
-    </style>
+    /* Estilos para a caixa */
+    .error-box {
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="bg-gray-200 min-h-screen flex items-center justify-center min-w-screen">
-        <!-- Container principal com margens -->
-        <div class="bg-white p-6 rounded-lg shadow-lg m-5 box">
-            <!-- Título e descrição -->
-            <div class="border-b mb-4 pb-4 flex items-center">
-                <img src="http://localhost:3000/img/favicon.png" alt="Imagem"
-                    style="max-width: 70px; max-height: 70px; margin-right: 10px;" class="ml-4">
-
-                <div class="border-b mb-4 pb-4">
-                    <h1 class="text-2xl font-bold">Ainda fazendo</h1>
-                    <p class="text-sm">Configurações de api da Alternight no local ${req.OriginalPath}.</p>
-                </div>
-            </div>
-
-            <!-- JSON Container -->
-            <div class="border mt-4 p-4 overflow-x-auto max-h-screen max-w-screen prebox">
-                <pre class="code" id="codeOutput"></pre>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        var jsonData = {
-            "Website": {
-                "title": "Core",
-                "url": "http://localhosthttp://localhosthttp://localhosthttp://localhosthttp://localhost",
-                "port": "3000",
-                "mode": "dev",
-                "source": {
-                    "type": "Typescript",
-                    "dir": "./app",
-                    "version": "1.0.0"
-                },
-                "colors": {
-                    "selected": "black",
-                    "black": {
-                        "color": {
-                            "primary": "#000",
-                            "secondary": "#1d5285",
-                            "tertiary": "#808080"
-                        },
-                        "text": {
-                            "primary": "#ffffff",
-                            "secondary": "#051322",
-                            "tertiary": "#808080"
-                        },
-                        "background": "#000"
-                    },
-                    "white": {
-                        "color": {
-                            "primary": "#fff",
-                            "secondary": "#1d5285",
-                            "tertiary": "#808080"
-                        },
-                        "text": {
-                            "primary": "#fff",
-                            "secondary": "#1d5285",
-                            "tertiary": "#808080"
-                        },
-                        "background": "#fff"
-                    }
-                }
-            }
-        };
-
-        var codeOutput = document.getElementById("codeOutput");
-
-        function displayJSON() {
-            var jsonText = JSON.stringify(jsonData, null, 4);
-
-            // Aplicar estilos às chaves, strings, números, booleanos e nulos no JSON
-            jsonText = jsonText.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-            jsonText = jsonText.replace(
-                /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|\b-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?\b)/g,
-                function (match) {
-                    let color = 'json-number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            color = 'json-key';
-                        } else {
-                            color = 'json-string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        color = 'json-boolean';
-                    } else if (/null/.test(match)) {
-                        color = 'json-null';
-                    }
-                    return '<span class="' + color + '">' + match + '</span>';
-                }
-            );
-
-            codeOutput.innerHTML = jsonText;
-        }
-
-        // Inicialmente, exiba o JSON
-        displayJSON();
-    </script>
+  <!-- Caixa que envolve o conteúdo da página de erro -->
+  <div class="error-box">
+    <h1>Detalhes do Erro</h1>
+    <p><strong>Mensagem:</strong> <span id="errorMessage"></span></p>
+    <p><strong>Nome do Erro:</strong> <span id="errorName"></span></p>
+    <p><strong>Código do Erro:</strong> <span id="errorCode"></span></p>
+    <p><strong>Stack do Erro:</strong></p>
+    <pre id="errorStack"></pre>
+  </div>
 </body>
-
 </html>

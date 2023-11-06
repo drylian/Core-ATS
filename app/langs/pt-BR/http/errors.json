@@ -32,8 +32,11 @@
         "code": "500 Erro Interno do Servidor",
         "title": "Erro Interno do Servidor"
     },
+    "InternalServerError":"Erro Interno do Servidor",
     "ErrorCSRF":"Erro de validação Csrf, impossivel de continuar",
     "AccessCSRFError":"Pela segurança do CSRF Usuários sem autenticação não podem acessar aréas privadas",
     "corsError":"Acesso não autorizado devido à política CORS.",
-    "ReactResourcesNotFound":"Erro interno ao tentar carregar o compilado do react, o vite foi buildado?"
+    "ReactResourcesNotFound":"Erro interno ao tentar carregar o compilado do react, o vite foi buildado?",
+    "ResourcesNotFound":"Não foi possivel encontrar conteúdo nessa rota, 404",
+    "ConnectionNotAllowed":"Acesso bloqueado, caso continuar será banido do servidor."
 }

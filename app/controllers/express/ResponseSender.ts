@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { ErrType } from "@/interfaces";
+import { ErrType, SettingsJson } from "@/interfaces";
 import SenderError from "@/http/pages/errors/Error.html";
 import JsonViewer from "@/http/pages/system/Json.html";
+import storage from "../Storage";
 
 interface Params<T> {
-    message?: string;
-    list?: object[];
-    json?: T;
-    err?: ErrType;
+	message?: string;
+	list?: object[];
+	json?: T;
+	err?: ErrType;
 }
 function QueryedData(list: object[] = [], page?: number) {
 	const data = list || [];
@@ -28,47 +29,46 @@ function QueryedData(list: object[] = [], page?: number) {
 	return { data: dataOnPage, meta: meta };
 }
 
-export default function ResponseSender<T>(req: Request, res: Response, params: Params<T>) {
+export default function ResponseSender<T>(req:Request, res: Response, params: Params<T>) {
 	const { message, err, json, list } = params;
 	const messages = message ? message : "Algo desconhecido aconteceu.";
 	switch (req.accepts(["html", "json", "txt"])) {
-	case "html":
-		if (err) {
-			delete err.stack;
-			res.send(SenderError({ req: req, message: messages, status: 500, lang: req.language }));
-		} else if (list) {
-			res.send(JsonViewer(QueryedData(list, Number(req.query.page)), "list"));
-		} else if (json) {
-			res.send(JsonViewer(params.json));
-		} else if (res.statusCode) {
-			res.send(SenderError({ req: req, message: messages, status: res.statusCode, lang: req.language }));
-		} else if (req.statusCode) {
-			res.send(SenderError({ req: req, message: messages, status: req.statusCode, lang: req.language }));
-		} else {
-			res.send(SenderError({ req: req, message: messages, status: 500, lang: req.language }));
-		}
-		break;
-	case "json":
-		if (err) {
-			delete err.stack;
-			res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...err });
-		} else if (list) {
-			res.json({
-				status: res.statusCode || req.statusCode,
-				timestamp: Date.now(),
-				...QueryedData(list, Number(req.query.page)),
-			});
-		} else if (json) {
-			res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...json });
-		} else {
-			res.json({
-				message: message || "unknown",
-				status: res.statusCode || req.statusCode || "unknown",
-				timestamp: Date.now(),
-			});
-		}
-		break;
-	default:
-		res.type("txt").send(params);
+		case "html":
+			if (err) {
+				res.send(SenderError({  message: "Internal Server Error", status: 500, lang: req.language }, req));
+			} else if (list) {
+				res.send(JsonViewer(QueryedData(list, Number(req.query.page)), req, "list"));
+			} else if (json) {
+				res.send(JsonViewer(params.json, req));
+			} else if (res.statusCode) {
+				res.send(SenderError({  message: messages, status: res.statusCode, lang: req.language }, req));
+			} else if (req.statusCode) {
+				res.send(SenderError({  message: messages, status: req.statusCode, lang: req.language }, req));
+			} else {
+				res.send(SenderError({  message: messages, status: 500, lang: req.language }, req));
+			}
+			break;
+		case "json":
+			if (err) {
+				if (storage.get<SettingsJson>("config").mode.startsWith("dev")) return res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...err });
+				else res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), message: "Internal Server Error" });
+			} else if (list) {
+				res.json({
+					status: res.statusCode || req.statusCode,
+					timestamp: Date.now(),
+					...QueryedData(list, Number(req.query.page)),
+				});
+			} else if (json) {
+				res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...json });
+			} else {
+				res.json({
+					message: message || "unknown",
+					status: res.statusCode || req.statusCode || "unknown",
+					timestamp: Date.now(),
+				});
+			}
+			break;
+		default:
+			res.type("txt").send(params);
 	}
 }

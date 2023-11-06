@@ -1,8 +1,8 @@
-export default function JsonJS<T>(data: T) {
+export default function JsonJS<T>(data: T, nonce:string) {
 	// essa função não é usada pelo backend, é usada para um html
 	/* eslint-disable no-useless-escape */
 	return `
-    <script>
+    <script nonce="${`${nonce}`}">
     function navigateToPage(page) {
         // Obtenha a parte da URL atual que não inclui a consulta (query) - Pode variar de acordo com o ambiente
         const currentURLWithoutQuery = window.location.origin + window.location.pathname;

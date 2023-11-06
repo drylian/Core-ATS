@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { genv5 } from "@/utils";
 import { ErrType } from "@/interfaces/Utils";
 import { db } from "@/controllers/Sequelize";
-import { webpanel } from "@/controllers/Express";
+import Express from "@/controllers/Express";
 import StartSettings from "./controllers/storage/Watcher";
 type LogMessage = string | number | boolean | object;
 
@@ -47,7 +47,7 @@ async function init() {
 async function run() {
 	await Settings().then(async () => {
 		await init();
-		await webpanel(); // Carrega o webpanel após as configurações e init
+		new Express()
 	});
 }
 

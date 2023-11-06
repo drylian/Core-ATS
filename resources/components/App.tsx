@@ -1,31 +1,29 @@
-import { useState } from "react";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "../assets/vite.svg";
-import "../assets/App.css";
+import { StoreProvider } from 'easy-peasy';
+import { WebsiteConf } from "../states/website";
+import { store } from "../states";
+import ErrorBoundary from "../pages/errors/ErrorBoundary";
+import GlobalRouter from "../routes/Global";
+interface ExtWindow extends Window {
+	WebsiteConf?: WebsiteConf;
 
-function App() {
-	const [count, setCount] = useState(0);
-
+}
+export default function App() {
+	const { WebsiteConf } = window as ExtWindow;
+	if (!store.getState().website.data) {
+		store.getActions().website.setWebsite(WebsiteConf!);
+	}
 	return (
 		<>
-			<div className='bg-black'>
-				<a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
-					<img src={viteLogo} className='logo' alt='Vite logo' />
-				</a>
-				<a href='https://react.dev' target='_blank' rel='noreferrer'>
-					<img src={reactLogo} className='logo react' alt='React logo' />
-				</a>
-			</div>
-			<h1>Vite + React</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-				<p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
+			{/**
+		  * Configuração de store do easy-peasy
+		  */}
+			<StoreProvider store={store}>
+				<ErrorBoundary>
+					<GlobalRouter />
+				</ErrorBoundary>
+			</StoreProvider>
+
 		</>
 	);
 }
 
-export default App;

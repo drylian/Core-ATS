@@ -1,26 +1,79 @@
 import HtmlIndex from "@/http/pages/system/index.html";
-import { Application } from "express";
-import { generateCsrfToken } from "@/http/middlewares/CSRF";
+import express, { Application } from "express";
+import { generateCsrfToken } from "@/http/middlewares/Csrf";
+import configuractions from "@/controllers/settings/Default";
+import { json } from "@/utils";
+import path from "path";
 
-async function ViteInjector(app: Application) {
-	// Import necessary functions and modules
-	const { createServer } = await import("vite");
+/**
+ * Types do Manifest gerado pelo Vite, apenas os usados
+ */
+type IndexHtmlEntry = {
+  assets: string[];
+  css: string[];
+  file: string;
+  isEntry: boolean;
+  src: string;
+};
 
-	// Create Vite server in middleware mode
-	const vite = await createServer({
-		server: { middlewareMode: true },
-		appType: "custom", // Don't include Vite's default HTML handling middlewares
-	});
+/**
+ * Manifest do Vite
+ */
+type Manifest = {
+  "index.html": IndexHtmlEntry;
+};
 
-	// Use vite's connect instance as middleware
-	app.use(vite.middlewares);
+/**
+ * Classe que injeta o servidor Vite em uma aplicação Express.
+ */
+class ViteInjector {
+  private server: Application;
 
-	app.use("*", async (req, res) => {
-		// Transform and send the index HTML
-		vite.transformIndexHtml(req.originalUrl, HtmlIndex(generateCsrfToken()(req, res, true), "dev")).then((html) => {
-			res.status(200).send(html);
-		});
-	});
+  /**
+   * Construtor da classe ViteInjector.
+   * @param {Application} server - A instância do servidor Express.
+   */
+  constructor(server: Application) {
+    this.server = server;
+  }
+
+  /**
+   * Configuração para desenvolvimento com Vite.
+   * @returns {Promise<void>}
+   */
+  public async development(): Promise<void> {
+    const { createServer } = await import("vite");
+    const vite = await createServer({
+      server: { middlewareMode: true },
+      appType: "custom",
+    });
+    this.server.use(vite.middlewares);
+    this.server.use("*", async (req, res) => {
+      vite.transformIndexHtml(req.originalUrl, HtmlIndex(generateCsrfToken()(req, res, true), req, [], "dev")).then((html) => {
+        res.status(200).send(html);
+      });
+    });
+  }
+
+  /**
+   * Configuração para produção com Vite.
+   * @returns {Promise<void>}
+   */
+  public async production(): Promise<void> {
+    const ViteMinefest: Manifest = json(configuractions.rootPATH + "/http/public/manifest.json");
+    const { css, file } = ViteMinefest["index.html"];
+    const manifest = [
+      `<script type="module" src="/${file}"></script>`,
+      ...css.map((cssFile: string) => `<link rel="stylesheet" href="/${cssFile}" />`),
+    ];
+    console.log(manifest);
+    this.server.use("/assets", express.static(path.join(configuractions.rootPATH + "/http/public/assets")));
+    this.server.get("*", (req, res) => {
+      if (req.accepts("html")) {
+        res.send(HtmlIndex(generateCsrfToken()(req, res, true), req, manifest));
+      }
+    });
+  }
 }
 
-export default ViteInjector;
+export { ViteInjector };

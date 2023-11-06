@@ -19,6 +19,5 @@ export default defineConfig({
 			"@": resolve(dirname(fileURLToPath(import.meta.url)), "resources"),
 		},
 	},
-
 },
 );

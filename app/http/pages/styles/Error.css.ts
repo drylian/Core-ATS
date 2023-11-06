@@ -33,6 +33,14 @@ export default function ErrorCss(color: ColorJson) {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
 
+      .error-box {
+        background-color: #ff7c7c;
+        border: 1px solid #ff0000;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
       .blur {
         background: rgba(255, 255, 255, 0.35);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -50,7 +58,7 @@ export default function ErrorCss(color: ColorJson) {
         background-color: transparent;
         border-radius: 10px;
         padding: 30px;
-        max-width: 400px;
+        max-width: 800px;
       }
 
       h1 {

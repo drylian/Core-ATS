@@ -1,144 +1,112 @@
-import * as path from "path";
-import express, { Application, Request, Response } from "express";
+import express, { Request, Response } from "express";
+import { Helmet } from "@/http/middlewares/Helmet";
+import storage from "@/controllers/Storage";
+import { ErrType, SettingsJson } from "@/interfaces";
 import Loggings from "@/controllers/Loggings";
-import fileUpload from "express-fileupload";
-import configuractions from "@/controllers/settings/Default";
-import { AppRouter as ApplicationBackend } from "@/http/Application";
-import { json } from "@/utils";
-import credentials from "@/http/middlewares/Credentials";
-import configureCors from "@/http/middlewares/Cors";
+import i18alt from "@/controllers/Language";
+import { MorganLogs } from "@/http/middlewares/Morgan";
 import cookieParser from "cookie-parser";
-import { ErrType } from "@/interfaces/Utils";
-import { SettingsJson } from "@/interfaces";
-import morgan from "morgan";
+import path from "path";
+import configuractions from "./settings/Default";
+import { i18AltRequests } from "@/http/middlewares/i18AltRequests";
+import { Protocols } from "@/http/middlewares/Protocols";
+import fileUpload from "express-fileupload";
+import { SenderSettings } from "@/http/middlewares/SenderSettings";
+import Credentials from "@/http/middlewares/Credentials";
+import Cors from "@/http/middlewares/Cors";
+import { Connections } from "@/http/middlewares/Connections";
+import { ApplicationRoutes } from "@/http/Application";
 import HtmlIndex from "@/http/pages/system/index.html";
-import ViteInjector from "@/controllers/express/vite/ViteInjector";
-import { generateCsrfToken } from "@/http/middlewares/CSRF";
-import i18alt, { i18AltMiddleware } from "@/controllers/Language";
-import ResponseSender from "@/controllers/express/ResponseSender";
-import storage from "./Storage";
+import { generateCsrfToken } from "@/http/middlewares/Csrf";
+import { ViteInjector } from "./express/vite/ViteInjector";
+import { LanguageRequests } from "@/http/router/base/Languages";
 
-const core = new Loggings("Express", "green");
-const i18n = new i18alt();
-const apache = new Loggings("Apache-Logs", "blue");
+class Express {
+  public server: express.Application;
+  private core: Loggings;
+  private i18n: i18alt;
+  private apache: Loggings;
+  private config: SettingsJson;
 
-export const rcore = new Loggings("Request", "gray");
-export const webpanel = async () => {
-	try {
-		storage.rel("config")
-		const config: SettingsJson = storage.get("config")
 
-		core.log("Iniciando [conexões].blue do painel.");
-		const app = express();
-		app.use((req, res, next) => {
-			morgan("combined", {
-				stream: {
-					write: (message: string) => {
-						apache.txt(message);
-					},
-				},
-			})(req, res, next);
-		});
-		app.use(cookieParser(config.server.csrf.cookie_secret));
+  constructor() {
+    this.core = new Loggings("Express", "green");
+    this.i18n = new i18alt();
+    this.apache = new Loggings("Apache-Logs", "blue");
+    storage.rel("config");
+    this.config = storage.get("config");
+    this.core.log("Iniciando Rotas do painel.");
+    this.server = express();
+    this.middlewares();
+    this.routers();
+    this.listen();
+  }
 
-		app.use("/", express.static(path.join(configuractions.rootPATH + "/http/static")));
+  private middlewares(): void {
+    this.server.use(Helmet());
+    this.server.use(cookieParser());
+    this.server.use(express.json());
+    this.server.use(express.urlencoded({ extended: true }));
+    this.server.use(i18AltRequests(this.i18n));
+    this.server.use(Protocols());
+    this.server.use(Credentials());
+    this.server.use(Cors());
+    this.server.use(Connections(this.core));
+    this.server.use(MorganLogs(this.apache));
+    this.server.use(cookieParser(this.config.server.csrf.cookie_secret));
+    this.server.use("/", express.static(path.join(configuractions.rootPATH + "/http/static")));
+    this.server.use(SenderSettings());
+    this.server.use(fileUpload());
+  }
 
-		// Configurações do express e middlewares
-		app.use(express.json());
-		app.use(express.urlencoded({ extended: true }));
-		app.use(i18AltMiddleware(i18n));
-		app.use((req, res, next) => {
-			const config: SettingsJson = json(configuractions.configPATH + "/settings.json");
+  private routers(): void {
+    new LanguageRequests(this.server)
+    new ApplicationRoutes(this.server, this.core)
+  }
 
-			if (config.server.protocol === req.protocol || config.server.protocol === "http/https") {
-				next();
-			} else {
-				res.status(403).sender({
-					message: req.t("backend:ErrorProtocol", {
-						protocol: config.server.protocol.toUpperCase(),
-					}),
-				});
-			}
-		});
+  private async listen() {
+    if (this.config.mode !== "production" && this.config.mode !== "pro") {
+      this.core.log("Aplicação em modo de [desenvolvimento].gray, inicializando...");
+      await new ViteInjector(this.server).development();
+      const server = this.server.listen(
+        parseInt(this.config?.server?.port),
+        "0.0.0.0",
+        () => this.core.log(`Servidor [iniciado].green em [${this.config.server.url}:${this.config.server.port}].blue.`)
+      );
+      this.core.log("[Vite].magenta iniciou com [sucesso].green.");
+      this.extend();
+      // Handle unhandled errors from Express
+      server.on("error", (error) => {
+        this.core.error(`[Erro].red não detectado pelo servidor servidor: ${error.stack}`);
+      });
+    } else {
+      this.core.log("Servidor está iniciando...");
+      await new ViteInjector(this.server).production();
+      this.extend();
+      const server = this.server.listen(
+        parseInt(this.config?.server?.port),
+        "0.0.0.0",
+        () => this.core.log(`Servidor [iniciado].green em [${this.config.server.url}:${this.config.server.port}].blue.`)
+      );
 
-		app.use((req, res, next) => {
-			res.sender = (params) => {
-				ResponseSender(req, res, params);
-			};
-			next();
-		});
+      // Handle unhandled errors from Express
+      server.on("error", (error) => {
+        this.core.error(`Uncaught error in the server: ${error.stack}`);
+      });
+    }
+  }
 
-		app.use(cookieParser());
-		app.use(cookieParser(config.server.csrf.cookie_secret));
+  private extend() {
+    this.server.all("*", (req, res) => {
+      res.status(404).sender({message:this.i18n.t("http:errors.ResourcesNotFound")});
+    });
 
-		// Configuração do express-fileupload
-		app.use(fileUpload());
-		app.use(credentials);
-		app.use(configureCors);
+    this.server.all("*", (error: ErrType, req: Request, res: Response) => {
+      this.core.error(`[Error:].red ${error.stack}`);
+      res.status(500).sender({ message:"http:errors.InternalServerError" });
+    });
+  }
 
-		let callCount = 0;
-
-		app.use("/", (req, res, next) => {
-			if (req.originalUrl === "/robots.txt") {
-				next();
-				return;
-			}
-			if (req.originalUrl === "/favicon.ico") {
-				next();
-				return;
-			}
-
-			core.debug(`Conexões: [${req.originalUrl}].magenta [(${callCount++})].blue`);
-			next();
-		});
-		await ApplicationBackend(app);
-
-		if (config.mode !== "production" && config.mode !== "pro") {
-			core.log("Aplicação em modo de desenvolvimento, iniciando...");
-			await ViteInjector(app);
-			const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
-				core.log(`Servidor iniciado em ${config.server.url}:${config.server.port}.`),
-			);
-			// ViteExpress.bind(app, server)
-			core.log("Vite iniciado com sucesso.");
-			await ExtendExpress(app);
-
-			// Eventos de erros vindos do express
-			server.on("error", (error) => {
-				core.error(`Erro não tratado no servidor: ${error.stack}`);
-			});
-		} else {
-			const buildPath = path.join(configuractions.rootPATH + "/http/public/assets");
-			core.log("Servidor esta inciando...");
-
-			app.use("/assets", express.static(path.join(buildPath)));
-
-			app.get("*", (req, res) => {
-				if (req.accepts("html")) {
-					res.send(HtmlIndex(generateCsrfToken()(req, res, true)));
-				}
-			});
-			await ExtendExpress(app);
-			const server = app.listen(parseInt(config?.server?.port), "0.0.0.0", () =>
-				core.log(`Servidor iniciado em ${config.server.url}:${config.server.port}.`),
-			);
-
-			// Eventos de erros vindos do express
-			server.on("error", (error) => {
-				core.error(`Erro não tratado no servidor: ${error.stack}`);
-			});
-		}
-	} catch (err) {
-		core.error(`Erro ao tentar carregar conexões do painel: [${(err as ErrType).stack}].red`);
-	}
-};
-
-async function ExtendExpress(app: Application) {
-	app.all("*", (req, res) => {
-		res.status(404).sender({});
-	});
-	app.all("*", (error: ErrType, req: Request, res: Response) => {
-		core.error(`Erro : [${error.stack}].red`);
-		res.status(500).sender({ err: error });
-	});
 }
+
+export default Express;

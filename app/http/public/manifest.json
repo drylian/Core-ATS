@@ -1,0 +1,51 @@
+{
+  "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.eot": {
+    "file": "assets/boxicons-c23887bb.eot",
+    "src": "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.eot"
+  },
+  "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.svg": {
+    "file": "assets/boxicons-3fe502d8.svg",
+    "src": "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.svg"
+  },
+  "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.ttf": {
+    "file": "assets/boxicons-47509a2d.ttf",
+    "src": "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.ttf"
+  },
+  "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.woff": {
+    "file": "assets/boxicons-d5d511cf.woff",
+    "src": "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.woff"
+  },
+  "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.woff2": {
+    "file": "assets/boxicons-4b87cbc7.woff2",
+    "src": "../node_modules/.pnpm/boxicons@2.1.4/node_modules/boxicons/fonts/boxicons.woff2"
+  },
+  "assets/react.svg": {
+    "file": "assets/react-35ef61ed.svg",
+    "src": "assets/react.svg"
+  },
+  "assets/vite.svg": {
+    "file": "assets/vite-4a748afd.svg",
+    "src": "assets/vite.svg"
+  },
+  "index.css": {
+    "file": "assets/index-c294c467.css",
+    "src": "index.css"
+  },
+  "index.html": {
+    "assets": [
+      "assets/react-35ef61ed.svg",
+      "assets/vite-4a748afd.svg",
+      "assets/boxicons-c23887bb.eot",
+      "assets/boxicons-4b87cbc7.woff2",
+      "assets/boxicons-d5d511cf.woff",
+      "assets/boxicons-47509a2d.ttf",
+      "assets/boxicons-3fe502d8.svg"
+    ],
+    "css": [
+      "assets/index-c294c467.css"
+    ],
+    "file": "assets/index-429190df.js",
+    "isEntry": true,
+    "src": "index.html"
+  }
+}

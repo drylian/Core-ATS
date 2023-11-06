@@ -24,7 +24,7 @@ router.get("/image/:image", (req, res) => {
 					// Converte a imagem em base64
 					const base64Image = data.toString("base64");
 					const sender = { name: imageName, data: base64Image, size: size };
-					res.send(ImageViewer<typeof sender>(sender));
+					res.send(ImageViewer<typeof sender>(sender, req));
 				}
 			});
 		}

@@ -58,22 +58,26 @@ declare global {
              * @param {string} namespace - o namespace selecionado.
              * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
              */
-            getNR(namespace: string, lang?: string): object;
+            getNR(namespace: string,i18next:boolean, lang?: string): object;
             /**
              * ( Alias do getNamespaceResource ) Obtem um json do namespace selecionado.
              * @param {string} namespace - o namespace selecionado.
              * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
              */
-            getNamespaceResource(namespace: string, lang?: string): object;
+            getNamespaceResource(namespace: string,i18next:boolean, lang?: string): object;
             /**
              * Configuração de Authorização, retorna alguns params uteis que podem ser usados no request
              */
             access: {
-                permissions: number;
-                type: "user" | "token";
-                uuid: string;
-                lang: string;
+                permissions?: number;
+                type?: "user" | "token";
+                uuid?: string;
+                lang?: string;
+                ip?:string | string[] | undefined;
             };
+            generated:{
+                nonce:string;
+            }
             alternative: {
                 origin: string;
             };
