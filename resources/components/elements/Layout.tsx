@@ -1,11 +1,13 @@
-import { Outlet } from "react-router-dom"
-
+import { Outlet } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
 const Layout = () => {
-    return (
-        <>
-            <Outlet />
-        </>
-    )
-}
+	return (
+		<>
+			<ProgressBar />
 
-export default Layout
+			<Outlet />
+		</>
+	);
+};
+
+export default Layout;

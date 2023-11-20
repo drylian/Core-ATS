@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 
 		core.log(`Novo usuário foi criado : "${newUser.username}"`);
 
-		return res.json({ complete: true, message: "Sucesso ao criar o usuário" });
+		return res.json({ type:"success", complete: true, message: "Sucesso ao criar o usuário" });
 	} catch (error) {
 		core.error(`Erro ao tentar registrar um usuário : "${(error as ErrType).stack}"`);
 		return res.status(500).json({ message: "Erro ao registrar" });

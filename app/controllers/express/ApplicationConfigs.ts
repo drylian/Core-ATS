@@ -2,7 +2,7 @@ import { root, type, version } from "@/controllers/settings/Default";
 import { ColorJson, SettingsJson } from "@/interfaces";
 import storage from "@/controllers/Storage";
 export default function ApplicationConfigs() {
-    const config: SettingsJson = storage.get("config");
+	const config: SettingsJson = storage.get("config");
 	const colors: ColorJson = storage.get("color");
 
 	const data = {
@@ -11,14 +11,9 @@ export default function ApplicationConfigs() {
 			url: config.server.url,
 			port: config.server.port,
 			mode: config.mode,
-			source: {
-				type: type,
-				dir: root,
-				version: version ? version : "development",
-			},
 			colors: { ...colors },
 		},
 	};
 
-    return data
+	return data;
 }

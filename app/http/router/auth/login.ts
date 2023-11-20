@@ -23,34 +23,23 @@ router.post("/", async (req: Request, res: Response) => {
 
 		// Procura o usuário pelo usuário ou email
 		const userRecord =
-            (await User.findOne({ where: { username: username } })) ||
-            (await User.findOne({ where: { email: username } }));
+			(await User.findOne({ where: { username: username } })) ||
+			(await User.findOne({ where: { email: username } }));
 
 		// Verifica se o usuário existe e se a senha está correta
 		if (userRecord && bcrypt.compareSync(password, userRecord.dataValues.password)) {
 			const UserData: UserE = userRecord.dataValues;
 			delete UserData.password;
-
-			const AcessToken = ALTcpt(userRecord.dataValues, config.server.accessTokenSecret, { expires: "15m" });
-
-			const expirationTimeInSeconds = AlTexp("15m");
-			const expirationDate = new Date(Date.now() + expirationTimeInSeconds * 1000);
-
+			delete UserData.id;
 			if (remember_me) {
 				const rememberMeUUID = uuidv4();
 				await User.update({ remember: rememberMeUUID }, { where: { uuid: userRecord.uuid } });
-				const RememberToken = ALTcpt({ remember: rememberMeUUID }, config.server.refreshTokenSecret);
-
-				return res.json({
-					user: userRecord,
-					token: AcessToken,
-					complete: true,
-					expire: expirationDate,
-					remember: RememberToken,
-				});
-			} else {
-				return res.json({ user: userRecord, token: AcessToken, complete: true, expire: expirationDate });
+				res.cookie("X-Application-Refresh", ALTcpt({ remember: rememberMeUUID }, config.server.refreshTokenSecret, { ip: req.access.ip?.toString() ,expires: "90d" }), { maxAge: AlTexp("90d"), httpOnly: true })
 			}
+			res.cookie("X-Application-Access", ALTcpt(UserData, config.server.accessTokenSecret, { ip: req.access.ip?.toString() ,expires: remember_me ? "15m" : "1h" }), { maxAge: AlTexp(remember_me ? "15m" : "1h"), httpOnly: true })
+
+			return res.json({ type: "success", message: "Bem vindo(a) " + UserData.username + ".", complete: true });
+
 		} else {
 			return res.status(401).json({ message: "Usuário/email ou senha inválidos." });
 		}

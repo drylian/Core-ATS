@@ -8,7 +8,7 @@ import CryptoJS from "crypto-js";
  * @param {object} options - Opções, como tempo de expiração (opcional).
  * @returns {string} - O token criptografado em formato hexadecimal.
  */
-export function ALTcpt(data: object, cryptKey: string, options?: { expires?: string }): string {
+export function ALTcpt(data: object, cryptKey: string, options?: { ip: string | undefined, expires?: string }): string {
 	try {
 		// Verificar se a opção "expires" foi fornecida
 		if (options && options.expires) {
@@ -60,14 +60,14 @@ export function AlTexp(expires: string): number {
 	const unit = match[2];
 
 	switch (unit) {
-	case "h":
-		return value * 60 * 60 * 1000; // horas em milissegundos
-	case "m":
-		return value * 60 * 1000; // minutos em milissegundos
-	case "d":
-		return value * 24 * 60 * 60 * 1000; // dias em milissegundos
-	default:
-		throw new Error("Unidade de expiração inválida. Use \"h\" para horas, \"m\" para minutos ou \"d\" para dias.");
+		case "h":
+			return value * 60 * 60 * 1000; // horas em milissegundos
+		case "m":
+			return value * 60 * 1000; // minutos em milissegundos
+		case "d":
+			return value * 24 * 60 * 60 * 1000; // dias em milissegundos
+		default:
+			throw new Error("Unidade de expiração inválida. Use \"h\" para horas, \"m\" para minutos ou \"d\" para dias.");
 	}
 }
 
@@ -77,7 +77,7 @@ export function AlTexp(expires: string): number {
  * @param {string} cryptKey - A chave de criptografia.
  * @returns {T | null} - Os dados descriptografados ou `false` se o token expirou.
  */
-export function ALTdcp<T>(token: string, cryptKey: string): T {
+export function ALTdcp<T>(token: string, cryptKey: string, ip: string | undefined): T {
 	try {
 		// Decodificar o token hexadecimal
 		const wordArray = CryptoJS.enc.Hex.parse(token);
@@ -94,6 +94,7 @@ export function ALTdcp<T>(token: string, cryptKey: string): T {
 
 		// Verificar se o token expirou (se a opção "expires" estiver presente)
 		let expired = false;
+		let IpDif = false;
 		if (decryptedData.options.expires) {
 			const now = new Date().getTime();
 			const expirationTime = new Date(decryptedData.options.expires).getTime();
@@ -101,8 +102,8 @@ export function ALTdcp<T>(token: string, cryptKey: string): T {
 				expired = true;
 			}
 		}
-
-		const data = expired ? (null as T) : (decryptedData.data as T);
+		if (decryptedData.options.ip && decryptedData.options.ip !== ip) IpDif = true
+			const data = expired ? (null as T) : IpDif ? (null as T) : (decryptedData.data as T);
 		return data;
 	} catch (error) {
 		throw new Error("Erro na verificação e descriptografia do token: " + (error as ErrType).message);

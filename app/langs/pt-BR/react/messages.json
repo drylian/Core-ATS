@@ -1,4 +1,8 @@
 {
     "PageNotFound":"A Pagina não foi encontrada",
-    "PageSolicitedNotFound":"A pagina solicitada não foi encontrada"
+    "PageSolicitedNotFound":"A pagina solicitada não foi encontrada",
+    "PageSolicitedNotFounds":"A pagina solicitada não foi encontrada",
+    "SuspendedAccount": "Você foi suspenso de nossos serviços.",
+    "DefaultSuspendedAccoutReason":"Você foi suspenso de nossos serviços por violar nossos termos de uso.",
+    "DeslogedForSuccess":"Deslogado com sucesso."
 }

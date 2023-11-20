@@ -4,76 +4,86 @@ import { generateCsrfToken } from "@/http/middlewares/Csrf";
 import configuractions from "@/controllers/settings/Default";
 import { json } from "@/utils";
 import path from "path";
+import I18alt from "@/controllers/Language";
+import SenderError from "@/http/pages/errors/Error.html";
 
 /**
  * Types do Manifest gerado pelo Vite, apenas os usados
  */
 type IndexHtmlEntry = {
-  assets: string[];
-  css: string[];
-  file: string;
-  isEntry: boolean;
-  src: string;
+    assets: string[];
+    css: string[];
+    file: string;
+    isEntry: boolean;
+    src: string;
 };
 
 /**
  * Manifest do Vite
  */
 type Manifest = {
-  "index.html": IndexHtmlEntry;
+    "index.html": IndexHtmlEntry;
 };
 
 /**
  * Classe que injeta o servidor Vite em uma aplicação Express.
  */
 class ViteInjector {
-  private server: Application;
+	private server: Application;
 
-  /**
-   * Construtor da classe ViteInjector.
-   * @param {Application} server - A instância do servidor Express.
-   */
-  constructor(server: Application) {
-    this.server = server;
-  }
+	/**
+     * Construtor da classe ViteInjector.
+     * @param {Application} server - A instância do servidor Express.
+     */
+	constructor(server: Application) {
+		this.server = server;
+	}
 
-  /**
-   * Configuração para desenvolvimento com Vite.
-   * @returns {Promise<void>}
-   */
-  public async development(): Promise<void> {
-    const { createServer } = await import("vite");
-    const vite = await createServer({
-      server: { middlewareMode: true },
-      appType: "custom",
-    });
-    this.server.use(vite.middlewares);
-    this.server.use("*", async (req, res) => {
-      vite.transformIndexHtml(req.originalUrl, HtmlIndex(generateCsrfToken()(req, res, true), req, [], "dev")).then((html) => {
-        res.status(200).send(html);
-      });
-    });
-  }
+	/**
+     * Configuração para desenvolvimento com Vite.
+     * @returns {Promise<void>}
+     */
+	public async development(): Promise<void> {
+		const { createServer } = await import("vite");
+		const vite = await createServer({
+			server: { middlewareMode: true },
+			appType: "custom",
+		});
+		this.server.use(vite.middlewares);
+		this.server.use("*", async (req, res) => {
+			try {
+				vite.transformIndexHtml(
+					req.originalUrl,
+					HtmlIndex(generateCsrfToken()(req, res, true), req, [], "dev"),
+				).then((html) => {
+					res.status(200).send(html);
+				});
+			} catch (e) {
+				res.status(500).send(
+					SenderError({ status: 500, message: new I18alt().t("http:errors.ReactResourcesNotFound") }, req),
+				);
+			}
+		});
+	}
 
-  /**
-   * Configuração para produção com Vite.
-   * @returns {Promise<void>}
-   */
-  public async production(): Promise<void> {
-    const ViteMinefest: Manifest = json(configuractions.rootPATH + "/http/public/manifest.json");
-    const { css, file } = ViteMinefest["index.html"];
-    const manifest = [
-      `<script type="module" src="/${file}"></script>`,
-      ...css.map((cssFile: string) => `<link rel="stylesheet" href="/${cssFile}" />`),
-    ];
-    console.log(manifest);
-    this.server.use("/assets", express.static(path.join(configuractions.rootPATH + "/http/public/assets")));
-    this.server.get("*", (req, res) => {
-      if (req.accepts("html")) {
-        res.send(HtmlIndex(generateCsrfToken()(req, res, true), req, manifest));
-      }
-    });
-  }
+	/**
+     * Configuração para produção com Vite.
+     * @returns {Promise<void>}
+     */
+	public async production(): Promise<void> {
+		const ViteMinefest: Manifest = json(configuractions.rootPATH + "/http/public/manifest.json");
+		const { css, file } = ViteMinefest["index.html"];
+		const manifest = [
+			`<script type="module" src="/${file}"></script>`,
+			...css.map((cssFile: string) => `<link rel="stylesheet" href="/${cssFile}" />`),
+		];
+		this.server.use("/assets", express.static(path.join(configuractions.rootPATH + "/http/public/assets")));
+		this.server.get("*", (req, res) => {
+			if (req.accepts("html")) {
+				res.send(HtmlIndex(generateCsrfToken()(req, res, true), req, manifest));
+			}
+		});
+	}
 }
 
 export { ViteInjector };

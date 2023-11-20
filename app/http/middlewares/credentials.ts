@@ -4,7 +4,7 @@ import { SetAlowedRoutes } from "@/controllers/express/AllowedRoutes";
 import storage from "@/controllers/Storage";
 
 export default function Credentials() {
-	return (req: Request, res: Response, next: NextFunction) => {
+	return async (req: Request, res: Response, next: NextFunction) => {
 		const valores: SettingsJson = storage.get("config");
 		if (valores?.server?.cors) {
 			if (!valores.server.cors.allowedroutes) {

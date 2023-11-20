@@ -1,0 +1,29 @@
+{
+  "selected": "black",
+  "black": {
+    "color": {
+      "primary": "#000",
+      "secondary": "#1e1e1e",
+      "tertiary": "#0c0c0c"
+    },
+    "text": {
+      "primary": "#ffffff",
+      "secondary": "#d9d9d9",
+      "tertiary": "#808080"
+    },
+    "background": "https://wallpapercave.com/wp/wp2133101.jpg"
+  },
+  "white": {
+    "color": {
+      "primary": "#fff",
+      "secondary": "#d5d5d5",
+      "tertiary": "#808080"
+    },
+    "text": {
+      "primary": "#000",
+      "secondary": "#414040",
+      "tertiary": "#808080"
+    },
+    "background": "#fff"
+  }
+}

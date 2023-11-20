@@ -21,7 +21,7 @@ export interface UserI {
 }
 
 export interface UserE {
-    id: number | null;
+    id?: number | null;
     username: string;
     email: string;
     lang: string | null;

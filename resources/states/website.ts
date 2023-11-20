@@ -1,4 +1,4 @@
-import { Action, action } from 'easy-peasy';
+import { Action, action } from "easy-peasy";
 /**
  * interface do color.json
  */
@@ -26,11 +26,6 @@ export interface WebsiteConf {
     url: string;
     port: string;
     mode: string; // Defina os modos permitidos
-    source: {
-        type: string;
-        dir: string;
-        version: string;
-    };
     colors: ColorJson;
 }
 export interface WebsiteStore {
@@ -39,10 +34,10 @@ export interface WebsiteStore {
 }
 
 const website: WebsiteStore = {
-    data: undefined,
-    setWebsite: action((state, payload) => {
-        state.data = { ...payload };
-    }),
+	data: undefined,
+	setWebsite: action((state, payload) => {
+		state.data = { ...payload };
+	}),
 };
 
 export default website;

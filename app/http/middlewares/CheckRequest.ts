@@ -4,16 +4,17 @@ import { Request, Response, NextFunction } from "express";
  */
 export default function CheckRequest() {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const hasAuthorization = req.headers.authorization !== undefined && typeof req.headers.authorization === "string";
+		const hasAuthorization =
+            req.headers.authorization !== undefined && typeof req.headers.authorization === "string";
 		const hasAlternightCookie =
-			req.cookies.authorization !== undefined && typeof req.cookies.authorization === "string";
+            req.cookies["X-Application-Access"] !== undefined && typeof req.cookies["X-Application-Access"] === "string";
 
 		if (hasAuthorization || hasAlternightCookie) {
 			if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Bearer"))
 				req.checked = "authorization";
 			else if (
 				(req.headers.authorization !== undefined && req.headers.authorization.startsWith("UserAuth")) ||
-				hasAlternightCookie
+                hasAlternightCookie
 			) {
 				req.checked = "user";
 			} else {
@@ -22,7 +23,7 @@ export default function CheckRequest() {
 			next();
 		} else {
 			if (req.accepts("text/html")) return res.redirect("/auth/login");
-			return res.status(401).sender({ message: req.t("http:messages.NotHaveAccessToken")})
+			return res.status(401).sender({ message: req.t("http:messages.NotHaveAccessToken") });
 		}
-	}
+	};
 }

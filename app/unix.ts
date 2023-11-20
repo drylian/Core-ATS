@@ -7,6 +7,7 @@ import { ErrType } from "@/interfaces/Utils";
 import { db } from "@/controllers/Sequelize";
 import Express from "@/controllers/Express";
 import StartSettings from "./controllers/storage/Watcher";
+import Starti18altJson from "./controllers/language/Watcher";
 type LogMessage = string | number | boolean | object;
 
 const core = (...args: LogMessage[]) => Console("Principal", "blue", "Infomações", args);
@@ -16,6 +17,7 @@ core("Iniciando processos do painel.");
 async function init() {
 	try {
 		StartSettings();
+		Starti18altJson();
 		// Carrega as configurações do banco de dados
 		await db.init();
 
@@ -47,7 +49,7 @@ async function init() {
 async function run() {
 	await Settings().then(async () => {
 		await init();
-		new Express()
+		new Express();
 	});
 }
 

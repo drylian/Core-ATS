@@ -14,10 +14,20 @@ export interface SettingsJson {
         pterodactyl: string;
         phpmyadmin: string;
     };
+    smtp: {
+        active: boolean;
+        host: string;
+        port: number;
+        secure: boolean;
+        username: string;
+        password: string;
+        from: string;
+    };
     server: {
         port: string;
         url: string;
         title: string;
+        description:string;
         logo: string;
         session: string;
         protocol: "http" | "https" | "http/https";

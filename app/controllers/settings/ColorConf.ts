@@ -41,7 +41,7 @@ export default async function ColorConf(core: LoggingsMethods) {
 		if (!white?.color?.secondary)
 			jsonsv(root.configPATH + "/color.json", { white: { color: { secondary: "#d5d5d5" } } });
 		if (!white?.color?.tertiary)
-			jsonsv(root.configPATH + "/color.json", { white: { color: { tertiary: "#c1bcbc" } } });
+			jsonsv(root.configPATH + "/color.json", { white: { color: { tertiary: "#d9d3d3" } } });
 		if (!white?.text?.primary) jsonsv(root.configPATH + "/color.json", { white: { text: { primary: "#000" } } });
 		if (!white?.text?.secondary)
 			jsonsv(root.configPATH + "/color.json", { white: { text: { secondary: "#414040" } } });

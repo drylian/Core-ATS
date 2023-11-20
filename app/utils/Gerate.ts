@@ -1,3 +1,4 @@
+import crypto from "crypto";
 // Função para gerar um valor aleatório de 128 caracteres
 const gen = (numero: number) => {
 	numero = numero || 128; // Define o valor padrão como '128' se não for fornecido nenhum valor ou se o valor fornecido for falsy
@@ -27,4 +28,8 @@ const gex = (numero: number) => {
 	return valor;
 };
 
-export { gen, gex };
+const hashmd5 = (response: object) => {
+	return crypto.createHash("md5").update(JSON.stringify(response)).digest("hex");
+};
+
+export { gen, gex, hashmd5 };

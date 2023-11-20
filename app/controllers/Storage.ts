@@ -16,8 +16,7 @@ class Storage {
 				this.storage["Accesslist"] = json<T>(configuractions.configPATH + "/Accesslist.json");
 			else if (keys[0] === "loggings")
 				this.storage["loggings"] = json<T>(configuractions.configPATH + "/loggings.json");
-			else if (keys[0] === "color")
-				this.storage["color"] = json<T>(configuractions.configPATH + "/color.json");
+			else if (keys[0] === "color") this.storage["color"] = json<T>(configuractions.configPATH + "/color.json");
 			else return false;
 			return true;
 		} else {
@@ -31,9 +30,8 @@ class Storage {
 	public set(chave: string, valor: object | string, json?: boolean): void {
 		if (valor !== "string") {
 			this.storage[chave] = _.merge(this.storage[chave], valor);
-			if (json) this.save(chave, valor)
-		}
-		else this.storage[chave] = valor;
+			if (json) this.save(chave, valor);
+		} else this.storage[chave] = valor;
 	}
 
 	public get<T>(chave: string): T {
@@ -47,7 +45,7 @@ class Storage {
 		}
 	}
 	public save<T>(chave: string, data: T): void {
-		jsonsv(configuractions.configPATH + `/${chave}.json`, data)
+		jsonsv(configuractions.configPATH + `/${chave}.json`, data);
 	}
 }
 const storage = new Storage();

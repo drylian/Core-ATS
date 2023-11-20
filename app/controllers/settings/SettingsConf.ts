@@ -138,6 +138,20 @@ export default async function SettingsConf(core: LoggingsMethods) {
 			jsonsv(root.configPATH + "/settings.json", { server: { cors: { active: true } } });
 
 		if (!c?.database?.dialect) jsonsv(root.configPATH + "/settings.json", { database: { dialect: "sqlite" } });
+
+		/**
+         * Mailer Configs
+         */
+		if (typeof css?.smtp?.active !== "boolean")
+			jsonsv(root.configPATH + "/settings.json", { smtp: { active: false } });
+		if (css?.smtp?.host) jsonsv(root.configPATH + "/settings.json", { smtp: { host: "mailer.smtp.com" } });
+		if (css?.smtp?.port) jsonsv(root.configPATH + "/settings.json", { smtp: { port: 465 } });
+		if (typeof css?.smtp?.secure !== "boolean")
+			jsonsv(root.configPATH + "/settings.json", { smtp: { secure: false } });
+		if (css?.smtp?.username)
+			jsonsv(root.configPATH + "/settings.json", { smtp: { username: "Username Mailer Or Email Mailer" } });
+		if (css?.smtp?.password) jsonsv(root.configPATH + "/settings.json", { smtp: { password: "Password Mailer" } });
+		if (css?.smtp?.from) jsonsv(root.configPATH + "/settings.json", { smtp: { from: "Core Panel" } });
 		core.sys("Configurações principais do painel - [OK].green ");
 	} catch (e) {
 		core.sys("[Erro nas principais do painel].red : " + (e as ErrType).message);

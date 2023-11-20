@@ -1,5 +1,5 @@
 import { ColorJson, SettingsJson } from "@/interfaces";
-import JsonJS from "@/http/pages/javascript/Json.js";
+import JsonJS from "@/http/pages/javascript/Json.javascript";
 import JsonCss from "@/http/pages/styles/Json.css";
 import createPaginationButtons from "@/http/pages/scripts/CreatePaginationButtons";
 import { Request } from "express";
@@ -16,28 +16,31 @@ type meta = {
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") {
-  const i18n = new I18alt();
   const config: SettingsJson = storage.get("config");
   const color: ColorJson = storage.get("color");
+  const language = req?.access.lang
+    ? req?.access.lang
+    : req?.language
+      ? req.language
+      : config.server.lang
+        ? config.server.lang
+        : "pt-BR";
+  const i18n = new I18alt(language);
 
   // Converte o objeto JSON em uma string JSON formatada
   const formattedJSON = JSON.stringify(jsonData, null, 2);
   return `
     <!DOCTYPE html>
-    <html lang="${req?.access.lang
-      ? req?.access.lang
-      : req?.language
-        ? req.language
-        : config.server.lang
-          ? config.server.lang
-          : "pt-BR"
-    }">
+    <html lang="${language}">
 
     <head>
       <meta charset="UTF-8">
       <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
       <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="${i18n.t("meta.description")}.">
+      <meta name="keywords" content="${i18n.t("meta.keywords")}.">
+      <meta name="author" content="${config.server.title || "Core"}">
       <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
       <title>${config.server.title || "Core"} - ${i18n.t("attributes.JsonViewerTitle")}${type ? ` - ${type ? ` - ${i18n.t("http:messages.api.Listtype")}` : ""}` : ""
     }</title>
@@ -84,7 +87,7 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
               </div>
             </div>
           </div>
-        ${JsonJS(formattedJSON, req?.generated?.nonce)}
+        ${JsonJS(formattedJSON, req.access.nonce ? req.access.nonce : "")}
         `;
       } else {
         return `
@@ -93,7 +96,7 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
             </div>
         </div>
       </div>
-      <script nonce="${req?.generated?.nonce}">
+      <script nonce="${req?.access?.nonce}">
     function navigateToPage(page) {
         // Obtenha a parte da URL atual que não inclui a consulta (query) - Pode variar de acordo com o ambiente
         const currentURLWithoutQuery = window.location.origin + window.location.pathname;

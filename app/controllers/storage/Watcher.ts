@@ -3,33 +3,53 @@ import path from "path";
 import storage from "@/controllers/Storage";
 import configuractions from "@/controllers/settings/Default";
 import { Console } from "../loggings/OnlyConsole";
+import { json } from "@/utils";
+
+/**
+ * Lista de configurações ignoradas
+ */
+const ignoresConfs = ["i18altStorage"];
 
 export default function StartSettings() {
 	const directoryToWatch = configuractions.configPATH; // Diretório que você deseja observar
 
 	const watcher = chokidar.watch(directoryToWatch, {
 		persistent: true,
+		// eslint-disable-next-line no-useless-escape
 		ignored: /(^|[\/\\])\../, // Ignora arquivos ocultos (começando com ponto)
 	});
 
 	watcher.on("add", (filePath) => {
-		if (path.extname(filePath) === ".json") {
-			storage.rel(path.basename(filePath, ".json"));
-			Console("Watcher", "blue", `${path.basename(filePath, ".json")}`, [`foi adicionado`])
+		if (path.extname(filePath) === ".json" && !ignoresConfs.includes(path.basename(filePath, ".json"))) {
+			const data: object = json(filePath);
+			storage.set(path.basename(filePath, ".json"), { ...data }, true);
+			Console(
+				"Configurações",
+				"blue",
+				`${path.relative(directoryToWatch, filePath).replace(".json", "").replace(/[/\\]/g, " -> ")}`,
+				["foi adicionado"],
+			);
 		}
 	});
 
 	watcher.on("change", (filePath) => {
-		if (path.extname(filePath) === ".json") {
-			storage.rel(path.basename(filePath, ".json"));
-			Console("Watcher", "blue", `${path.basename(filePath, ".json")}`, [`foi alterado`])
+		if (path.extname(filePath) === ".json" && !ignoresConfs.includes(path.basename(filePath, ".json"))) {
+			const data: object = json(filePath);
+			storage.set(path.basename(filePath, ".json"), { ...data }, true);
+			// Console("Configurações", "blue", `${path.relative(directoryToWatch, filePath).replace('.json', '').replace(/[/\\]/g, ' -> ')}`, [`foi alterado, salvando`])
 		}
 	});
 
 	watcher.on("unlink", (filePath) => {
-		if (path.extname(filePath) === ".json") {
-			storage.rel(path.basename(filePath, ".json"));
-			Console("Watcher", "blue", `${path.basename(filePath, ".json")}`, [`foi removido`])
+		if (path.extname(filePath) === ".json" && !ignoresConfs.includes(path.basename(filePath, ".json"))) {
+			const data: object = json(filePath);
+			storage.set(path.basename(filePath, ".json"), { ...data }, true);
+			Console(
+				"Configurações",
+				"blue",
+				`${path.relative(directoryToWatch, filePath).replace(".json", "").replace(/[/\\]/g, " -> ")}`,
+				["foi deletado"],
+			);
 		}
 	});
 

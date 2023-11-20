@@ -29,37 +29,45 @@ function QueryedData(list: object[] = [], page?: number) {
 	return { data: dataOnPage, meta: meta };
 }
 
-export default function ResponseSender<T>(req:Request, res: Response, params: Params<T>) {
+export default async function ResponseSender<T>(req: Request, res: Response, params: Params<T>) {
 	const { message, err, json, list } = params;
 	const messages = message ? message : "Algo desconhecido aconteceu.";
 	switch (req.accepts(["html", "json", "txt"])) {
 		case "html":
 			if (err) {
-				res.send(SenderError({  message: "Internal Server Error", status: 500, lang: req.language }, req));
+				res.send(SenderError({ message: "Internal Server Error", status: 500, lang: req.language }, req));
 			} else if (list) {
 				res.send(JsonViewer(QueryedData(list, Number(req.query.page)), req, "list"));
 			} else if (json) {
 				res.send(JsonViewer(params.json, req));
 			} else if (res.statusCode) {
-				res.send(SenderError({  message: messages, status: res.statusCode, lang: req.language }, req));
+				res.send(SenderError({ message: messages, status: res.statusCode, lang: req.language }, req));
 			} else if (req.statusCode) {
-				res.send(SenderError({  message: messages, status: req.statusCode, lang: req.language }, req));
+				res.send(SenderError({ message: messages, status: req.statusCode, lang: req.language }, req));
 			} else {
-				res.send(SenderError({  message: messages, status: 500, lang: req.language }, req));
+				res.send(SenderError({ message: messages, status: 500, lang: req.language }, req));
 			}
 			break;
 		case "json":
 			if (err) {
-				if (storage.get<SettingsJson>("config").mode.startsWith("dev")) return res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...err });
-				else res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), message: "Internal Server Error" });
+				if (storage.get<SettingsJson>("config").mode.startsWith("dev"))
+					return res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...err });
+				else
+					res.json({
+						type: "error",
+						status: res.statusCode || req.statusCode,
+						timestamp: Date.now(),
+						message: err.message || "Internal Server Error",
+					});
 			} else if (list) {
 				res.json({
+					type: "success",
 					status: res.statusCode || req.statusCode,
 					timestamp: Date.now(),
 					...QueryedData(list, Number(req.query.page)),
 				});
 			} else if (json) {
-				res.json({ status: res.statusCode || req.statusCode, timestamp: Date.now(), ...json });
+				res.json({ type: "success", status: res.statusCode || req.statusCode, timestamp: Date.now(), ...json });
 			} else {
 				res.json({
 					message: message || "unknown",

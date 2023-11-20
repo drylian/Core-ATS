@@ -1,4 +1,5 @@
 {
+    "Comment":"attributes notes",
     "user": "Usuário",
     "token": "Token",
     "guest": "Visitante",
@@ -15,5 +16,14 @@
             "pageTotal": "Total de Páginas",
             "pageCurrent": "Pagina Atual"
         }
-    }
+    },
+    "ServiceThanks":"Obrigado por usar nossos serviços",
+    "AllRightsReserved.":"Todos os direitos reservados",
+    "Hello":"Olá",
+    "Return":"Retornar",
+    "account":"Conta",
+    "settings":"Configurações",
+    "logout":"Deslogar",
+    "login":"Fazer login",
+    "motive":"Motivo:"
 }

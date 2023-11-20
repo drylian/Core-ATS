@@ -18,8 +18,8 @@ export default function Authenticator(
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve) => {
 		/**
-         * Configurações Previas e que podem ser usadas em todos os casos
-         */
+		 * Configurações Previas e que podem ser usadas em todos os casos
+		 */
 		const config: SettingsJson = storage.get("config");
 
 		try {
@@ -28,13 +28,16 @@ export default function Authenticator(
 
 				if (req.headers.authorization !== null && typeof req.headers.authorization === "string") {
 					token = req.headers.authorization.split(" ")[1]; // configura o token de usuário por UserAuth
-				} else if (req.cookies.authorization !== undefined && typeof req.cookies.authorization === "string") {
-					token = req.cookies.authorization; // configura o token de usuário por cookie, caso o Bearer não esteja presente
+				} else if (req.cookies["X-Application-Access"] !== undefined && typeof req.cookies["X-Application-Access"] === "string") {
+					token = req.cookies["X-Application-Access"]; // configura o token de usuário por cookie, caso o Bearer não esteja presente
 				} else {
-					return res.status(406).sender({ message: i18n.t("http:messages.NotAcceptableAccess") });
+					res.clearCookie("X-Application-Access");
+					res.clearCookie("X-Application-Refresh");
+					// redireciona para o home
+					return res.redirect("/");
 				}
 
-				const TokenData = ALTdcp<UserE | null>(token, config.server.accessTokenSecret);
+				const TokenData = ALTdcp<UserE | null>(token, config.server.accessTokenSecret, req.access.ip?.toString());
 				if (TokenData) {
 					const DatabaseUser: UserE | null = await User.findOne({ where: { uuid: TokenData.uuid } });
 					if (DatabaseUser && DatabaseUser.permissions !== null && DatabaseUser.permissions < permission) {
@@ -47,11 +50,11 @@ export default function Authenticator(
 						req.access.type = "user";
 						req.access.uuid = DatabaseUser.uuid;
 						req.access.lang =
-                            DatabaseUser.lang !== null
-                            	? DatabaseUser.lang
-                            	: config.server.lang
-                            		? config.server.lang
-                            		: "pt-BR";
+							DatabaseUser.lang !== null
+								? DatabaseUser.lang
+								: config.server.lang
+									? config.server.lang
+									: "pt-BR";
 					} else {
 						return res.status(401).sender({
 							message: i18n.t("http:messages.NotHaveTypeAcessForRoute", {
@@ -61,6 +64,8 @@ export default function Authenticator(
 					}
 					resolve({ req, res });
 				} else {
+					res.clearCookie("X-Application-Refresh");
+					res.clearCookie("X-Application-Access");
 					return res.status(401).sender({
 						message: i18n.t("http:messages.NotHaveTypeAccessToken", {
 							type: i18n.t("attributes.user"),
@@ -79,7 +84,7 @@ export default function Authenticator(
 						}),
 					});
 
-				const TokenData = ALTdcp<TokenI | null>(token, config.server.accessTokenSecret);
+				const TokenData = ALTdcp<TokenI | null>(token, config.server.accessTokenSecret, req.access.ip?.toString());
 				if (TokenData) {
 					const DatabaseToken: TokenI | null = await Token.findOne({ where: { uuid: TokenData.uuid } });
 					if (DatabaseToken && DatabaseToken.permissions !== null && DatabaseToken.permissions < permission) {

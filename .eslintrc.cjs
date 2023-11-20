@@ -37,7 +37,7 @@ module.exports = {
 		"plugin:@typescript-eslint/recommended",
 		"prettier",
 	],
-	ignorePatterns: ['dist', '.eslintrc.cjs', 'app/http/public', "tools", "reactOlds"],
+	ignorePatterns: ['dist', '.eslintrc.cjs', 'app/http/public', "tools", "resources-old"],
 	overrides: [
 		{
 			"env": {

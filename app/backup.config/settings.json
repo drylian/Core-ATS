@@ -1,0 +1,45 @@
+{
+  "mode": "dev",
+  "proxy": {
+    "pterodactyl": "localhost:3000",
+    "phpmyadmin": "localhost:55555"
+  },
+  "namespaces": {
+    "users": "01e28973-1537-473c-8759-666820b7c4af",
+    "settings": "d079e42e-a493-4378-9ea3-2d8181bb18d0",
+    "tokens": "d0db7785-b209-459c-b1d4-67af2eb7fde7"
+  },
+  "smtp": {
+    "username": "Username Mailer Or Email Mailer",
+    "password": "Password Mailer",
+    "secure": true,
+    "active": true,
+    "host": "mailer.smtp.com"
+  },
+  "server": {
+    "port": "3000",
+    "url": "http://localhost",
+    "title": "Alternight",
+    "protocol": "http",
+    "session": "LXYfEANerqFv685QQJcIkmFClXoNIJyr93yysnjnf9GHB49RSs22I5ytIeeBHxRDsPITnM7xR83akBDrXQQHYuLMkoLsoqR2Veu2PBA1iu7PtpKu9VqgTHnDmfqjccHq",
+    "refreshTokenSecret": "refreshToken_AgkVUirnZzkEjUOqAHYifjVFlpBaF8QyKXwxpxdbSNi8EVay5JYLPDyMrw00tg1dfRbOepcuAlBkaGnuZsIAepVj3ioKYiDKIRZK1PSLuZdwBnZsRObW3ejvp1RnWGHN",
+    "accessTokenSecret": "accessToken_cIzhMf1Fxw7d8klPFoQRWGP8D4z6p4v9Rg6uJgfAdwnIYYFNxy2GJSd1mbqiqlac3n44FsJeCocuTD8sPdyaSbUhW69ni04UZlohl2UBuGEZtn2ufWxfsIou4CMlPazR",
+    "csrf": {
+      "cookie_secret": "grnqvGwI8n6SLg8ZMFK3iLVW39804ldgJ7TdZsC5gfTpOdfLJByDIQrCrVtVAvvz5buiPTuarHCzLrwxSTRrfen8PJ9Ijzx0AKaeI7Ts9MLDGhXYBXeQMxMEcRlaxdHr",
+      "secret": "mDCcaOCIEj4l95Wkf9U7tqOZYWQ2Lr1lVGBjrNI6A30IzJIKkR7yf3MuIeVC4b7YaM4gpGZ71CA2yVemshvRruHqUYS6Q12Y0PuBZ1feQ8FzMzRI7Nu9mQyn2Y53zwRi",
+      "samesite": false,
+      "secure": false,
+      "signed": false,
+      "size": 64,
+      "ignoreroutes": ""
+    },
+    "cors": {
+      "allowedroutes": "http://localhost,localhost,127.0.0.1",
+      "active": true
+    },
+    "lang": "pt-BR"
+  },
+  "database": {
+    "dialect": "sqlite"
+  }
+}

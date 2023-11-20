@@ -28,16 +28,16 @@ const core = (...message: LogMessage[]) => Console("i18Alt", "red", "Avisos", me
  * @property {function(string, string): object} getNamespaceResource - Função para obter um recurso de namespace.
  */
 export type i18t = {
-	t(key: string, params?: Record<string, string>): string;
-	translate(key: string, params?: Record<string, string>): string;
-	lang: string;
-	language: string;
-	languages: string[];
-	langs: string[];
-	sl(lang: string): boolean;
-	setLanguage(lang: string): boolean;
-	getNR(namespace: string, i18next: boolean, lang?: string): object;
-	getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object;
+    t(key: string, params?: Record<string, string>): string;
+    translate(key: string, params?: Record<string, string>): string;
+    lang: string;
+    language: string;
+    languages: string[];
+    langs: string[];
+    sl(lang: string): boolean;
+    setLanguage(lang: string): boolean;
+    getNR(namespace: string, i18next: boolean, lang?: string): object;
+    getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object;
 };
 
 /**
@@ -67,45 +67,42 @@ export default class I18alt {
 	private currentLang: string;
 
 	/**
-	 * Cria uma instância da classe I18alt.
-	 */
-	constructor() {
+     * Cria uma instância da classe I18alt.
+     */
+	constructor(lang?: string) {
 		this.config = storage.get("config");
-		this.currentLang = this.config?.server?.lang || DefaultLang;
+		this.currentLang = lang || this.config?.server?.lang || DefaultLang;
 	}
 
 	/**
-	 * (Alias do translate) Traduz uma chave para o idioma atual.
-	 * @param {string} key - A chave de tradução.
-	 * @param {Record<string, string>} params (Opcional) - Parâmetros para substituição na tradução.
-	 * @returns {string} A tradução resultante.
-	 */
+     * (Alias do translate) Traduz uma chave para o idioma atual.
+     * @param {string} key - A chave de tradução.
+     * @param {Record<string, string>} params (Opcional) - Parâmetros para substituição na tradução.
+     * @returns {string} A tradução resultante.
+     */
 	public t(key: string, params: Record<string, string> = {}): string {
 		return this.translate(key, params);
 	}
 
 	/**
-	 * Traduz uma chave para o idioma atual.
-	 * @param {string} key - A chave de tradução.
-	 * @param {Record<string, string>} params (Opcional) - Parâmetros para substituição na tradução.
-	 * @returns {string} A tradução resultante.
-	 */
+     * Traduz uma chave para o idioma atual.
+     * @param {string} key - A chave de tradução.
+     * @param {Record<string, string>} params (Opcional) - Parâmetros para substituição na tradução.
+     * @returns {string} A tradução resultante.
+     */
 	public translate(key: string, params: Record<string, string> = {}): string {
+		const LangCore = storage.get<{ [key: string]: object }>("i18altStorage");
 		const keyvar = key;
-		key = key.replace(/:/g, "/");
+		key = key.replace(/:/g, ".");
 		if (!params.lang) params.lang = this.currentLang;
 		const keys = key.split(".");
-		const langdir = configuractions.langsPATH + `/${this.currentLang}/${keys[0]}.json`;
-		keys.shift();
+		const langdir = configuractions.langsPATH + `/${params.lang}/${keys[0]}.json`;
 		const nestedKey = keys.join(".");
-
-		if (fs.existsSync(langdir)) {
-			const langSources: Record<string, object> = json(langdir);
-
-			let translation = _.get(langSources, nestedKey, nestedKey);
+		if (LangCore[params.lang]) {
+			let translation = _.get(LangCore[params.lang], nestedKey, nestedKey);
 			if (translation === nestedKey) {
 				core(
-					`[A key ${nestedKey} não pode ser encontrada].red no [${langdir}].blue da lingua atual ["${this.currentLang}"].blue verifique se a key existe.`,
+					`[A key ${nestedKey} não pode ser encontrada].red no [${langdir}].blue da lingua atual ["${params.lang}"].blue verifique se a key existe.`,
 				);
 			}
 			if (typeof translation === "string") {
@@ -115,9 +112,9 @@ export default class I18alt {
 
 				return translation;
 			}
-		} else if (!fs.existsSync(configuractions.langsPATH + `/${this.currentLang}`)) {
+		} else if (!LangCore[params.lang]) {
 			core(
-				`[Lingua atual não foi encontrada].red ["${this.currentLang}"].blue , alterando para a lingua [padrão "${DefaultLang}"].green.`,
+				`[Lingua atual não foi encontrada].red ["${params.lang}"].blue , alterando para a lingua [padrão "${DefaultLang}"].green.`,
 			);
 			this.currentLang = DefaultLang;
 			return key;
@@ -131,33 +128,33 @@ export default class I18alt {
 	}
 
 	/**
-	 * (Alias do language) Obtém o idioma atual.
-	 * @returns {string} O idioma atual.
-	 */
+     * (Alias do language) Obtém o idioma atual.
+     * @returns {string} O idioma atual.
+     */
 	public get lang(): string {
 		return this.language;
 	}
 
 	/**
-	 * Obtém o idioma atual.
-	 * @returns {string} O idioma atual.
-	 */
+     * Obtém o idioma atual.
+     * @returns {string} O idioma atual.
+     */
 	public get language(): string {
 		return this.currentLang;
 	}
 
 	/**
-	 * (Alias do languages) Obtém a lista de idiomas disponíveis.
-	 * @returns {string[]} A lista de idiomas disponíveis em um array.
-	 */
+     * (Alias do languages) Obtém a lista de idiomas disponíveis.
+     * @returns {string[]} A lista de idiomas disponíveis em um array.
+     */
 	public get langs(): string[] {
 		return this.languages;
 	}
 
 	/**
-	 * Obtém a lista de idiomas disponíveis.
-	 * @returns {string[]} A lista de idiomas disponíveis em um array.
-	 */
+     * Obtém a lista de idiomas disponíveis.
+     * @returns {string[]} A lista de idiomas disponíveis em um array.
+     */
 	public get languages(): string[] {
 		const folders = fs.readdirSync(configuractions.langsPATH);
 		const languageFolders = folders.filter((folder) =>
@@ -167,17 +164,17 @@ export default class I18alt {
 	}
 
 	/**
-	 * (Alias do setLanguage) Define o idioma atual.
-	 * @param {string} lang - O idioma a ser definido como idioma atual.
-	 */
+     * (Alias do setLanguage) Define o idioma atual.
+     * @param {string} lang - O idioma a ser definido como idioma atual.
+     */
 	public sl(lang: string): boolean {
 		return this.setLanguage(lang);
 	}
 
 	/**
-	 * Define o idioma atual.
-	 * @param {string} lang - O idioma a ser definido como idioma atual.
-	 */
+     * Define o idioma atual.
+     * @param {string} lang - O idioma a ser definido como idioma atual.
+     */
 	public setLanguage(lang: string): boolean {
 		if (fs.existsSync(configuractions.langsPATH + `/${lang}`)) {
 			this.currentLang = lang;
@@ -190,30 +187,47 @@ export default class I18alt {
 	}
 
 	/**
-	 * ( Alias do getNamespaceResource ) Obtem um json do namespace selecionado.
-	 * @param {string} namespace - o namespace selecionado.
-	 * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
-	 */
+     * ( Alias do getNamespaceResource ) Obtem um json do namespace selecionado.
+     * @param {string} namespace - o namespace selecionado.
+     * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
+     */
 	public getNR(namespace: string, i18next: boolean, lang?: string): object {
 		return this.getNamespaceResource(namespace, i18next, lang);
 	}
 
 	/**
-	 * Obtem um json do namespace selecionado.
-	 * @param {string} namespace - o namespace selecionado.
-	 * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
-	 */
+     * Obtem um json do namespace selecionado.
+     * @param {string} namespace - o namespace selecionado.
+     * @param {string} lang - O idioma a ser definido (opicional, caso não definido será usado o padrão).
+     */
 	public getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object {
 		const value = namespace;
 		namespace = namespace.replace(/:/g, "/");
 		const keys = namespace.split(".");
 		const langdir = configuractions.langsPATH + `/${lang || this.currentLang}/${keys[0]}.json`;
-		if (i18next) {
-			const native = value.replace(/:/g, ".")
-			keys.shift();
-			const nestedKey = keys.join(".");
-			console.log(_.get(json(langdir), nestedKey, nestedKey))
-			return _.set({}, native.split("."), _.get(json(langdir), nestedKey, nestedKey));
+		if (i18next && lang) {
+			const nextLang = lang.split(" ");
+			const nextNamespace = value.split(" ");
+			const response: { [locale: string]: object } = {};
+			const LangCore = storage.get<{ [key: string]: { [key: string]: object } }>("i18altStorage");
+			nextLang.forEach((locale) => {
+				response[locale] = {};
+				nextNamespace.forEach((nextns) => {
+					let result;
+					if (nextns.indexOf(":") !== -1) {
+						result = _.get(LangCore[locale], nextns.replace(/:/g, ".").split("."));
+					} else {
+						result = _.get(LangCore[locale], nextns);
+					}
+					if (result !== undefined) {
+						_.set(response[locale], nextns, result);
+					} else {
+						_.set(response[locale], nextns, []);
+					}
+				});
+			});
+			console.log(response);
+			return response;
 		} else if (namespace.split(".").length === 1) {
 			if (fs.existsSync(langdir)) {
 				return json(langdir);

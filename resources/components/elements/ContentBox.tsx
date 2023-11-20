@@ -1,73 +1,50 @@
-import React from "react";
-import styled from "styled-components";
+import React, { ReactNode, useEffect } from "react";
 import { store } from "../../states";
+import ContentContainer from "./ContentContainer";
+import tw from "twin.macro";
+import FlashMessageRender from "../FlashMessageRender";
+/* eslint-disable  react/no-unknown-property */
 
-// Define PropTypes
-interface ContentBoxProps {
-  title?: string;
-  children: React.ReactNode;
+// Definir PropTypes
+export interface ContentBoxProps {
+	children?: ReactNode;
+	nofooter?: boolean
+	title?: string;
+	className?: string;
 }
 
-interface StyledContentBoxProps {
-  backgroundValue: string;
-  textColor: string;
-}
+const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nofooter }) => {
+	// Obter dados do site do armazenamento
+	const website = store.getState().website.data;
 
-// Styled component for ContentBox
-const StyledContentBox = styled.div<StyledContentBoxProps>`
-  background: ${(props) => `${props.backgroundValue}`};
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: ${(props) => props.textColor || "black"};
-  /* Add more styles as needed */
-`;
+	useEffect(() => {
+		if (title) {
+			document.title = website?.title + " - " + title;
+		}
+	}, [title]);
 
-// Styled component for ContentController
-const ContentController = styled.div`
-  max-height: calc(100vh - 40px); /* Maximum height allowed by ContentBox */
-  overflow: hidden; /* Hide content that exceeds the maximum height */
-`;
+	return (
+		<>
+			<ContentContainer css={tw`my-4 sm:my-10`} className={className}>
+				<FlashMessageRender />
+				{children}
+			</ContentContainer>
+			{!nofooter && <ContentContainer>
+				<p css={tw`text-center text-neutral-500 text-xl`}>
+					<a
+						rel={"noopener nofollow noreferrer"}
+						href={"https://alternight.com.br"}
+						target={"_blank"}
+						css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
+					>
+						Alternight&reg;
+					</a>
+					&nbsp;&copy; 2020 - {new Date().getFullYear()}
+				</p>
+			</ContentContainer>}
 
-const ContentBox: React.FC<ContentBoxProps> = (props) => {
-  // Get website data from the store
-  const website = store.getState().website.data;
-  const { title, children } = props;
-
-  // Determine text color based on website color settings
-  const color = website && website.colors && website.colors.selected
-    ? website.colors[website.colors.selected]
-    : website?.colors["black"];
-  const textColor = color?.color?.secondary || "white";
-
-  let backgroundImage = "";
-
-  // Determine background image or color
-  if (color?.background.startsWith("http://") || color?.background.startsWith("https://")) {
-    backgroundImage = `url(${color?.background})`;
-  } else if (color?.background.startsWith("/")) {
-    backgroundImage = `url('${color?.background}')`;
-  } else if (color && /^#[0-9a-fA-F]+$/.test(color?.background)) {
-    backgroundImage = color?.background;
-  }
-
-  const backgroundValue = backgroundImage;
-
-  // Set the document title
-  const configTitle = website?.title || "Core";
-  document.title = `${configTitle} - ${title || "Unknown"}`;
-
-  return (
-    <StyledContentBox
-      backgroundValue={backgroundValue}
-      textColor={textColor}
-    >
-      <div className="overflow-hidden h-screen">
-        {/* Use a control div to limit content size */}
-        <ContentController>{children}</ContentController>
-      </div>
-    </StyledContentBox>
-  );
+		</>
+	);
 };
 
 export default ContentBox;

@@ -1,27 +1,28 @@
 import I18alt from "@/controllers/Language";
-import { Application, Request, Response, NextFunction } from "express";
+import { hashmd5 } from "@/utils";
+import { Application, Request, Response } from "express";
 
 export class LanguageRequests {
-    private app: Application;
-    private i18n: I18alt;
+	private app: Application;
+	private i18n: I18alt;
 
-    constructor(app: Application) {
-        this.app = app;
-        this.i18n = new I18alt();
-        this.set();
-    }
+	constructor(app: Application) {
+		this.app = app;
+		this.i18n = new I18alt();
+		this.set();
+	}
 
-    private set() {
-        this.app.get("/languages/request", (req: Request, res: Response, next: NextFunction) => {
-            const { namespace, lang, native } = req.query
-            console.log(req.query)
-            switch (req.accepts(["html", "json", "txt"])) {
-                case "json":
-                    res.json(this.i18n.getNR(namespace as string, JSON.parse(native as string), lang as string));
-                    break;
-                default:
-                    next();
-            }
-        });
-    }
+	private set() {
+		this.app.get("/languages/requests", (req: Request, res: Response) => {
+			const { namespace, lang, native, hash } = req.query;
+			
+			const data = this.i18n.getNR(namespace as string, native !== undefined, lang as string);
+			res.header({
+				"Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+				ETag: hashmd5(data),
+				i18hash: hash || "know",
+			});
+			res.status(200).json(data);
+		});
+	}
 }
