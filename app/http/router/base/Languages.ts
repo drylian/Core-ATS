@@ -15,7 +15,7 @@ export class LanguageRequests {
 	private set() {
 		this.app.get("/languages/requests", (req: Request, res: Response) => {
 			const { namespace, lang, native, hash } = req.query;
-			
+
 			const data = this.i18n.getNR(namespace as string, native !== undefined, lang as string);
 			res.header({
 				"Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",

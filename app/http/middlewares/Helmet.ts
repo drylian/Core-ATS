@@ -8,7 +8,7 @@ export function Helmet() {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const nonce = gen(32);
 		req.access = {};
-		req.access.nonce = nonce
+		req.access.nonce = nonce;
 		helmet({
 			contentSecurityPolicy: {
 				directives: {

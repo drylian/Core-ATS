@@ -5,13 +5,13 @@ export default class Account extends Controller {
 	constructor() {
 		super();
 		this.get("/account", async (Request, Response) => {
-			const { req, res } = await Authenticator(Request, Response, 1000);
+			const { res } = await Authenticator(Request, Response, 1000);
 			const users = await User.findAll();
 			// Verifique se existem usuários
 			if (users.length === 0) {
 				return res.status(404).sender({ message: "Nenhum usuário encontrado" });
 			}
 			return res.status(200).sender({ json: users });
-		})
+		});
 	}
 }

@@ -18,7 +18,7 @@ const Missing = () => {
 					className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300'
 					onClick={goBack}
 				>
-					<Trans ns={'attributes'} i18nKey={'Return'} />
+					<Trans ns={"attributes"} i18nKey={"Return"} />
 				</button>
 			</div>
 		</div>

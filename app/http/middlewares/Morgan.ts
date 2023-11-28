@@ -7,7 +7,6 @@ import morgan from "morgan";
  */
 export function MorganLogs(apache: LoggingsMethods) {
 	return (req: Request, res: Response, next: NextFunction) => {
-		
 		morgan("combined", {
 			stream: {
 				write: (message: string) => {

@@ -12,8 +12,8 @@ import { UserData } from "../states/user";
 import i18n from "../i18n";
 
 interface ExtWindow extends Window {
-	WebsiteConf?: WebsiteConf;
-	UserConf?: UserData;
+    WebsiteConf?: WebsiteConf;
+    UserConf?: UserData;
 }
 export default function App() {
 	const { WebsiteConf, UserConf } = window as ExtWindow;

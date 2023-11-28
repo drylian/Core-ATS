@@ -1,5 +1,8 @@
 {
-    "Comment":"attributes notes",
+    "Comment": "attributes notes",
+    "UserAPI": "Api de Usuário",
+    "AdminAPI": "Api Administrativa",
+    "ClientAPI": "Api de Cliente",
     "user": "Usuário",
     "token": "Token",
     "guest": "Visitante",
@@ -17,13 +20,14 @@
             "pageCurrent": "Pagina Atual"
         }
     },
-    "ServiceThanks":"Obrigado por usar nossos serviços",
-    "AllRightsReserved.":"Todos os direitos reservados",
-    "Hello":"Olá",
-    "Return":"Retornar",
-    "account":"Conta",
-    "settings":"Configurações",
-    "logout":"Deslogar",
-    "login":"Fazer login",
-    "motive":"Motivo:"
+    "ServiceThanks": "Obrigado por usar nossos serviços",
+    "AllRightsReserved.": "Todos os direitos reservados",
+    "Hello": "Olá",
+    "Return": "Retornar",
+    "account": "Conta",
+    "settings": "Configurações",
+    "logout": "Deslogar",
+    "login": "Fazer login",
+    "motive": "Motivo:",
+    "administration": "Administração"
 }

@@ -8,7 +8,7 @@ export interface ApplicationStore {
     website: WebsiteStore;
     progress: ProgressStore;
     flashes: FlashStore;
-    user:UserStore;
+    user: UserStore;
 }
 /**
  * States usados
@@ -17,7 +17,7 @@ const state: ApplicationStore = {
 	website,
 	progress,
 	flashes,
-    user
+	user,
 };
 
 export const store = createStore(state);

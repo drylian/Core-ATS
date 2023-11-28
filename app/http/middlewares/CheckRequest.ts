@@ -7,7 +7,8 @@ export default function CheckRequest() {
 		const hasAuthorization =
             req.headers.authorization !== undefined && typeof req.headers.authorization === "string";
 		const hasAlternightCookie =
-            req.cookies["X-Application-Access"] !== undefined && typeof req.cookies["X-Application-Access"] === "string";
+            req.cookies["X-Application-Access"] !== undefined &&
+            typeof req.cookies["X-Application-Access"] === "string";
 
 		if (hasAuthorization || hasAlternightCookie) {
 			if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Bearer"))

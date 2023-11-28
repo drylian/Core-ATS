@@ -11,25 +11,27 @@ import { ALTdcp } from "@/utils";
  * @returns Html principal do sistema, usado para rederizar o React
  */
 export default function HtmlIndex(csrftoken: string, req: Request, manifest: string[], dev?: string) {
-    let data: unknown
-    const config: SettingsJson = storage.get("config");
-    const language = req?.access.lang
-        ? req?.access.lang
-        : req?.language
-            ? req.language
-            : config.server.lang
-                ? config.server.lang
-                : "pt-BR";
-    const i18n = new I18alt(language);
-    try {
-        data = JSON.stringify(ALTdcp(req.cookies["X-Application-Access"], config.server.accessTokenSecret, req.access.ip?.toString() ))
-    } catch (e) {
-        data = false
-    }
-    if (manifest.length === 0 && !dev) {
-        return SenderError({ status: 500, message: i18n.t("http:errors.ReactResourcesNotFound") }, req);
-    } else
-        return `
+	let data: unknown;
+	const config: SettingsJson = storage.get("config");
+	const language = req?.access.lang
+		? req?.access.lang
+		: req?.language
+			? req.language
+			: config.server.lang
+				? config.server.lang
+				: "pt-BR";
+	const i18n = new I18alt(language);
+	try {
+		data = JSON.stringify(
+			ALTdcp(req.cookies["X-Application-Access"], config.server.accessTokenSecret, req.access.ip?.toString()),
+		);
+	} catch (e) {
+		data = false;
+	}
+	if (manifest.length === 0 && !dev) {
+		return SenderError({ status: 500, message: i18n.t("http:errors.ReactResourcesNotFound") }, req);
+	} else
+		return `
         <!DOCTYPE html>
         <html lang="${language}">
             <head>

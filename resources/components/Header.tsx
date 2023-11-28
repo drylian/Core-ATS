@@ -5,7 +5,7 @@ import logout from "../axios/auth/logout";
 import Trans from "./elements/Trans";
 
 const Header = ({ fixed = false }: { fixed?: boolean }) => {
-	const website = store.getState().website.data
+	const website = store.getState().website.data;
 	const [showDropdown, setShowDropdown] = useState(false);
 	const user = store.getState().user.data;
 	const [loggedIn, setLoggedIn] = useState(user !== undefined);
@@ -21,7 +21,9 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 		setShowDropdown(!showDropdown);
 	};
 
-	const headerClassName = `corpri text-white p-4 flex items-center justify-between ${fixed ? 'fixed top-0 left-0 w-full z-50' : ''}`;
+	const headerClassName = `corpri text-white p-4 flex items-center justify-between ${
+		fixed ? "fixed top-0 left-0 w-full z-50" : ""
+	}`;
 
 	return (
 		<>
@@ -49,8 +51,25 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 									}}
 									className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
 								>
-									<i className='bx bxs-cog'></i> <span><Trans ns={'attributes'} i18nKey={'account'} /></span>
+									<i className='bx bxs-cog'></i>{" "}
+									<span>
+										<Trans ns={"attributes"} i18nKey={"account"} />
+									</span>
 								</Link>
+								{user.permissions && user.permissions >= 2000 && (
+									<Link
+										to='/admin'
+										onClick={() => {
+											toggleDropdown();
+										}}
+										className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
+									>
+										<i className='bx bxs-cog'></i>{" "}
+										<span>
+											<Trans ns={"attributes"} i18nKey={"administration"} />
+										</span>
+									</Link>
+								)}
 								<button
 									onClick={() => {
 										handleLogout();
@@ -58,7 +77,10 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 									}}
 									className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
 								>
-									<i className='bx bxs-exit'></i> <span><Trans ns={'attributes'} i18nKey={'logout'} /></span>
+									<i className='bx bxs-exit'></i>{" "}
+									<span>
+										<Trans ns={"attributes"} i18nKey={"logout"} />
+									</span>
 								</button>
 							</div>
 						)}
@@ -68,7 +90,10 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 						to='/auth/login'
 						className='flex items-center space-x-2 px-4 py-2 border border-white rounded-lg hover:bg-white hover:text-gray-800'
 					>
-						<i className='bx bx-log-in'></i> <span><Trans ns={'attributes'} i18nKey={'login'} /></span>
+						<i className='bx bx-log-in'></i>{" "}
+						<span>
+							<Trans ns={"attributes"} i18nKey={"login"} />
+						</span>
 					</Link>
 				)}
 			</header>

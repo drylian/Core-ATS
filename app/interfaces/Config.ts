@@ -27,7 +27,7 @@ export interface SettingsJson {
         port: string;
         url: string;
         title: string;
-        description:string;
+        description: string;
         logo: string;
         session: string;
         protocol: "http" | "https" | "http/https";

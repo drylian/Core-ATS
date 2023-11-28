@@ -75,7 +75,7 @@ declare global {
                 uuid?: string;
                 lang?: string;
                 ip?: string | string[] | undefined;
-                nonce?:string;
+                nonce?: string;
             };
             checked: "user" | "authorization" | "guest";
         }

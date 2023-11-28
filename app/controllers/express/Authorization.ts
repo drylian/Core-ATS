@@ -11,6 +11,7 @@ export default function Authenticator(
 	req: Request,
 	res: Response,
 	permission: number,
+	type?: "UserAPI" | "AdminAPI" | "ClientAPI",
 ): Promise<{ req: Request; res: Response }> {
 	const i18n = new i18alt();
 	const core = new Loggings("Authorization", "cyan");
@@ -18,17 +19,27 @@ export default function Authenticator(
 	// eslint-disable-next-line no-async-promise-executor
 	return new Promise(async (resolve) => {
 		/**
-		 * Configurações Previas e que podem ser usadas em todos os casos
-		 */
+         * Configurações Previas e que podem ser usadas em todos os casos
+         */
 		const config: SettingsJson = storage.get("config");
 
 		try {
 			if (req.checked === "user") {
+				if (type && type !== "UserAPI")
+					return res.status(401).sender({
+						message: i18n.t("http:messages.TypeAccessNotValid", {
+							type: i18n.t("attributes." + type),
+							checked: i18n.t("attributes.UserAPI"),
+						}),
+					});
 				let token: string;
 
 				if (req.headers.authorization !== null && typeof req.headers.authorization === "string") {
 					token = req.headers.authorization.split(" ")[1]; // configura o token de usuário por UserAuth
-				} else if (req.cookies["X-Application-Access"] !== undefined && typeof req.cookies["X-Application-Access"] === "string") {
+				} else if (
+					req.cookies["X-Application-Access"] !== undefined &&
+                    typeof req.cookies["X-Application-Access"] === "string"
+				) {
 					token = req.cookies["X-Application-Access"]; // configura o token de usuário por cookie, caso o Bearer não esteja presente
 				} else {
 					res.clearCookie("X-Application-Access");
@@ -37,7 +48,11 @@ export default function Authenticator(
 					return res.redirect("/");
 				}
 
-				const TokenData = ALTdcp<UserE | null>(token, config.server.accessTokenSecret, req.access.ip?.toString());
+				const TokenData = ALTdcp<UserE | null>(
+					token,
+					config.server.accessTokenSecret,
+					req.access.ip?.toString(),
+				);
 				if (TokenData) {
 					const DatabaseUser: UserE | null = await User.findOne({ where: { uuid: TokenData.uuid } });
 					if (DatabaseUser && DatabaseUser.permissions !== null && DatabaseUser.permissions < permission) {
@@ -45,16 +60,16 @@ export default function Authenticator(
 					}
 					// Carrega params de usuário
 					if (DatabaseUser !== null) {
-						req.user = DatabaseUser;
+						req.access.user = DatabaseUser;
 						req.access.permissions = DatabaseUser.permissions !== null ? DatabaseUser.permissions : 0;
 						req.access.type = "user";
 						req.access.uuid = DatabaseUser.uuid;
 						req.access.lang =
-							DatabaseUser.lang !== null
-								? DatabaseUser.lang
-								: config.server.lang
-									? config.server.lang
-									: "pt-BR";
+                            DatabaseUser.lang !== null
+                            	? DatabaseUser.lang
+                            	: config.server.lang
+                            		? config.server.lang
+                            		: "pt-BR";
 					} else {
 						return res.status(401).sender({
 							message: i18n.t("http:messages.NotHaveTypeAcessForRoute", {
@@ -73,6 +88,13 @@ export default function Authenticator(
 					});
 				}
 			} else if (req.checked === "authorization") {
+				if (type && type !== "AdminAPI")
+					return res.status(401).sender({
+						message: i18n.t("http:messages.TypeAccessNotValid", {
+							type: i18n.t("attributes." + type),
+							checked: i18n.t("attributes.AdminAPI"),
+						}),
+					});
 				let token: string;
 
 				if (req.headers.authorization !== null && typeof req.headers.authorization === "string")
@@ -84,7 +106,11 @@ export default function Authenticator(
 						}),
 					});
 
-				const TokenData = ALTdcp<TokenI | null>(token, config.server.accessTokenSecret, req.access.ip?.toString());
+				const TokenData = ALTdcp<TokenI | null>(
+					token,
+					config.server.accessTokenSecret,
+					req.access.ip?.toString(),
+				);
 				if (TokenData) {
 					const DatabaseToken: TokenI | null = await Token.findOne({ where: { uuid: TokenData.uuid } });
 					if (DatabaseToken && DatabaseToken.permissions !== null && DatabaseToken.permissions < permission) {

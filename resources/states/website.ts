@@ -27,6 +27,8 @@ export interface WebsiteConf {
     port: string;
     mode: string; // Defina os modos permitidos
     colors: ColorJson;
+    langs: Array<string>;
+    languages: { [key: string]: string };
 }
 export interface WebsiteStore {
     data?: WebsiteConf;

@@ -6,30 +6,30 @@ import { Request } from "express";
 import I18alt from "@/controllers/Language";
 import storage from "@/controllers/Storage";
 type meta = {
-  pagination: {
-    pages: number;
-    per_page: number;
-    current: number;
-    results: number;
-  };
+    pagination: {
+        pages: number;
+        per_page: number;
+        current: number;
+        results: number;
+    };
 };
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") {
-  const config: SettingsJson = storage.get("config");
-  const color: ColorJson = storage.get("color");
-  const language = req?.access.lang
-    ? req?.access.lang
-    : req?.language
-      ? req.language
-      : config.server.lang
-        ? config.server.lang
-        : "pt-BR";
-  const i18n = new I18alt(language);
+	const config: SettingsJson = storage.get("config");
+	const color: ColorJson = storage.get("color");
+	const language = req?.access.lang
+		? req?.access.lang
+		: req?.language
+			? req.language
+			: config.server.lang
+				? config.server.lang
+				: "pt-BR";
+	const i18n = new I18alt(language);
 
-  // Converte o objeto JSON em uma string JSON formatada
-  const formattedJSON = JSON.stringify(jsonData, null, 2);
-  return `
+	// Converte o objeto JSON em uma string JSON formatada
+	const formattedJSON = JSON.stringify(jsonData, null, 2);
+	return `
     <!DOCTYPE html>
     <html lang="${language}">
 
@@ -42,8 +42,9 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
       <meta name="keywords" content="${i18n.t("meta.keywords")}.">
       <meta name="author" content="${config.server.title || "Core"}">
       <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
-      <title>${config.server.title || "Core"} - ${i18n.t("attributes.JsonViewerTitle")}${type ? ` - ${type ? ` - ${i18n.t("http:messages.api.Listtype")}` : ""}` : ""
-    }</title>
+      <title>${config.server.title || "Core"} - ${i18n.t("attributes.JsonViewerTitle")}${
+	type ? ` - ${type ? ` - ${i18n.t("http:messages.api.Listtype")}` : ""}` : ""
+}</title>
       ${JsonCss(color)}
     </head>
       <body>
@@ -57,30 +58,30 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
 
                   <div class="border-b mb-4 pb-4">
                       <h1 class="pritext text-2xl font-bold">${config.server.title || "Core"} - ${i18n.t(
-      "attributes.JsonViewerTitle",
-    )}${type ? ` - ${i18n.t("http:messages.api.Listtype")}` : ""}</h1>
+	"attributes.JsonViewerTitle",
+)}${type ? ` - ${i18n.t("http:messages.api.Listtype")}` : ""}</h1>
                       <p class="sectext text-sm">${i18n.t("http:messages.JsonViewerApi", {
-      title: `${config.server.title || "Core"}`,
-    })}</p>
+		title: `${config.server.title || "Core"}`,
+	})}</p>
                   </div>
               </div>
               ${(() => {
-      if (type === "list") {
-        const pagination = (jsonData as { meta: meta }).meta.pagination;
+		if (type === "list") {
+			const pagination = (jsonData as { meta: meta }).meta.pagination;
 
-        return createPaginationButtons(pagination.current, pagination.pages, pagination.results);
-      } else {
-        return "";
-      }
-    })()}
+			return createPaginationButtons(pagination.current, pagination.pages, pagination.results);
+		} else {
+			return "";
+		}
+	})()}
     ${(() => {
-      if (
-        (type === "list" &&
-          (jsonData as { data: object[] }).data &&
-          (jsonData as { data: object[] }).data.length > 0) ||
-        (type !== "list" && jsonData)
-      ) {
-        return `
+		if (
+			(type === "list" &&
+                (jsonData as { data: object[] }).data &&
+                (jsonData as { data: object[] }).data.length > 0) ||
+            (type !== "list" && jsonData)
+		) {
+			return `
         <!-- JSON Container -->
               <div class="tercor border mt-4 p-4 overflow-x-auto max-h-screen max-w-screen prebox">
                   <pre class="code" id="codeOutput"></pre>
@@ -89,8 +90,8 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
           </div>
         ${JsonJS(formattedJSON, req.access.nonce ? req.access.nonce : "")}
         `;
-      } else {
-        return `
+		} else {
+			return `
             <div class="tercor border mt-4 p-4 overflow-x-auto max-h-screen max-w-screen prebox">
               <h1 class="pritext text-2xl font-bold">${i18n.t("http:messages.api.ResourcesNotFound")}</h1>
             </div>
@@ -104,8 +105,8 @@ export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") 
     };
     </script>
     `;
-      }
-    })()}
+		}
+	})()}
   </body>
 
     </html>

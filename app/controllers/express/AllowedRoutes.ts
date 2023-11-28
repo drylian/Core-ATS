@@ -4,6 +4,7 @@
  * @param protocol protocolo usado
  * @returns array de rotas permitidas
  */
+
 export function SetAlowedRoutes(allowed: string, protocol: string, port: string): string[] {
 	const routes = allowed.split(",").map((route) => route.trim());
 	const allowedOrigins: string[] = [];
@@ -23,13 +24,18 @@ export function SetAlowedRoutes(allowed: string, protocol: string, port: string)
 	default:
 		break;
 	}
+
 	routes.forEach((route) => {
 		protocols.forEach((protocol) => {
-			if (!route.startsWith("http://") && !route.startsWith("https://")) {
-				allowedOrigins.push(`${protocol}://${route}:${port}`);
-				allowedOrigins.push(`${protocol}://${route}`);
-			} else {
-				allowedOrigins.push(route);
+			const originWithPort = `${protocol}://${route}:${port}`;
+			const originWithoutPort = `${protocol}://${route}`;
+
+			if (port && !allowedOrigins.includes(originWithPort)) {
+				allowedOrigins.push(originWithPort);
+			}
+
+			if (!allowedOrigins.includes(originWithoutPort)) {
+				allowedOrigins.push(originWithoutPort);
 			}
 		});
 	});

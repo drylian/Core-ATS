@@ -23,7 +23,6 @@ class ApplicationRoutes {
 		// API Routes
 		this.server.use("/api/", imagemRoute);
 
-
 		// Protected Routes
 		this.server.use("/api", CheckRequest(), Csrf(this.core), new Protect().Routers());
 

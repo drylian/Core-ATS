@@ -226,7 +226,7 @@ export default class I18alt {
 					}
 				});
 			});
-			console.log(response);
+			// console.log(response);
 			return response;
 		} else if (namespace.split(".").length === 1) {
 			if (fs.existsSync(langdir)) {

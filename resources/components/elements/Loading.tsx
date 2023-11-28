@@ -7,7 +7,7 @@ const Loading: React.FC = () => {
 			{/* Cor de fundo azul mais escuro */}
 			<div className='flex flex-col items-center gap-2 corpri'>
 				{/* Elemento de carregamento */}
-				<span className='h-20 w-20 block rounded-full border-4 border-t-blue-300 animate-spin'></span>
+				<span className='h-20 w-20 block rounded-full border-4 border-t-blue-300 animate-spin' />
 
 				{/* Texto "Carregando..." com animação "pulse" */}
 				<span className='text-2xl font-semibold animate-pulse'>Carregando...</span>

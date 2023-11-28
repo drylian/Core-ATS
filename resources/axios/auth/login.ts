@@ -1,33 +1,35 @@
 import http from "../http";
 
 interface LoginResponse {
-  complete?: boolean;
+    complete?: boolean;
 }
 
 interface LoginParams {
-  username: string;
-  password: string;
-  remember_me: boolean;
+    email: string;
+    password: string;
+    remember_me: boolean;
+    lang: string;
 }
 
-const loginUser = ({ username, password, remember_me }: LoginParams): Promise<LoginResponse> => {
-  return new Promise((resolve, reject) => {
-    http.post("/auth/login", {
-      username,
-      password,
-      remember_me,
-    })
-      .then((response) => {
-        if (!(response.data instanceof Object)) {
-          return reject(new Error("Ocorreu um erro ao processar a solicitação de login."));
-        }
+const loginUser = ({ email, password, remember_me, lang }: LoginParams): Promise<LoginResponse> => {
+	return new Promise((resolve, reject) => {
+		http.post("/auth/login", {
+			email,
+			password,
+			remember_me,
+			lang,
+		})
+			.then((response) => {
+				if (!(response.data instanceof Object)) {
+					return reject("ErrorForProcessLogin");
+				}
 
-        return resolve({
-          complete: response.data.complete || false,
-        });
-      })
-      .catch(reject);
-  });
+				return resolve({
+					complete: response.data.complete || false,
+				});
+			})
+			.catch(reject);
+	});
 };
 
 export default loginUser;

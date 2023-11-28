@@ -7,10 +7,10 @@ import FlashMessageRender from "../FlashMessageRender";
 
 // Definir PropTypes
 export interface ContentBoxProps {
-	children?: ReactNode;
-	nofooter?: boolean
-	title?: string;
-	className?: string;
+    children?: ReactNode;
+    nofooter?: boolean;
+    title?: string;
+    className?: string;
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nofooter }) => {
@@ -29,20 +29,21 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 				<FlashMessageRender />
 				{children}
 			</ContentContainer>
-			{!nofooter && <ContentContainer>
-				<p css={tw`text-center text-neutral-500 text-xl`}>
-					<a
-						rel={"noopener nofollow noreferrer"}
-						href={"https://alternight.com.br"}
-						target={"_blank"}
-						css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
-					>
-						Alternight&reg;
-					</a>
-					&nbsp;&copy; 2020 - {new Date().getFullYear()}
-				</p>
-			</ContentContainer>}
-
+			{!nofooter && (
+				<ContentContainer>
+					<p css={tw`text-center text-neutral-500 text-xl`}>
+						<a
+							rel={"noopener nofollow noreferrer"}
+							href={"https://alternight.com.br"}
+							target={"_blank"}
+							css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
+						>
+                            Alternight&reg;
+						</a>
+                        &nbsp;&copy; 2020 - {new Date().getFullYear()}
+					</p>
+				</ContentContainer>
+			)}
 		</>
 	);
 };
