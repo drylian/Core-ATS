@@ -25,7 +25,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 
 	return (
 		<>
-			<ContentContainer css={tw`my-4 sm:my-10`} className={className}>
+			<ContentContainer css={tw`my-1 sm:my-1`} className={className}>
 				<FlashMessageRender />
 				{children}
 			</ContentContainer>

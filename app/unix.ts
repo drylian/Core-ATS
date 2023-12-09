@@ -8,6 +8,7 @@ import { db } from "@/controllers/Sequelize";
 import Express from "@/controllers/Express";
 import StartSettings from "./controllers/storage/Watcher";
 import Starti18altJson from "./controllers/language/Watcher";
+import { SystemActivity } from "./controllers/database/MakeActivity";
 type LogMessage = string | number | boolean | object;
 
 const core = (...args: LogMessage[]) => Console("Principal", "blue", "Infomações", args);
@@ -38,6 +39,8 @@ async function init() {
 			suspended: true,
 			suspendedReason: "Nome impróprio.",
 		});
+
+		await SystemActivity(`Usuários de testes criados "${newUser.username}" e "${ss.username}" pelo modo dev`);
 
 		console.log(newUser, ss);
 		core("Todos os Sistemas foram iniciados com [sucesso].green.");

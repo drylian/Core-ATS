@@ -1,0 +1,42 @@
+{
+    "400": {
+        "code": "400 Bad Request",
+        "title": "Bad Request"
+    },
+    "401": {
+        "code": "401 Unauthorized",
+        "title": "Unauthorized"
+    },
+    "402": {
+        "code": "402 Payment Required",
+        "title": "Payment Required"
+    },
+    "403": {
+        "code": "403 Forbidden",
+        "title": "Forbidden"
+    },
+    "404": {
+        "code": "404 Not Found",
+        "title": "Not Found"
+    },
+    "405": {
+        "code": "405 Method Not Allowed",
+        "title": "Method Not Allowed"
+    },
+    "406": {
+        "code": "406 Not Acceptable",
+        "title": "Not Acceptable",
+        "desc": "Your request cannot be processed correctly, please try again later"
+    },
+    "500": {
+        "code": "500 Internal Server Error",
+        "title": "Internal Server Error"
+    },
+    "InternalServerError": "Internal Server Error",
+    "ErrorCSRF": "Csrf validation error, unable to continue",
+    "AccessCSRFError": "For CSRF security, unauthenticated users cannot access private areas",
+    "corsError": "Unauthorized access due to CORS policy.",
+    "ReactResourcesNotFound": "Internal error while trying to load the React compilation, was Vite built?",
+    "ResourcesNotFound": "Unable to find content on this route, 404",
+    "ConnectionNotAllowed": "Access blocked, continued access will result in a ban from the server."
+}

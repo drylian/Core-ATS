@@ -49,7 +49,7 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 									onClick={() => {
 										toggleDropdown();
 									}}
-									className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
+									className='flex space-x-2 items-center px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
 								>
 									<i className='bx bxs-cog'></i>{" "}
 									<span>
@@ -62,7 +62,7 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 										onClick={() => {
 											toggleDropdown();
 										}}
-										className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
+										className='flex space-x-2 items-center px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
 									>
 										<i className='bx bxs-cog'></i>{" "}
 										<span>
@@ -75,7 +75,7 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 										handleLogout();
 										toggleDropdown();
 									}}
-									className='flex space-x-2 items-center block px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
+									className='flex space-x-2 items-center px-4 py-2 w-full text-left hover:bg-gray-200 rounded-lg'
 								>
 									<i className='bx bxs-exit'></i>{" "}
 									<span>

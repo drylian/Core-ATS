@@ -11,6 +11,8 @@ const Submit = (
 	errRef: RefObject<HTMLInputElement>,
 	t: TFunction<"react:auth", undefined>,
 ) => {
+	const callbackUrl = new URLSearchParams(window.location.search).get("callback");
+
 	const navigate = useNavigate();
 
 	return async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
@@ -27,7 +29,8 @@ const Submit = (
 			.then((response) => {
 				if (response.complete) {
 					// Set user configurations and navigate to the home page
-					navigate("/");
+					if (callbackUrl) navigate(callbackUrl);
+					else navigate("/");
 					window.location.reload();
 					return;
 				}

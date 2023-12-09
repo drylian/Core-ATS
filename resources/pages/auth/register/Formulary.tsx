@@ -104,7 +104,7 @@ const RegisterForm: React.FC = () => {
 									htmlFor='confirmPassword'
 									className='block text-sm font-medium leading-6 text-gray-900'
 								>
-									<Trans ns='react:auth' i18nKey={"Password"} />
+									<Trans ns='react:auth' i18nKey={"ConfirmPassword"} />
 								</label>
 								<Field
 									type='confirmPassword'

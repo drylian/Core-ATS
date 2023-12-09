@@ -34,8 +34,8 @@ export type i18t = {
     language: string;
     languages: string[];
     langs: string[];
-    sl(lang: string): boolean;
-    setLanguage(lang: string): boolean;
+    sl(lang: string | null): boolean;
+    setLanguage(lang: string | null): boolean;
     getNR(namespace: string, i18next: boolean, lang?: string): object;
     getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object;
 };
@@ -167,17 +167,17 @@ export default class I18alt {
      * (Alias do setLanguage) Define o idioma atual.
      * @param {string} lang - O idioma a ser definido como idioma atual.
      */
-	public sl(lang: string): boolean {
-		return this.setLanguage(lang);
+	public sl(lang: string | undefined): boolean {
+		return this.setLanguage(lang ?? DefaultLang);
 	}
 
 	/**
      * Define o idioma atual.
-     * @param {string} lang - O idioma a ser definido como idioma atual.
+     * @param {string| null} lang - O idioma a ser definido como idioma atual.
      */
-	public setLanguage(lang: string): boolean {
+	public setLanguage(lang: string | undefined): boolean {
 		if (fs.existsSync(configuractions.langsPATH + `/${lang}`)) {
-			this.currentLang = lang;
+			this.currentLang = lang ?? DefaultLang;
 			return true;
 		}
 		core(

@@ -1,0 +1,21 @@
+{
+    "NotAcceptableAccess": "Your request cannot be verified correctly, please try again later",
+    "NotHaveAccessForRoute": "You do not have sufficient authority to use this route.",
+    "NotHaveTypeAcessForRoute": "{{type}} not found, how did you get here?",
+    "NotHaveAccessToken": "The authorization token is missing.",
+    "NotHaveTypeAccessToken": "Invalid {{type}}",
+    "TypeAccessNotValid": "Only '{{type}}' tokens can access resources on this route, token used '{{checked}}'.",
+    "BackToMainPage": "Back to the main page.",
+    "JsonViewerApi": "Response received from the API in {{title}}",
+    "api": {
+        "Listtype": "List",
+        "ResourcesNotFound": "Resource not found.",
+        "meta": {
+            "pagenotfound": "Page does not exist",
+            "selectOnePage": "try the first one",
+            "pageResult": "Results",
+            "pageTotal": "Total Pages",
+            "pageCurrent": "Current Page"
+        }
+    }
+}

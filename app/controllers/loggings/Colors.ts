@@ -9,9 +9,13 @@ type LogMessage = string | number | boolean | object | Array<string | number | b
 // Função para remover o padrão de cores na log
 export function ReStringColors(message: string): string {
 	const colorTagPattern = /\[([^\]]+)\]\.(\w+)/g;
-	return message.replace(colorTagPattern, (_, text) => {
-		const message = `"${text}"`;
-		return message; // Retornar o texto original se a cor não for encontrada
+	return message.replace(colorTagPattern, (_, text, color) => {
+		const colorFunction = colors[CheckColors(color, `[${text}]`)];
+		if (colorFunction) {
+			return ReStringColors(text);
+		} else {
+			return text; // Retornar o texto original se a cor não for encontrada
+		}
 	});
 }
 

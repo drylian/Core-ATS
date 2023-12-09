@@ -1,12 +1,32 @@
 import { Transition } from "@headlessui/react";
 import { Actions, State, useStoreActions, useStoreState } from "easy-peasy";
 import { Fragment, useEffect, useRef, useState } from "react";
+import styled, { keyframes } from "styled-components";
 
 import { randomInt } from "../../helpers";
 import { ApplicationStore } from "../../states";
+import tw from "twin.macro";
 
 type Timer = ReturnType<typeof setTimeout>;
-
+const RGB = keyframes`
+0% {
+    border-color: rgb(255, 0, 0);
+  }
+  50% {
+    border-color: rgb(0, 255, 0);
+  }
+  80% {
+    border-color: rgb(0, 0, 255);
+  }
+  100% {
+    border-color: rgb(200, 0, 78);
+  }
+`;
+const AnimatedDiv = styled.div<{ progress: number | undefined }>`
+    ${tw`h-full shadow-[0_-2px_10px_2px] transition-all duration-[250ms] ease-in-out`}
+    /* Aplicando a animação */
+  animation: ${RGB} 2000ms infinite; /* Ajuste a duração conforme necessário */
+`;
 function ProgressBar() {
 	const interval = useRef<Timer>();
 	const timeout = useRef<Timer>();
@@ -52,7 +72,6 @@ function ProgressBar() {
 			}
 		}
 	}, [progress, continuous]);
-
 	return (
 		<div className='fixed h-[2px] w-full'>
 			<Transition
@@ -67,10 +86,7 @@ function ProgressBar() {
 				appear
 				unmount
 			>
-				<div
-					className='h-full bg-cyan-400 shadow-[0_-2px_10px_2px] shadow-[#3CE7E1] transition-all duration-[250ms] ease-in-out'
-					style={{ width: progress === undefined ? "100%" : `${progress}%` }}
-				/>
+				<AnimatedDiv progress={progress} style={{ width: progress === undefined ? "100%" : `${progress}%` }} />
 			</Transition>
 		</div>
 	);

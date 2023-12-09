@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
+import ErrorBoundary from "../../pages/errors/ErrorBoundary";
 const Layout = () => {
 	return (
 		<>
-			<ProgressBar />
-
-			<Outlet />
+			<ErrorBoundary>
+				<ProgressBar />
+				<Outlet />
+			</ErrorBoundary>
 		</>
 	);
 };

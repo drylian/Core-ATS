@@ -1,6 +1,5 @@
 {
   "name": "core-ats",
-  "version": "1.0.0",
   "main": "./dist/unix.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register app/unix.ts",
@@ -64,6 +63,7 @@
     "pathe": "^1.1.1",
     "pkg": "^5.8.1",
     "sequelize": "^6.33.0",
+    "socket.io": "^4.7.2",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.1"
   },
@@ -91,6 +91,7 @@
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-styled-components": "^2.1.4",
     "boxicons": "^2.1.4",
+    "date-fns": "^2.30.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
@@ -106,9 +107,11 @@
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-loader": "^4.13.1",
     "react-i18next": "^13.3.1",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.17.0",
+    "socket.io-client": "^4.7.2",
     "styled-components": "^6.1.0",
     "tailwindcss": "^3.3.3",
     "ts-node": "^10.9.1",

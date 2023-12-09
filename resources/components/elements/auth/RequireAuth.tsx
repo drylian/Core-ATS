@@ -29,6 +29,10 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ Protected = 0, component: Com
 	/**
      * Se existir user.username
      */
+	if (!user && location.pathname !== "/auth/login" && location.pathname !== "/auth/register") {
+		return <Navigate to={`/auth/login?callback=${location.pathname}`} />;
+	}
+
 	if (!user && (location.pathname === "/auth/login" || location.pathname === "/auth/register")) {
 		return <Component {...props} />;
 	}

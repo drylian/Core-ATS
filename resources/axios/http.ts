@@ -1,6 +1,16 @@
 import axios, { AxiosInstance } from "axios";
 import { store } from "../states";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
+function checkCookie(cookieName: string) {
+	const cookies = document.cookie.split(";");
+	for (const cookie of cookies) {
+		const [name] = cookie.trim().split("=");
+		if (name === cookieName) {
+			return true;
+		}
+	}
+	return false;
+}
 
 const http: AxiosInstance = axios.create({
 	withCredentials: true,
@@ -11,54 +21,43 @@ const http: AxiosInstance = axios.create({
 	},
 });
 
-// http.interceptors.request.use(req => {
-
-//     return req;
-// });
+http.interceptors.request.use(
+	(config) => {
+		store.getActions().progress.startContinuous();
+		return config;
+	},
+	(error) => {
+		return error;
+	},
+);
 
 http.interceptors.response.use(
 	(resp) => {
+		store.getActions().progress.setComplete();
 		if (resp.data.type && resp.data.message) {
 			if (resp.data.type)
-				store.getActions().flashes.addFlash({ type: resp.data.type, message: httpRespToHuman(resp) });
-			else store.getActions().flashes.addFlash({ type: "info", message: httpRespToHuman(resp) });
+				store.getActions().flashes.addFlash({ type: resp.data.type, message: resp.data.message });
+			else store.getActions().flashes.addFlash({ type: "info", message: resp.data.message });
 		}
 		return resp;
 	},
 	(error) => {
-		store.getActions().flashes.addError({ message: httpErrorToHuman(error) });
+		store.getActions().progress.setComplete();
+
+		if (error.response.data.type)
+			store.getActions().flashes.addFlash({ type: error.response.data.type, message: httpErrorToHuman(error) });
+		else {
+			if (checkCookie("X-Application-Access")) {
+				store.getActions().flashes.addError({ message: httpErrorToHuman(error) });
+			} else {
+				store.getActions().flashes.addFlash({ type: "warning", message: "Session Expired Please Reload" });
+			}
+		}
 		throw error;
 	},
 );
 
 export default http;
-
-export function httpRespToHuman(resp: any): string {
-	if (resp && resp.data) {
-		let { data } = resp;
-
-		// Some non-JSON requests can still return the error as a JSON block. In those cases, attempt
-		// to parse it into JSON so we can display an actual error.
-		if (typeof data === "string") {
-			try {
-				data = JSON.parse(data);
-			} catch (e) {
-				// do nothing, bad json
-			}
-		}
-
-		if (data.errors && data.errors[0] && data.errors[0].detail) {
-			return data.errors[0].detail;
-		}
-
-		// Errors from wings directory, mostly just for file uploads.
-		if (data.error && typeof data.error === "string") {
-			return data.error;
-		}
-	}
-
-	return resp.data.message;
-}
 
 /**
  * Converts an error into a human readable response. Mostly just a generic helper to
@@ -90,97 +89,3 @@ export function httpErrorToHuman(error: any): string {
 
 	return error.message;
 }
-
-export interface FractalResponseData {
-    object: string;
-    attributes: {
-        [k: string]: any;
-        relationships?: Record<string, FractalResponseData | FractalResponseList | null | undefined>;
-    };
-}
-
-export interface FractalResponseList {
-    object: "list";
-    data: FractalResponseData[];
-}
-
-export interface FractalPaginatedResponse extends FractalResponseList {
-    meta: {
-        pagination: {
-            total: number;
-            count: number;
-
-            per_page: number;
-            current_page: number;
-            total_pages: number;
-        };
-    };
-}
-
-export interface PaginatedResult<T> {
-    items: T[];
-    pagination: PaginationDataSet;
-}
-
-export interface PaginationDataSet {
-    total: number;
-    count: number;
-    perPage: number;
-    currentPage: number;
-    totalPages: number;
-}
-
-export function getPaginationSet(data: any): PaginationDataSet {
-	return {
-		total: data.total,
-		count: data.count,
-		perPage: data.per_page,
-		currentPage: data.current_page,
-		totalPages: data.total_pages,
-	};
-}
-
-type QueryBuilderFilterValue = string | number | boolean | null;
-
-export interface QueryBuilderParams<FilterKeys extends string = string, SortKeys extends string = string> {
-    page?: number;
-    filters?: {
-        [K in FilterKeys]?: QueryBuilderFilterValue | Readonly<QueryBuilderFilterValue[]>;
-    };
-    sorts?: {
-        [K in SortKeys]?: -1 | 0 | 1 | "asc" | "desc" | null;
-    };
-}
-
-/**
- * Helper function that parses a data object provided and builds query parameters
- * for the Laravel Query Builder package automatically. This will apply sorts and
- * filters deterministically based on the provided values.
- */
-export const withQueryBuilderParams = (data?: QueryBuilderParams): Record<string, unknown> => {
-	if (!data) return {};
-
-	const filters = Object.keys(data.filters || {}).reduce(
-		(obj, key) => {
-			const value = data.filters?.[key];
-
-			return !value || value === "" ? obj : { ...obj, [`filter[${key}]`]: value };
-		},
-        {} as NonNullable<QueryBuilderParams["filters"]>,
-	);
-
-	const sorts = Object.keys(data.sorts || {}).reduce((arr, key) => {
-		const value = data.sorts?.[key];
-		if (!value || !["asc", "desc", 1, -1].includes(value)) {
-			return arr;
-		}
-
-		return [...arr, (value === -1 || value === "desc" ? "-" : "") + key];
-	}, [] as string[]);
-
-	return {
-		...filters,
-		sort: !sorts.length ? undefined : sorts.join(","),
-		page: data.page,
-	};
-};

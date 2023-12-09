@@ -105,6 +105,7 @@ export function TokensValiter() {
 				}
 			}
 		} catch (e) {
+			console.log(e);
 			res.clearCookie("X-Application-Access");
 			req.cookies["X-Application-Access"] = undefined;
 			res.clearCookie("X-Application-Refresh");

@@ -23,7 +23,7 @@ export default function CheckRequest() {
 			}
 			next();
 		} else {
-			if (req.accepts("text/html")) return res.redirect("/auth/login");
+			if (req.accepts("text/html")) return res.redirect("/auth/login?callback=" + req.originalUrl);
 			return res.status(401).sender({ message: req.t("http:messages.NotHaveAccessToken") });
 		}
 	};

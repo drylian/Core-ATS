@@ -1,5 +1,6 @@
 import tw, { TwStyle } from "twin.macro";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 export type MessageType = "success" | "info" | "warning" | "error";
 
@@ -45,22 +46,52 @@ const Box = styled.div<{ $type?: MessageType }>`
 /* eslint-disable  react/no-unknown-property */
 Box.displayName = "MessageBox.Box";
 
-const MessageBox = ({ title, children, type }: Props) => (
-	<Box $type={type} role={"alert"}>
-		<div className='flex items-center'>
-			<div className='mr-2'>{title && <i className={`${Icon(type)}`} css={[tw`text-2xl`]}></i>}</div>
+const MessageBox = ({ title, children, type }: Props) => {
+	const [visible, setVisible] = useState(true);
 
-			<div>
-				{title && (
-					<p className={"title"} css={[tw`font-bold`]}>
-						{title}
-					</p>
-				)}
-				<span css={tw`mr-2 text-left flex-auto`}>{children}</span>
-			</div>
-		</div>
-	</Box>
-);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setVisible(false);
+		}, 3000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, []);
+
+	const handleClose = () => {
+		setVisible(false);
+	};
+
+	return (
+		<>
+			{visible && (
+				<Box $type={type} role={"alert"}>
+					<div className='flex items-center justify-center'>
+						<div className='mr-2'>{title && <i className={`${Icon(type)}`} css={[tw`text-2xl`]}></i>}</div>
+
+						<div>
+							{title && (
+								<p className={"title"} css={[tw`font-bold`]}>
+									{title}
+								</p>
+							)}
+							<span css={tw`mr-2 text-left flex-auto`}>{children}</span>
+						</div>
+					</div>
+					<div className='rounded-full'>
+						<i
+							onClick={handleClose}
+							className={"bx bx-x"}
+							css={[tw`text-2xl`]}
+							style={{ marginTop: "5px", color: "black", fontSize: "30px" }}
+						/>
+					</div>
+				</Box>
+			)}
+		</>
+	);
+};
 
 MessageBox.displayName = "MessageBox";
 

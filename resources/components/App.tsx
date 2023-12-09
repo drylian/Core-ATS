@@ -3,19 +3,19 @@ import { ThemeProvider } from "styled-components";
 import Theme from "../theme";
 import { WebsiteConf } from "../states/website";
 import { store } from "../states";
-import ErrorBoundary from "../pages/errors/ErrorBoundary";
 import GlobalRouter from "../routes/Global";
 import GlobalStyles from "../assets/StylesSet";
 import React from "react";
 import Loading from "./elements/Loading";
 import { UserData } from "../states/user";
 import i18n from "../i18n";
+import ErrorBoundary from "../pages/errors/ErrorBoundary";
 
 interface ExtWindow extends Window {
     WebsiteConf?: WebsiteConf;
     UserConf?: UserData;
 }
-export default function App() {
+function App() {
 	const { WebsiteConf, UserConf } = window as ExtWindow;
 	if (!store.getState().website.data) {
 		store.getActions().website.setWebsite(WebsiteConf!);
@@ -32,14 +32,16 @@ export default function App() {
 				<ThemeProvider theme={theme}>
 					<GlobalStyles />
 					<React.Suspense fallback={<Loading />}>
-						<ErrorBoundary>
-							<div className='mx-auto w-auto'>
+						<div className='mx-auto w-auto'>
+							<ErrorBoundary>
 								<GlobalRouter />
-							</div>
-						</ErrorBoundary>
+							</ErrorBoundary>
+						</div>
 					</React.Suspense>
 				</ThemeProvider>
 			</StoreProvider>
 		</>
 	);
 }
+
+export default App;

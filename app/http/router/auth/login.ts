@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid"; // Importa a função uuidv4 para gerar UUI
 import { ErrType, SettingsJson } from "@/interfaces";
 import storage from "@/controllers/Storage";
 import I18alt from "@/controllers/Language";
+import MakeActivity from "@/controllers/database/MakeActivity";
 
 const core = new Loggings("Login", "green");
 const router = express.Router();
@@ -51,6 +52,7 @@ router.post("/", async (req: Request, res: Response) => {
 				}),
 				{ maxAge: AlTexp(remember_me ? "15m" : "1h"), httpOnly: true },
 			);
+			await MakeActivity(req, "react:auth.MakedLogin", UserData.uuid);
 
 			return res.json({
 				message: i18n.t("react:auth.WelcomeBack", { Username: UserData.username }),

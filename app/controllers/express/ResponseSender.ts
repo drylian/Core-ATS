@@ -67,7 +67,12 @@ export default async function ResponseSender<T>(req: Request, res: Response, par
 				...QueryedData(list, Number(req.query.page)),
 			});
 		} else if (json) {
-			res.json({ type: "success", status: res.statusCode || req.statusCode, timestamp: Date.now(), ...json });
+			res.json({
+				type: "success",
+				status: res.statusCode || req.statusCode,
+				timestamp: Date.now(),
+				data: json,
+			});
 		} else {
 			res.json({
 				message: message || "unknown",

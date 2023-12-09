@@ -1,0 +1,33 @@
+{
+    "Comment": "attributes notes",
+    "UserAPI": "User API",
+    "AdminAPI": "Administrative API",
+    "ClientAPI": "Client API",
+    "user": "User",
+    "token": "Token",
+    "guest": "Guest",
+    "authentication": "Authentication",
+    "JsonViewerTitle": "JSON Viewer",
+    "VisualizerImage": "Image Viewer",
+    "api": {
+        "Listtype": "List",
+        "ResourcesNotFound": "Resource not found.",
+        "meta": {
+            "pagenotfound": "Page does not exist",
+            "selectOnePage": "try the first one",
+            "pageResult": "Results",
+            "pageTotal": "Total Pages",
+            "pageCurrent": "Current Page"
+        }
+    },
+    "ServiceThanks": "Thank you for using our services",
+    "AllRightsReserved.": "All rights reserved",
+    "Hello": "Hello",
+    "Return": "Return",
+    "account": "Account",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Log in",
+    "motive": "Motive:",
+    "administration": "Administration"
+}

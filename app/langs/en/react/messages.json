@@ -1,0 +1,9 @@
+{
+    "PageNotFound": "Page not found",
+    "PageSolicitedNotFound": "The requested page was not found",
+    "SuspendedAccount": "You have been suspended from our services.",
+    "DefaultSuspendedAccoutReason": "You have been suspended from our services for violating our terms of use.",
+    "DeslogedForSuccess": "Logged out successfully.",
+    "ErrorBoundaryReact": "An error occurred while loading the resources of this page.",
+    "ErrorBoundaryReactTitle": "Error loading the page."
+}

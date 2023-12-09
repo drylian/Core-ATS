@@ -4,13 +4,13 @@ import { json } from "@/utils";
 export let root: string = "./dist",
 	type: string = "",
 	IsJavascript: boolean = false,
-	version: string = "Canary";
+	version: string = "Desenvolvimento";
 type LogMessage = string | number | boolean | object;
 const core = (...message: LogMessage[]) => Console("Principal", "blue", "Infomações", message);
 
 const file = path.join(__filename);
 
-version = json<{ version: "string" }>("./package.json").version;
+version = json<{ version: "string" }>("./package.json").version ?? version;
 
 if (file.endsWith(".js")) {
 	IsJavascript = true;

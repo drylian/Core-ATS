@@ -6,6 +6,7 @@ const core = new Loggings("Registro", "green");
 import { genv5 } from "@/utils";
 import { ErrType } from "@/interfaces";
 import I18alt from "@/controllers/Language";
+import MakeActivity from "@/controllers/database/MakeActivity";
 
 const router = express.Router();
 
@@ -22,21 +23,25 @@ router.post("/", async (req, res) => {
 		if (existingUser) {
 			return res.status(400).json({ message: i18n.t("react:auth.EmailHasUsed") });
 		}
+		if (!username || !email || !password)
+			return res.status(400).sender({ message: "Params Obrigatorío não encontrado." });
 
 		// Cria um hash da senha
 		const saltRounds = 10; // You can adjust the number of salt rounds as needed
 		const salt = bcrypt.genSaltSync(saltRounds);
 		const hashedPassword = bcrypt.hashSync(password, salt);
-
+		const uuid = genv5(email, "users");
 		// Cria o usuário no banco de dados
 		const newUser = await User.create({
+			lang,
 			username,
 			email,
 			password: hashedPassword,
-			uuid: genv5(email, "users"),
+			uuid: uuid,
 		});
 
 		core.log(`Novo usuário foi criado : "${newUser.username}"`);
+		await MakeActivity(req, "Conta criada", uuid);
 
 		return res.json({ type: "success", complete: true, message: i18n.t("react:auth.SuccessCreatedUser") });
 	} catch (error) {

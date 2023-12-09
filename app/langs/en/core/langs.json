@@ -1,0 +1,6 @@
+{
+    "Comment": "Intended for errors within the system's language",
+    "LangNotFound": "The chosen language was not found, '{{SelectedLang}}'",
+    "NamespaceResourcesNotFound": "Resources for the specified Namespace could not be found. lang:{{SelectedLang}}, namespace:{{Selectednamespace}}",
+    "NamespaceKeyNotFound": "The searched key in the specified Namespace could not be found. lang:{{SelectedLang}}, namespace:{{Selectednamespace}}"
+}
