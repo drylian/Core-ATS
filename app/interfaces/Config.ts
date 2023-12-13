@@ -45,7 +45,7 @@ export interface SettingsJson {
         };
         cors: {
             active: boolean;
-            allowedroutes: string;
+            allowedroutes: string[];
         };
     };
     database: {

@@ -21,7 +21,7 @@ const Icon = (type?: MessageType): string => {
 	case "warning":
 		return "bx bxs-info-circle";
 	default:
-		return "";
+		return "bx bxs-error";
 	}
 };
 const MessageStyle = (type?: MessageType): TwStyle | string => {
@@ -35,10 +35,9 @@ const MessageStyle = (type?: MessageType): TwStyle | string => {
 	case "warning":
 		return tw`bg-yellow-200 bg-opacity-90 border-yellow-500 text-yellow-800`;
 	default:
-		return "";
+		return tw`bg-red-200 bg-opacity-90 border-red-500 text-red-800`;
 	}
 };
-
 const Box = styled.div<{ $type?: MessageType }>`
     ${tw`rounded border-l-4 p-2 mb-4 flex items-center justify-between`};
     ${(props) => MessageStyle(props.$type)};
@@ -68,7 +67,7 @@ const MessageBox = ({ title, children, type }: Props) => {
 			{visible && (
 				<Box $type={type} role={"alert"}>
 					<div className='flex items-center justify-center'>
-						<div className='mr-2'>{title && <i className={`${Icon(type)}`} css={[tw`text-2xl`]}></i>}</div>
+						<div className='mr-2'><i className={`${Icon(type)}`} css={[tw`text-2xl`]}></i></div>
 
 						<div>
 							{title && (

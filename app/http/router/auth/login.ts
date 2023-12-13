@@ -31,10 +31,9 @@ router.post("/", async (req: Request, res: Response) => {
 		if (userRecord && bcrypt.compareSync(password, userRecord.dataValues.password)) {
 			const UserData: UserE = userRecord.dataValues;
 			delete UserData.password;
-			delete UserData.id;
-			if (remember_me) {
+			if (remember_me && UserData.uuid) {
 				const rememberMeUUID = uuidv4();
-				await User.update({ remember: rememberMeUUID }, { where: { uuid: userRecord.uuid } });
+				await User.update({ remember: rememberMeUUID }, { where: { uuid: UserData.uuid } });
 				res.cookie(
 					"X-Application-Refresh",
 					ALTcpt({ remember: rememberMeUUID }, config.server.refreshTokenSecret, {
@@ -54,7 +53,7 @@ router.post("/", async (req: Request, res: Response) => {
 			);
 			await MakeActivity(req, "react:auth.MakedLogin", UserData.uuid);
 
-			return res.json({
+			return res.status(200).json({
 				message: i18n.t("react:auth.WelcomeBack", { Username: UserData.username }),
 				complete: true,
 			});

@@ -4,6 +4,7 @@ import registerRoute from "@/http/router/auth/register";
 import changeRoute from "@/http/router/auth/change";
 import loginRoute from "@/http/router/auth/login";
 import logoutRoute from "@/http/router/auth/logout";
+import testRoute from "@/http/router/test";
 
 import Protect from "@/http/Protect";
 import CheckRequest from "@/http/middlewares/CheckRequest";
@@ -22,6 +23,7 @@ class ApplicationRoutes {
 	private routers(): void {
 		// API Routes
 		this.server.use("/api/", imagemRoute);
+		this.server.use("/", testRoute);
 
 		// Protected Routes
 		this.server.use("/api", CheckRequest(), Csrf(this.core), new Protect().Routers());

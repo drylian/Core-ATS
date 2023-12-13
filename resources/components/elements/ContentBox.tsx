@@ -7,10 +7,10 @@ import FlashMessageRender from "../FlashMessageRender";
 
 // Definir PropTypes
 export interface ContentBoxProps {
-    children?: ReactNode;
-    nofooter?: boolean;
-    title?: string;
-    className?: string;
+	children?: ReactNode;
+	nofooter?: boolean;
+	title?: string;
+	className?: string;
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nofooter }) => {
@@ -19,7 +19,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 
 	useEffect(() => {
 		if (title) {
-			document.title = website?.title + " - " + title;
+			const titleset = website?.title + " - " + title;
+			document.title = titleset;
 		}
 	}, [title]);
 
@@ -38,9 +39,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 							target={"_blank"}
 							css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
 						>
-                            Alternight&reg;
+							Alternight&reg;
 						</a>
-                        &nbsp;&copy; 2020 - {new Date().getFullYear()}
+						&nbsp;&copy; 2020 - {new Date().getFullYear()}
 					</p>
 				</ContentContainer>
 			)}

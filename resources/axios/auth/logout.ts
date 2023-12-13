@@ -1,4 +1,4 @@
-import http from "../http";
+import axios from "axios";
 
 interface Response {
     complete?: boolean;
@@ -7,7 +7,7 @@ interface Response {
 
 const logout = (): Promise<Response> => {
 	return new Promise((resolve, reject) => {
-		http.post("/auth/logout")
+		axios.post("/auth/logout")
 			.then((response) => {
 				return resolve({
 					complete: response.data.complete || false,

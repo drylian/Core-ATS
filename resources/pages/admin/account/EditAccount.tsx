@@ -11,13 +11,14 @@ import AdminMissing from "../../errors/admin/AdminMissing";
 import { UserE } from "../../../states/admin/account";
 import BlockedContent from "../../errors/admin/BlockedContent";
 import Loading from "../../../components/elements/Loading";
+import WarningContent from "../../errors/admin/WarningContent";
 
 interface FormData {
-    name: string;
-    email: string;
-    password: string;
-    permissions: number;
-    lang: string;
+	name: string;
+	email: string;
+	password: string;
+	permissions: number;
+	lang: string;
 }
 
 const validationSchema = Yup.object({
@@ -62,14 +63,14 @@ const EditAccount = () => {
 	if (!userData) getAccount(id).then((data) => setUserData(data as UserE));
 	if (!userData) return <Loading />;
 	if (user && userData && user.permissions && userData.permissions && userData.permissions > user.permissions) {
-		// Aqui você pode decidir como lidar com o estado de carregamento, como mostrar um indicador de carregamento
 		return <BlockedContent />;
 	}
+
 	const onSubmit = (values: FormData) => {
 		editAccount(values, userid);
 		// Lógica de envio dos dados, por exemplo, chamar uma API
-		console.log("Valores do formulário:", values);
 	};
+
 	const initialValues: FormData = {
 		name: userData.username,
 		email: userData.email,
@@ -84,6 +85,8 @@ const EditAccount = () => {
 		setSelectedLang(newLang);
 		return newLang;
 	};
+	if (user && Number(id) === user.id) return <WarningContent title="Perfil Bloqueado" desc="Aviso de acesso bloqueado" message="Não é possivel editar seu proprio perfil na area administrativa, edite na area do client" />;
+
 	return (
 		<ContentBox title='Administração - Usuários - Novo usuário' nofooter={true}>
 			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -95,7 +98,7 @@ const EditAccount = () => {
 									<BoxModel title='Informações'>
 										<div className='mb-4'>
 											<label htmlFor='name' className='block text-sm font-bold textpri'>
-                                                Usuário
+												Usuário
 											</label>
 											<Field
 												type='text'
@@ -112,7 +115,7 @@ const EditAccount = () => {
 
 										<div className='mb-4'>
 											<label htmlFor='email' className='block text-sm font-bold textpri'>
-                                                Email
+												Email
 											</label>
 											<Field
 												type='text'
@@ -129,7 +132,7 @@ const EditAccount = () => {
 
 										<div className='mb-4'>
 											<label htmlFor='lang' className='block text-sm font-bold textpri'>
-                                                Idioma
+												Idioma
 											</label>
 											<div className='flex'>
 												<Field
@@ -144,11 +147,11 @@ const EditAccount = () => {
 													className='mt-1 p-2 w-full border rounded-md'
 												>
 													{website &&
-                                                        website.langs.map((lang) => (
-                                                        	<option key={lang} value={lang}>
-                                                        		{website.languages[lang] || lang}
-                                                        	</option>
-                                                        ))}
+														website.langs.map((lang) => (
+															<option key={lang} value={lang}>
+																{website.languages[lang] || lang}
+															</option>
+														))}
 												</Field>
 											</div>
 											<ErrorMessage
@@ -159,7 +162,7 @@ const EditAccount = () => {
 										</div>
 
 										<button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md'>
-                                            Enviar
+											Enviar
 										</button>
 									</BoxModel>
 								</div>
@@ -168,7 +171,7 @@ const EditAccount = () => {
 									<BoxModel title='Permissões'>
 										<div className='mb-4 mt-1'>
 											<label htmlFor='permissions' className='block text-sm font-bold textpri'>
-                                                Nivel de permissão
+												Nivel de permissão
 											</label>
 											<Field
 												as='select'
@@ -192,9 +195,18 @@ const EditAccount = () => {
 									</BoxModel>
 									<div className='mt-1'>
 										<BoxModel title='Senha'>
+											<BoxModel color="red" noheader nopad>
+												<div className="flex flex-col bg-red-500">
+													<div className="flex font-bold items-center bg-red-900">
+														<i className="bx bx-error-alt ml-2" />
+														<span className="ml-2">Aviso</span>
+													</div>
+													<span className="textpri p-1 text-sm font-bold">Opicional, caso tenha esquecido a senha, é possivel troca-la.</span>
+												</div>
+											</BoxModel>
 											<div className='mb-4'>
 												<label htmlFor='password' className='block text-sm font-bold textpri'>
-                                                    Senha
+													Senha
 												</label>
 												<div className='flex'>
 													<Field
@@ -216,7 +228,7 @@ const EditAccount = () => {
 															e.preventDefault();
 														}}
 													>
-                                                        Gerar
+														Gerar
 													</button>
 												</div>
 												<ErrorMessage
@@ -234,9 +246,9 @@ const EditAccount = () => {
 									{/* <i className={`bx bx-error ml-1 mr-1`} style={{ color: "white", fontSize: '20px', }} /> */}
 									<div className='bg-red-500 rounded p-2'>
 										<span className='textpri font-semibold'>
-                                            A permissão é o nivel do usuário , para um usuário padrão deixe o valor
-                                            padrão "1000" caso queira algum nivel administrativo coloque acima de
-                                            "2000", o limite de permissão é limitado ao seu nivel administrativo.
+											A permissão é o nivel do usuário , para um usuário padrão deixe o valor
+											padrão "1000" caso queira algum nivel administrativo coloque acima de
+											"2000", o limite de permissão é limitado ao seu nivel administrativo.
 										</span>
 									</div>
 								</BoxModel>

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { SettingsJson } from "@/interfaces";
-import { SetAlowedRoutes } from "@/controllers/express/AllowedRoutes";
+import { SetAllowedRoutes } from "@/controllers/express/AllowedRoutes";
 import storage from "@/controllers/Storage";
 
 export default function Credentials() {
@@ -8,16 +8,16 @@ export default function Credentials() {
 		const valores: SettingsJson = storage.get("config");
 		if (valores?.server?.cors) {
 			if (!valores.server.cors.allowedroutes) {
-				valores.server.cors.allowedroutes = "";
+				valores.server.cors.allowedroutes = [];
 			}
-			valores.server.cors.allowedroutes += `,${valores.server.url}:${valores.server.port}`;
+			valores.server.cors.allowedroutes.push(`${valores.server.url}:${valores.server.port}`);
 		}
 		const origin = req.headers.origin
 			? req.headers.origin
 			: req.headers.host
-				? SetAlowedRoutes(req.headers.host, valores.server.protocol, valores.server.port)
+				? SetAllowedRoutes(req.headers.host, valores.server.protocol, valores.server.port)
 				: undefined;
-		const allowedOrigins = SetAlowedRoutes(
+		const allowedOrigins = SetAllowedRoutes(
 			valores.server.cors.allowedroutes,
 			valores.server.protocol,
 			valores.server.port,

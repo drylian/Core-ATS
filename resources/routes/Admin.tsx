@@ -12,6 +12,9 @@ import AdminActivitys from "../pages/admin/Activity";
 import NewAccount from "../pages/admin/account/NewAccount";
 import Testes from "../pages/admin/Testes";
 import EditAccount from "../pages/admin/account/EditAccount";
+import ViewActivity from "../pages/admin/activity/ViewActivity";
+import Tokens from "../pages/admin/Tokens";
+import NewToken from "../pages/admin/tokens/NewToken";
 
 const AdminController = () => {
 	return (
@@ -23,6 +26,11 @@ const AdminController = () => {
 				<Route path='accounts/:id/edit' element={<RequireAuth Protected={2000} component={EditAccount} />} />
 
 				<Route path='activity' element={<RequireAuth Protected={4000} component={AdminActivitys} />} />
+				<Route path='activity/:id/view' element={<RequireAuth Protected={4000} component={ViewActivity} />} />
+
+				<Route path='tokens' element={<RequireAuth Protected={2000} component={Tokens} />} />
+				<Route path='tokens/new' element={<RequireAuth Protected={2000} component={NewToken} />} />
+
 				<Route path='testes' element={<RequireAuth Protected={4000} component={Testes} />} />
 
 				<Route path='*' element={<RequireAuth Protected={2000} component={AdminMissing} />} />

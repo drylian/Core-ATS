@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
 	res.clearCookie("X-Application-Access"); // limpa o access token
 	res.clearCookie("X-Application-Refresh"); // limpa o Refresh
-	return res.json({
+	return res.status(200).json({
 		type: "success",
 		complete: true,
 		message: req.t("react:messages.DeslogedForSuccess", { lang: req.access.lang || "pt-BR" }),

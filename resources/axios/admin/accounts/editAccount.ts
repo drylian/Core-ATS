@@ -2,7 +2,7 @@ import http from "../../http";
 interface FormData {
     name: string;
     email: string;
-    password: string;
+    password?: string;
     permissions: number;
     lang: string;
 }

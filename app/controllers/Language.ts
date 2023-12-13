@@ -117,7 +117,7 @@ export default class I18alt {
 				`[Lingua atual não foi encontrada].red ["${params.lang}"].blue , alterando para a lingua [padrão "${DefaultLang}"].green.`,
 			);
 			this.currentLang = DefaultLang;
-			return key;
+			return this.t(key, params)
 		}
 
 		core(

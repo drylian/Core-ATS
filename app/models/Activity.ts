@@ -20,6 +20,7 @@ import { DataTypes, Model } from "sequelize";
  */
 export interface ActivityI {
     id?: number | null;
+	userid?: number;
     useruuid?: string;
     action: string;
     username?: string;
@@ -36,6 +37,7 @@ export interface ActivityI {
 class Activity extends Model<ActivityI> implements ActivityI {
 	public id?: number | null;
 	public useruuid?: string;
+	public userid?: number;
 	public action!: string;
 	public username?: string;
 	public ip?: string;
@@ -55,6 +57,10 @@ Activity.init(
 		},
 		useruuid: {
 			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		userid: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		action: {

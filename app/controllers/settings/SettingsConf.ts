@@ -68,8 +68,8 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		}
 
 		/**
-         * Cores do painel(Frontend)
-         */
+		 * Cores do painel(Frontend)
+		 */
 		const c: SettingsJson = json(root.configPATH + "/settings.json");
 
 		if (!c?.mode) jsonsv(root.configPATH + "/settings.json", { mode: "pro" });
@@ -125,23 +125,27 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		if (!css?.server?.cors?.allowedroutes) {
 			if (css.server.protocol === "http") {
 				const selected = await qprefix("server_protocol_select", `${css.server.url},localhost,127.0.0.1`);
-				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: selected } } });
+				const allowedRoutes = selected ? selected.split(',') : [];
+				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: allowedRoutes } } });
 			} else if (css.server.protocol === "https") {
 				const selected = await qprefix("server_protocol_select", `${css.server.url}`);
-				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: selected } } });
+				const allowedRoutes = selected ? selected.split(',') : [];
+				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: allowedRoutes } } });
 			} else if (css.server.protocol === "http/https") {
 				const selected = await qprefix("server_protocol_select", `${css.server.url},localhost,127.0.0.1`);
-				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: selected } } });
+				const allowedRoutes = selected ? selected.split(',') : [];
+				jsonsv(root.configPATH + "/settings.json", { server: { cors: { allowedroutes: allowedRoutes } } });
 			}
 		}
+
 		if (typeof css?.server?.cors?.active !== "boolean")
 			jsonsv(root.configPATH + "/settings.json", { server: { cors: { active: true } } });
 
 		if (!c?.database?.dialect) jsonsv(root.configPATH + "/settings.json", { database: { dialect: "sqlite" } });
 
 		/**
-         * Mailer Configs
-         */
+		 * Mailer Configs
+		 */
 		if (typeof css?.smtp?.active !== "boolean")
 			jsonsv(root.configPATH + "/settings.json", { smtp: { active: false } });
 		if (css?.smtp?.host) jsonsv(root.configPATH + "/settings.json", { smtp: { host: "mailer.smtp.com" } });

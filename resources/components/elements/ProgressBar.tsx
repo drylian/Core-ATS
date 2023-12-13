@@ -23,9 +23,9 @@ const RGB = keyframes`
   }
 `;
 const AnimatedDiv = styled.div<{ progress: number | undefined }>`
-    ${tw`h-full shadow-[0_-2px_10px_2px] transition-all duration-[250ms] ease-in-out`}
+    ${tw`h-full shadow-[0_-2px_10px_2px] transition-all duration-[250ms] ease-in-out border-t-4`}
     /* Aplicando a animação */
-  animation: ${RGB} 2000ms infinite; /* Ajuste a duração conforme necessário */
+  animation: ${RGB} 3000ms infinite; /* Ajuste a duração conforme necessário */
 `;
 function ProgressBar() {
 	const interval = useRef<Timer>();

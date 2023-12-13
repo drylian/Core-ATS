@@ -1,4 +1,4 @@
-import http from "../http";
+import axios from "axios";
 
 interface RegisterResponse {
     complete?: boolean;
@@ -14,7 +14,7 @@ interface RegisterParams {
 
 const registerUser = ({ username, password, email, lang }: RegisterParams): Promise<RegisterResponse> => {
 	return new Promise((resolve, reject) => {
-		http.post("/auth/register", {
+		axios.post("/auth/register", {
 			username,
 			password,
 			email,

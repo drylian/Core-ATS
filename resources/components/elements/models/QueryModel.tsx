@@ -1,16 +1,17 @@
 import { ReactNode, useState, useEffect } from "react";
 
 interface QueryModalProps<T> {
-    data: T[] | undefined;
-    search: string;
-    limit?: number;
-    children: (props: { query: T[] }) => ReactNode;
+	data: T[] | undefined;
+	search: string;
+	limit?: number;
+	children: (props: { query: T[] }) => ReactNode;
 }
 /**
  * Este é um componente React chamado QueryModal que recebe um tipo genérico T
  *  e props que incluem dados (data), termo de pesquisa (search), limite (limit),
  *  e uma função de renderização de children.
  */
+
 const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<T>) => {
 	// Estados para gerenciar o estado da query, a página atual, a ativação do filtro,
 	// a lista de resultados filtrados e os dados originais.
@@ -18,13 +19,12 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 	const [currentPage, setCurrentPage] = useState(1);
 	const [activefilter, setActivefilter] = useState(false);
 	const [queryed, setQueryed] = useState<T[]>([]);
-	const Dated = data; // Renomeando 'data' para 'Dated' para evitar confusão.
 	const resultsPerPage = limit;
 
 	// Efeito colateral para atualizar a query com base nos dados, termo de pesquisa e página atual.
 	useEffect(() => {
-		if (Dated) {
-			const filteredData = Dated.filter((item) =>
+		if (data) {
+			const filteredData = data.filter((item) =>
 				JSON.stringify(item).toLowerCase().includes(search.toLowerCase()),
 			);
 			if (queryed.length === (data as object[]).length && activefilter) setCurrentPage(1);
@@ -48,7 +48,7 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 					{children({ query })}
 
 					{totalPages !== 1 && totalPages !== 0 ? (
-					// Controles de navegação da página, exibidos apenas se houver mais de uma página.
+						// Controles de navegação da página, exibidos apenas se houver mais de uma página.
 						<ul className='flex-1 list-style-none flex p-2 items-center justify-center'>
 							{totalPages !== 1 && currentPage !== 1 && (
 								<button
@@ -56,7 +56,7 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 									disabled={currentPage === 1}
 									className='relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white'
 								>
-                                    Anterior
+									Anterior
 								</button>
 							)}
 							{queryed.length !== (data as object[]).length ? (
@@ -68,7 +68,7 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 							) : (
 								<>
 									<span className='relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-white transition-all duration-300'>
-                                        Página {currentPage} de {totalPages}
+										Página {currentPage} de {totalPages}
 									</span>
 								</>
 							)}
@@ -78,7 +78,7 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 									disabled={currentPage === totalPages}
 									className='relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white'
 								>
-                                    Próxima
+									Próxima
 								</button>
 							)}
 						</ul>
@@ -98,13 +98,14 @@ const QueryModal = <T,>({ data, search, children, limit = 10 }: QueryModalProps<
 					)}
 				</>
 			) : (
-			// Exibido quando não há resultados correspondentes.
+				// Exibido quando não há resultados correspondentes.
 				<div className='flex p-2 w-full items-center justify-center'>
 					<span className='relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-white transition-all duration-300'>
-                        Nenhum Resultado encontrado com as informações de {(data as object[]).length} dados
+						Nenhum Resultado encontrado com as informações de {(data as object[]).length} dados
 					</span>
 				</div>
 			)}
+
 		</>
 	);
 };

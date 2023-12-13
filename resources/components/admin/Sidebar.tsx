@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { store } from "../../states";
 import logout from "../../axios/auth/logout";
+import BoxModel from "../elements/models/BoxModel";
 
 interface Menu {
-    title: string;
-    icon: string;
-    permission: number;
-    path: string;
-    gap?: boolean;
+	title: string;
+	icon: string;
+	permission: number;
+	path: string;
+	gap?: boolean;
 }
 
 interface Props {
-    open: boolean;
+	open: boolean;
 }
 
 const App: React.FC<Props> = ({ open }) => {
@@ -30,11 +31,11 @@ const App: React.FC<Props> = ({ open }) => {
 	const Menus: Menu[] = [
 		{ title: "Retornar", icon: "bx-arrow-back", permission: 0, path: "/" },
 		{ title: "Dashboard", icon: "bxs-dashboard", permission: 2, path: "/admin" },
-		{ title: "Registros", icon: "bxs-chart", permission: 2, path: "/admin/activity" },
+		{ title: "Atividades", icon: "bxs-chart", permission: 2, path: "/admin/activity" },
 		{ title: "Usuários", icon: "bxs-user", permission: 2, path: "/admin/accounts" },
+		{ title: "Tokens", icon: "bx bx-network-chart", permission: 2, path: "/admin/tokens" },
 		{ title: "Configurações", icon: "bxs-cog", permission: 2, path: "/admin/settings" },
 		{ title: "Testes", icon: "bxs-search", permission: 2, path: "/admin/testes" },
-		// { title: "Analytics", icon: "bxs-chart", permission: 2, path: "/" },
 		// { title: "Files ", icon: "bxs-folder", permission: 2, path: "/" },
 		// { title: "Setting", icon: "bxs-cog", permission: 2, path: "/" },
 	];
@@ -58,21 +59,21 @@ const App: React.FC<Props> = ({ open }) => {
 					alt='Logo'
 				/>
 				<span className={`textpri font-bold text-lg origin-left duration-200 ${!open && "scale-0"}`}>
-                    Administração
+					Administração
 				</span>
 			</div>
 			<ul className='pt-2'>
 				{Menus.map(
 					(Menu, index) =>
-					// Verifique a permissão aqui
+						// Verifique a permissão aqui
 						User &&
-                        User.permissions &&
-                        User.permissions >= Menu.permission && (
+						User.permissions &&
+						User.permissions >= Menu.permission && (
 							<Link to={Menu.path} key={index}>
 								<li
-									className={`flex rounded-md p-2 cursor-pointer hover:bg-white hover:bg-opacity-20 textsec text-sm items-center gap-x-4 
+									className={`flex duration-200 rounded-md p-2 cursor-pointer hover:bg-white hover:bg-opacity-20 textsec text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}
-			  ${currentPage === Menu.path ? "border-l-4 border-blue-500 shadow-md bg-white bg-opacity-10" : ""}
+			  ${currentPage === Menu.path ? "border-l-4 border-blue-500 shadow-md bg-white hover:border-blue-300 after:border-blue-500 bg-opacity-10" : "border-blue-400"}
               `}
 								>
 									{/* Use as classes do Boxicons para os ícones */}
@@ -91,18 +92,22 @@ const App: React.FC<Props> = ({ open }) => {
 						),
 				)}
 				{User && (
-					<div
-						className={`${
-							!open && "scale-0"
-						} duration-200 mt-2 p-2 bg-light-white rounded-md border border-gray-300`}
-					>
-						<div className='flex items-center justify-between border-b pb-2 mb-2'>
+					<BoxModel className={`${!open && "scale-0"
+						} duration-200 mt-3`} noheader nopad>
+						<div className="flex items-center justify-between p-2">
+							<div className="w-10 h-10 flex items-center justify-center border-4 border-blue-500 rounded-full">
+								<i className="bx bx-user" style={{ fontSize: '20px' }} />
+							</div>
 							<div>
-								<div className='font-bold text-sm'>{User.username}</div>
-								<div className='text-gray-500'>{User.email}</div>
+								<p className="text-xs textsec">
+									{User.email}
+								</p>
+								<p className="text-xs textter">
+									{User.permissions ?? 'N/A'}
+								</p>
 							</div>
 							<div
-								className='mt-2 p-2 bg-light-white rounded-md border border-gray-300 flex'
+								className='rounded-full justify-between items-center'
 								style={{
 									cursor: "pointer",
 								}}
@@ -114,15 +119,15 @@ const App: React.FC<Props> = ({ open }) => {
 								}}
 							>
 								<i
-									className='bx bx-log-out-circle'
+									className='bx bx-exit'
 									style={{
 										marginLeft: "-1px",
-										fontSize: "20px",
+										fontSize: "30px",
 									}}
 								/>
 							</div>
 						</div>
-					</div>
+					</BoxModel>
 				)}
 			</ul>
 		</div>

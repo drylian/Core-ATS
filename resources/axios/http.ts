@@ -1,16 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { store } from "../states";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-function checkCookie(cookieName: string) {
-	const cookies = document.cookie.split(";");
-	for (const cookie of cookies) {
-		const [name] = cookie.trim().split("=");
-		if (name === cookieName) {
-			return true;
-		}
-	}
-	return false;
-}
 
 const http: AxiosInstance = axios.create({
 	withCredentials: true,
@@ -47,11 +37,7 @@ http.interceptors.response.use(
 		if (error.response.data.type)
 			store.getActions().flashes.addFlash({ type: error.response.data.type, message: httpErrorToHuman(error) });
 		else {
-			if (checkCookie("X-Application-Access")) {
-				store.getActions().flashes.addError({ message: httpErrorToHuman(error) });
-			} else {
-				store.getActions().flashes.addFlash({ type: "warning", message: "Session Expired Please Reload" });
-			}
+			store.getActions().flashes.addError({ message: httpErrorToHuman(error) });
 		}
 		throw error;
 	},
@@ -76,7 +62,9 @@ export function httpErrorToHuman(error: any): string {
 				// do nothing, bad json
 			}
 		}
-
+		if (data.message) {
+			return data.message;
+		}
 		if (data.errors && data.errors[0] && data.errors[0].detail) {
 			return data.errors[0].detail;
 		}

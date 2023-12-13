@@ -29,7 +29,6 @@ export default class AdminsAccounts extends Controller {
 				suspendedReason: user.suspendedReason,
 			}));
 
-			console.log(modifiedData);
 			return res.status(200).sender({ json: modifiedData });
 		});
 		this.put("/accounts/new", async (Request, Response) => {
@@ -59,7 +58,7 @@ export default class AdminsAccounts extends Controller {
 				uuid: genv5(email, "users"),
 			});
 			core.log(`Novo usuário foi criado : "${newUser.username}"`);
-			await MakeActivity(req, "novo usuário criado :" + newUser.username, "ADMINISTRATION");
+			await MakeActivity(req, "criou o usuário " + newUser.username, "ADMINISTRATION");
 
 			return res.status(200).json({ type: "success", message: "Usuário criado com sucesso." });
 		});
@@ -79,22 +78,22 @@ export default class AdminsAccounts extends Controller {
 
 		this.delete("/accounts/:id/delete", async (Request, Response) => {
 			const userId = Request.params.id;
-			const { req, res } = await Authenticator(Request, Response, 3000);
+			const { req, res } = await Authenticator(Request, Response, PERMISSION);
 
 			// Verifica se o usuário existe antes de excluí-lo
 			const userRecord = await User.findOne({ where: { id: userId } });
 			if (!userRecord) {
 				return res.status(404).sender({ message: "Usuário não encontrado" });
 			}
+			if((req.access.permissions ?? 0) < (userRecord.dataValues.permissions ?? PERMISSION)){
+				return res.status(401).sender({ message: "Não é possivel deletar um usuário com uma permissão maior que a sua." });
+			}
+			if (req.access.user && req.access.id === Number(userId)) return res.status(404).json({ type:"warning",message: "É impossivel um administrador deletar a si mesmo no painel administrativo, delete sua conta pela area do cliente" });
 
 			// Realiza a exclusão do usuário
 			await User.destroy({ where: { id: userId } });
-			await MakeActivity(
-				req,
-				"Usuário deletado pelo '" + req.access.user?.username ||
-                    "token" + "' , usuário :" + userRecord.username,
-				"ADMINISTRATION",
-			);
+			await MakeActivity(req, `deletou o usuário do email "${userRecord.dataValues.email}" que tinha rank de permissão "${userRecord.dataValues.permissions}"`, "ADMINISTRATION");
+
 			return res.status(200).sender({ message: "Usuário excluído com sucesso" });
 		});
 
@@ -108,13 +107,18 @@ export default class AdminsAccounts extends Controller {
 				if (!userRecord) {
 					return res.status(404).sender({ message: "Usuário não encontrado" });
 				}
+				if(userRecord.permissions && (req.access.permissions ?? 0) <= userRecord.permissions){
+					return res.status(401).json({ type:"warning", message: "Não é possivel modificar um usuário com uma permissão maior ou igual." });
+				}
 				if (request.body.password) {
 					const saltRounds = 10; // You can adjust the number of salt rounds as needed
 					const salt = bcrypt.genSaltSync(saltRounds);
 					request.body.password = bcrypt.hashSync(request.body.password, salt);
 				}
+				if (req.access.user && req.access.user.id && req.access.user.id === Number(userId)) return res.status(404).sender({ message: "É impossivel um administrador editar a si mesmo no painel administrativo, gerencie sua conta pela area do cliente" });
+
 				// Atualiza os dados do usuário com base nos dados fornecidos no corpo da requisição
-				const updatedUser = await User.update(
+				await User.update(
 					{
 						username: request.body.username,
 						email: request.body.email,
@@ -124,14 +128,12 @@ export default class AdminsAccounts extends Controller {
 					},
 					{ where: { id: userId } },
 				);
-				console.log(updatedUser);
-				await MakeActivity(
-					req,
-					`Usuário atualizado pelo "${req.access.user?.username || "token"}" , usuário :${
-						request.body.username
-					}`,
-					"ADMINISTRATION",
-				);
+				if (req.access.user?.username === request.body.username)
+					await MakeActivity(
+						req,
+						`Atualizou as configurações de conta do email ${request.body.email}`,
+						"ADMINISTRATION",
+					);
 
 				return res.status(200).sender({ message: "Usuário atualizado com sucesso" });
 			} catch (error) {

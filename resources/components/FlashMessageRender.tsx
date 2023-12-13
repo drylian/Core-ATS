@@ -24,7 +24,7 @@ const FlashMessageRender: React.FC = () => {
 	// Render flash messages if there are any
 	return flash.length
 		? flash.map((flash, index) => (
-			<div className='mb-4' key={index}>
+			<div className='mb-1' key={index}>
 				<Fragment>
 					{index > 0 && <div className='mt-2' key={index} />}
 					<MessageAlert type={flash.type} title={flash.title}>

@@ -1,21 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ContentBox from "../../components/elements/ContentBox";
 import BoxModel from "../../components/elements/models/BoxModel";
-import activity from "../../axios/admin/activity";
-import { format } from "date-fns";
+import activity, { AdminActivity } from "../../axios/admin/activity";
+import QueryModal from "../../components/elements/models/QueryModel";
+import { differenceInHours, format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-
-export interface AdminActivity {
-    username: string | undefined;
-    action: string;
-    ip: string | undefined;
-    create_at: Date | undefined;
-}
+import { Link } from "react-router-dom";
 
 const AdminActivitys = () => {
 	const [data, setData] = useState<AdminActivity[] | null>(null);
-	const [currentPage, setCurrentPage] = useState(1);
-	const resultsPerPage = 10;
+	const [searchTerm, setSearchTerm] = useState<string>("");
 
 	const handleClick = () => {
 		activity()
@@ -27,79 +21,63 @@ const AdminActivitys = () => {
 			});
 	};
 
-	useEffect(() => {
-		if (!data) handleClick();
-	}, [data]);
-
-	// Função para obter os resultados da página atual
-	const getCurrentPageResults = (): AdminActivity[] => {
-		const startIndex = (currentPage - 1) * resultsPerPage;
-		const endIndex = startIndex + resultsPerPage;
-		return data ? data.slice(startIndex, endIndex) : [];
-	};
-
-	// Calcular o número total de páginas
-	const totalPages = data ? Math.ceil(data.length / resultsPerPage) : 0;
+	if (!data) handleClick();
 
 	return (
-		<ContentBox title='Administração - Registros do painel'>
+		<ContentBox title='Administração - Atividades do painel' nofooter={true}>
 			<BoxModel
-				title='Registros do painel'
-				desc='Informa os registros da administração do painel'
+				title='Atividades do painel'
+				desc='Informa os Atividades da administração do painel'
 				onClick={handleClick}
 				buttonSub='Refresh'
+				search={searchTerm}
+				setSearch={setSearchTerm}
 			>
-				{data ? (
-					<>
-						{getCurrentPageResults().map((item, index) => (
-							<div
-								key={index}
-								className='rounded-lg overflow-hidden shadow-md bg-white bg-opacity-10 m-4 p-4'
-							>
-								<p className='text-lg font-bold mb-2'>Responsável: {item.username}</p>
-								<p className='mb-1 font-bold '>
-                                    Ação feita: <span>{item.action}</span>
-								</p>
-								<div className='flex justify-between items-start'>
-									<p className='mb-1 '>IP: {item.ip}</p>
-									<p className='mb-1 '>
-										{item.create_at
-											? format(new Date(item.create_at), "'dia' d 'de' MMMM yyyy', às' HH:mm", {
-												locale: ptBR,
-											})
-											: "desconhecido"}
+				<QueryModal data={data ?? []} search={searchTerm} limit={5}>
+					{({ query }: { query: AdminActivity[] | undefined }) => (
+						<>
+							{query && query.sort((a, b) => {
+								return b.create_at && a.create_at
+									? new Date(b.create_at).getTime() - new Date(a.create_at).getTime()
+									: 0;
+							}).map((activity, index) =>
+							(<>
+								<div key={index}
+									className='rounded-lg overflow-hidden shadow-md bg-white bg-opacity-10 p-1 mb-1'
+								>
+									{activity.userid !== -1 && activity.userid !== -10 && <p className="text-base font-bold textsec">
+										<i className="bx bx-user" />{" "}
+										<Link to={`/admin/activity/${activity.userid}/view`} className="text-blue-500 hover:text-blue-800">
+											{activity.username}
+										</Link>{" "}
+										- <small className="text text-xs">{activity.ip}</small>
+									</p>}
+									{activity.userid === -1 && <p className="text-base font-bold textsec">
+										<i className="bx bx-user" />{" "}{activity.username+ " "} - <small className="text text-xs">{activity.ip}</small>
+									</p>}
+									{activity.userid === -10 && <p className="text-base font-bold textsec">
+										<i className="bx bx-cog" />{" "}
+										<Link to={`/admin/activity/system/view`} className="text-gray-500 hover:text-gray-400">
+											{activity.username}
+										</Link>{" "}
+										- <small className="text text-xs">{activity.ip}</small>
+									</p>}
+									<p className='mb-1 textter font-bold text-xs '>
+										<i className='bx bx-book-content' />{' '}<span>{activity.action}</span>
+									</p>
+									<p className='mb-1 text-sm textsec'><i className="bx bx-time" /> {' '}
+										{activity.create_at
+											? Math.abs(differenceInHours(new Date(activity.create_at), new Date())) > 48
+												? format(new Date(activity.create_at), "'dia' d 'de' MMMM yyyy', ás' HH:mm", { locale: ptBR })
+												: formatDistanceToNow(new Date(activity.create_at), { addSuffix: true, locale: ptBR })
+											: 'desconhecido'}
 									</p>
 								</div>
-							</div>
-						))}
-						{/* Adicione controles de paginação */}
-						<div className='flex justify-between items-center mt-4'>
-							<div>
-								<button
-									onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-									disabled={currentPage === 1}
-									className='px-2 py-1 bg-blue-500 text-white rounded-md'
-								>
-                                    Anterior
-								</button>
-								<span className='mx-2'>
-                                    Página {currentPage} de {totalPages}
-								</span>
-								<button
-									onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-									disabled={
-										getCurrentPageResults().length < resultsPerPage || currentPage === totalPages
-									}
-									className='px-2 py-1 bg-blue-500 text-white rounded-md'
-								>
-                                    Próxima
-								</button>
-							</div>
-						</div>
-					</>
-				) : (
-					<p className='text-gray-500'>Nenhum dado disponível</p>
-				)}
+							</>
+							))}
+						</>
+					)}
+				</QueryModal>
 			</BoxModel>
 		</ContentBox>
 	);

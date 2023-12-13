@@ -18,10 +18,12 @@ import { DataTypes, Model } from "sequelize";
  *
  */
 export interface TokenI {
-    id: number | null;
-    token: string;
-    permissions: number | null;
-    uuid: string;
+	id: number | null;
+	token: string;
+	permissions: number | null;
+	uuid: string;
+	lang: string;
+	memo: string;
 }
 
 /**
@@ -38,6 +40,9 @@ class Token extends Model<TokenI> implements TokenI {
 	public token!: string;
 	public permissions!: number | null;
 	public uuid!: string;
+	public lang!: string;
+	public memo!: string;
+
 }
 
 /**
@@ -55,10 +60,18 @@ Token.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		memo: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 		permissions: {
 			type: DataTypes.NUMBER,
 			allowNull: false,
 			defaultValue: 1000,
+		},
+		lang: {
+			type: DataTypes.NUMBER,
+			allowNull: false,
 		},
 		uuid: {
 			type: DataTypes.STRING,

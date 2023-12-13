@@ -18,13 +18,14 @@ router.post("/", async (req, res) => {
 	if (lang) i18n.setLanguage(lang);
 
 	try {
+		if (!username || !email || !password){
+		return res.status(400).sender({ message: "Params Obrigatorío não encontrado." });}
 		// Verifica se o email já está em uso
 		const existingUser = await User.findOne({ where: { email } });
 		if (existingUser) {
-			return res.status(400).json({ message: i18n.t("react:auth.EmailHasUsed") });
+			console.log(existingUser)
+			return res.status(409).json({ message: i18n.t("react:auth.EmailHasUsed") });
 		}
-		if (!username || !email || !password)
-			return res.status(400).sender({ message: "Params Obrigatorío não encontrado." });
 
 		// Cria um hash da senha
 		const saltRounds = 10; // You can adjust the number of salt rounds as needed
@@ -43,7 +44,7 @@ router.post("/", async (req, res) => {
 		core.log(`Novo usuário foi criado : "${newUser.username}"`);
 		await MakeActivity(req, "Conta criada", uuid);
 
-		return res.json({ type: "success", complete: true, message: i18n.t("react:auth.SuccessCreatedUser") });
+		return res.status(200).json({ type: "success", complete: true, message: i18n.t("react:auth.SuccessCreatedUser") });
 	} catch (error) {
 		core.error(`Erro ao tentar registrar um usuário : "${(error as ErrType).stack}"`);
 		return res.status(500).json({ message: i18n.t("react:auth.ErrorForProcessRegister") });

@@ -1,11 +1,11 @@
 import { Action, action } from "easy-peasy";
 
 export interface UserData {
+    id:number;
     username: string;
     email: string;
     lang: string | null;
     permissions: number | null;
-    uuid: string;
     remember: string | null;
     suspended: boolean | null;
     suspendedReason: string | null;

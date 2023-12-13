@@ -28,34 +28,34 @@ export function TokensValiter() {
 					if (access?.suspended) {
 						if (config.server.protocol !== "https") res.header({ "Content-Security-Policy": "" });
 						switch (req.accepts(["html", "json", "txt"])) {
-						case "html":
-							return res.status(401).send(
-								SenderError(
-									{
-										lang: access.lang || "unk",
-										status: 401,
-										title: i18n.t("react:titles.Suspended"),
-										code: i18n.t("react:messages.SuspendedAccount"),
-										message:
-                                                i18n.t("attributes.motive") + access.suspendedReason ||
-                                                i18n.t("react:messages.DefaultSuspendedAccoutReason"),
-									},
-									req,
-								),
-							);
-						case "json":
-							return res.status(401).json({
-								type: "error",
-								message:
-                                        access.suspendedReason || i18n.t("react:messages.DefaultSuspendedAccoutReason"),
-								status: res.statusCode || req.statusCode || "unknown",
-								timestamp: Date.now(),
-							});
-						default:
-							return res
-								.status(401)
-								.type("txt")
-								.send(i18n.t("react:messages.DefaultSuspendedAccoutReason"));
+							case "html":
+								return res.status(401).send(
+									SenderError(
+										{
+											lang: access.lang || "unk",
+											status: 401,
+											title: i18n.t("react:titles.Suspended"),
+											code: i18n.t("react:messages.SuspendedAccount"),
+											message:
+												i18n.t("attributes.motive") + access.suspendedReason ||
+												i18n.t("react:messages.DefaultSuspendedAccoutReason"),
+										},
+										req,
+									),
+								);
+							case "json":
+								return res.status(401).json({
+									type: "error",
+									message:
+										access.suspendedReason || i18n.t("react:messages.DefaultSuspendedAccoutReason"),
+									status: res.statusCode || req.statusCode || "unknown",
+									timestamp: Date.now(),
+								});
+							default:
+								return res
+									.status(401)
+									.type("txt")
+									.send(i18n.t("react:messages.DefaultSuspendedAccoutReason"));
 						}
 					}
 				} else {
@@ -64,7 +64,7 @@ export function TokensValiter() {
 				}
 			}
 
-			if (!req.cookies["X-Application-Access"] && req.cookies["X-Application-Refresh"]) {
+			if (req.cookies["X-Application-Refresh"] && !req.cookies["X-Application-Access"]) {
 				const refresh = ALTdcp<{ remember: string } | null>(
 					req.cookies["X-Application-Refresh"],
 					config.server.refreshTokenSecret,
@@ -87,7 +87,7 @@ export function TokensValiter() {
 						res.cookie("X-Application-Access", access, { maxAge: AlTexp("15m"), httpOnly: true });
 						req.cookies["X-Application-Access"] = access;
 						const rememberMeUUID = uuidv4();
-						await User.update({ remember: rememberMeUUID }, { where: { uuid: userRecord.uuid } });
+						await User.update({ remember: rememberMeUUID }, { where: { uuid: UserData.uuid } });
 						// atualiza o Refresh
 						const token = ALTcpt({ remember: rememberMeUUID }, config.server.refreshTokenSecret, {
 							ip: req.access.ip?.toString(),
@@ -100,8 +100,7 @@ export function TokensValiter() {
 						req.cookies["X-Application-Refresh"] = undefined;
 					}
 				} else {
-					res.clearCookie("X-Application-Refresh");
-					req.cookies["X-Application-Refresh"] = undefined;
+					res.redirect("/auth/login?callback=" + req.originalUrl)
 				}
 			}
 		} catch (e) {

@@ -3,6 +3,7 @@ import AdminsAccounts from "@/http/router/api/admin/accounts";
 import AdminApplication from "./router/api/admin/application";
 import AdminActivity from "./router/api/admin/activity";
 import ClientActivity from "./router/api/client/activity";
+import AdminsTokens from "./router/api/admin/tokens";
 
 class Protect {
 	private router: express.Router;
@@ -14,6 +15,7 @@ class Protect {
 
 	private routes() {
 		this.router.use("/admin", new AdminsAccounts().route);
+		this.router.use("/admin", new AdminsTokens().route);
 		this.router.use("/admin", new AdminApplication().route);
 		this.router.use("/admin", new AdminActivity().route);
 		this.router.use("/client", new ClientActivity().route);

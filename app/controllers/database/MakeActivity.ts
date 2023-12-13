@@ -10,7 +10,8 @@ export default async function MakeActivity(req: Request, action: string, useruui
 	core.debug(action);
 	return await Activity.create({
 		action: action,
-		username: req.access.user?.username || "Desconhecido",
+		username: req.access.user?.username ?? req.access.tokenref ?? "Desconhecido",
+		userid: req.access.user?.id ?? req.access.id ?? -1,
 		ip: req.access.ip?.toString() || "0.0.0.0", // Substitua pelo IP real
 		useruuid: useruuid || req.access.uuid || "ADMINISTRATION",
 	});
@@ -20,6 +21,7 @@ export async function SystemActivity(action: string) {
 	core.debug(action);
 	return await Activity.create({
 		action: action,
+		userid:  -10,
 		username: "Sistema",
 		ip: "Interno", // Substitua pelo IP real
 		useruuid: "ADMINISTRATION",

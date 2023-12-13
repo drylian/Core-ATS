@@ -2,13 +2,15 @@ import Settings from "@/controllers/Settings";
 import { Console } from "@/controllers/loggings/OnlyConsole";
 import User from "@/models/User";
 import bcrypt from "bcrypt";
-import { genv5 } from "@/utils";
+import { delay, genv5 } from "@/utils";
 import { ErrType } from "@/interfaces/Utils";
 import { db } from "@/controllers/Sequelize";
 import Express from "@/controllers/Express";
-import StartSettings from "./controllers/storage/Watcher";
-import Starti18altJson from "./controllers/language/Watcher";
-import { SystemActivity } from "./controllers/database/MakeActivity";
+import StartSettings from "@/controllers/storage/Watcher";
+import Starti18altJson from "@/controllers/language/Watcher";
+import { SystemActivity } from "@/controllers/database/MakeActivity";
+import terminal from "@/terminal/Kernel";
+
 type LogMessage = string | number | boolean | object;
 
 const core = (...args: LogMessage[]) => Console("Principal", "blue", "Infomações", args);
@@ -52,8 +54,12 @@ async function init() {
 async function run() {
 	await Settings().then(async () => {
 		await init();
-		new Express();
+		const server = new Express();
+		await server.listen();
+		await delay(2000)
+		terminal.start()
+		return server
 	});
 }
 
-run();
+export default run();

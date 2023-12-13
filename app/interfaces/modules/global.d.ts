@@ -47,12 +47,12 @@ declare global {
              * (Alias do setLanguage) Define o idioma atual.
              * @param {string} lang - O idioma a ser definido como idioma atual.
              */
-            sl(lang: string): boolean;
+            sl(lang: string | null): boolean;
             /**
              * Define o idioma atual.
              * @param {string} lang - O idioma a ser definido como idioma atual.
              */
-            setLanguage(lang: string): boolean;
+            setLanguage(lang: string | null): boolean;
             /**
              * ( Alias do getNamespaceResource ) Obtem um json do namespace selecionado.
              * @param {string} namespace - o namespace selecionado.
@@ -72,10 +72,12 @@ declare global {
                 user?: UserE;
                 permissions?: number;
                 type?: "user" | "token";
+                tokenref?:string;
                 uuid?: string;
                 lang?: string;
                 ip?: string | string[] | undefined;
                 nonce?: string;
+                id?:number | null;
             };
             checked: "user" | "authorization" | "guest";
         }

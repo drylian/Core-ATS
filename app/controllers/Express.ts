@@ -44,7 +44,6 @@ class Express {
 		this.middlewares();
 		this.routers();
 		this.sockets();
-		this.listen();
 	}
 	private sockets(): void {
 		this.io.sockets.on("connection", function (socket) {
@@ -80,7 +79,7 @@ class Express {
 		new ApplicationRoutes(this.express, this.core);
 	}
 
-	private async listen() {
+	public async listen() {
 		if (this.config.mode !== "production" && this.config.mode !== "pro") {
 			this.core.log("Aplicação em modo de [desenvolvimento].gray, inicializando...");
 			await new ViteInjector(this.express).development();

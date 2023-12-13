@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { ErrType, SettingsJson } from "@/interfaces";
-import { SetAlowedRoutes } from "@/controllers/express/AllowedRoutes";
+import { SetAllowedRoutes } from "@/controllers/express/AllowedRoutes";
 import storage from "@/controllers/Storage";
 import I18alt from "@/controllers/Language";
 
@@ -15,17 +15,17 @@ export default function Cors() {
 					// Configuração de origins e a origin padrão do sistema (a configurada no settings.json)
 					if (valores?.server?.cors) {
 						if (!valores.server.cors.allowedroutes) {
-							valores.server.cors.allowedroutes = "";
+							valores.server.cors.allowedroutes = [];
 						}
-						valores.server.cors.allowedroutes += `,${valores.server.url}:${valores.server.port}`;
+						valores.server.cors.allowedroutes.push(`${valores.server.url}:${valores.server.port}`);
 					}
 
 					const origin = requestOrigin
 						? requestOrigin
 						: req.headers.host
-							? SetAlowedRoutes(req.headers.host, valores.server.protocol, valores.server.port)
+							? SetAllowedRoutes(req.headers.host, valores.server.protocol, valores.server.port)
 							: undefined;
-					const allowedOrigins = SetAlowedRoutes(
+					const allowedOrigins = SetAllowedRoutes(
 						valores.server.cors.allowedroutes,
 						valores.server.protocol,
 						valores.server.port,

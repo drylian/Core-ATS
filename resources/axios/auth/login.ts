@@ -1,4 +1,4 @@
-import http from "../http";
+import axios from "axios";
 
 interface LoginResponse {
     complete?: boolean;
@@ -13,7 +13,7 @@ interface LoginParams {
 
 const loginUser = ({ email, password, remember_me, lang }: LoginParams): Promise<LoginResponse> => {
 	return new Promise((resolve, reject) => {
-		http.post("/auth/login", {
+		axios.post("/auth/login", {
 			email,
 			password,
 			remember_me,
