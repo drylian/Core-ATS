@@ -18,7 +18,7 @@ import { Connections } from "@/http/middlewares/Connections";
 import { ApplicationRoutes } from "@/http/Application";
 import { ViteInjector } from "./express/vite/ViteInjector";
 import { LanguageRequests } from "@/http/router/base/Languages";
-import { TokensValiter } from "@/http/middlewares/Tokens";
+import { CookieController } from "@/http/middlewares/CookieController";
 import http from "http";
 import { Server } from "socket.io";
 import ServerUptime from "@/http/sockets/ServerUptime";
@@ -59,11 +59,10 @@ class Express {
 		this.express.use(express.json());
 		this.express.use(fileUpload());
 		this.express.use(express.urlencoded({ extended: true }));
-		this.express.use(cookieParser());
+		this.express.use(cookieParser(this.config.server.signature));
 		this.express.use("/", express.static(path.join(configuractions.rootPATH + "/http/static")));
 		this.express.use(i18AltRequests(this.i18n));
-		this.express.use(TokensValiter());
-		this.express.use(cookieParser(this.config.server.csrf.cookie_secret));
+		this.express.use(CookieController());
 		this.express.use(Credentials());
 		/**
          * Core Middlewares

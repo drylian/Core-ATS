@@ -2,7 +2,7 @@
     "NotAcceptableAccess": "Sua solicitação não pode ser verificada corretamente, tente novamente mais tarde",
     "NotHaveAccessForRoute": "Você não possui autoridade o suficiente para usar esta rota.",
     "NotHaveTypeAcessForRoute": "{{type}} não encontrado, como você chegou até aqui?.",
-    "NotHaveAccessToken": "O Token de autorização está ausente.",
+    "NotHaveAccessToken": "para acessar api é necessario usar 'Client' ou 'Bearer' no começo do token exemplo 'Client Token123'.",
     "NotHaveTypeAccessToken": "{{type}} ínvalido",
     "TypeAccessNotValid": "Apenas token de '{{type}}' podem acessar os recursos dessa rota, token usado '{{checked}}'.",
     "BackToMainPage": "Voltar à página inicial.",

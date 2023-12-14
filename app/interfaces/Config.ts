@@ -35,7 +35,6 @@ export interface SettingsJson {
         refreshTokenSecret: string;
         accessTokenSecret: string;
         csrf: {
-            cookie_secret: string;
             secret: string;
             samesite: boolean;
             secure: boolean;
@@ -43,6 +42,7 @@ export interface SettingsJson {
             size: number;
             ignoreroutes: string;
         };
+        signature:string;
         cors: {
             active: boolean;
             allowedroutes: string[];

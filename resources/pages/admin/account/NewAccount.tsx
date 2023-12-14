@@ -6,11 +6,11 @@ import { store } from "../../../states";
 import { useState } from "react";
 import newAccount from "../../../axios/admin/accounts/newAccount";
 interface FormData {
-    name: string;
-    email: string;
-    password: string;
-    permissions: string;
-    lang: string;
+	name: string;
+	email: string;
+	password: string;
+	permissions: string;
+	lang: string;
 }
 
 const initialValues: FormData = {
@@ -22,9 +22,9 @@ const initialValues: FormData = {
 };
 
 const validationSchema = Yup.object({
-	name: Yup.string().required("Nome necessario"),
+	name: Yup.string().min(3, "A senha precisa de pelo menos 3 caracteres").required("Nome necessario"),
 	email: Yup.string().email("Formato de e-mail inválido").required("Campo obrigatório"),
-	password: Yup.string().required("Senha necessaria"),
+	password: Yup.string().min(4, "A senha precisa de pelo menos 4 caracteres").required("Senha necessaria"),
 	permissions: Yup.string().required("Permissão necessaria"),
 	lang: Yup.string().required("Linguagem é obrigatório"),
 });
@@ -75,41 +75,43 @@ const NewAccount = () => {
 									<BoxModel title='Informações'>
 										<div className='mb-4'>
 											<label htmlFor='name' className='block text-sm font-bold textpri'>
-                                                Usuário
+												Usuário
 											</label>
 											<Field
 												type='text'
 												id='name'
 												name='name'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='name'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">O nome do usuário, com pelo menos 3 digitos.</p>
 										</div>
 
 										<div className='mb-4'>
 											<label htmlFor='email' className='block text-sm font-bold textpri'>
-                                                Email
+												Email
 											</label>
 											<Field
 												type='text'
 												id='email'
 												name='email'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='email'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">Deve ser um email que ainda não foi usado no painel</p>
 										</div>
 
 										<div className='mb-4'>
 											<label htmlFor='lang' className='block text-sm font-bold textpri'>
-                                                Idioma
+												Idioma
 											</label>
 											<div className='flex'>
 												<Field
@@ -121,15 +123,15 @@ const NewAccount = () => {
 														const seleted = setLang(e);
 														props.setFieldValue("lang", seleted);
 													}}
-													className='mt-1 p-2 w-full border rounded-md'
+													className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 												>
 													<option disabled value='' label='Selecione a lingua do usuário' />
 													{website &&
-                                                        website.langs.map((lang) => (
-                                                        	<option key={lang} value={lang}>
-                                                        		{website.languages[lang] || lang}
-                                                        	</option>
-                                                        ))}
+														website.langs.map((lang) => (
+															<option key={lang} value={lang}>
+																{website.languages[lang] || lang}
+															</option>
+														))}
 												</Field>
 											</div>
 											<ErrorMessage
@@ -137,10 +139,11 @@ const NewAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">O Idioma que vai ser  usado nas respostas do backend e do frontend</p>
 										</div>
 
-										<button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md'>
-                                            Enviar
+										<button type='submit' className='corpri textpri border border-gray-500 px-4 py-2 rounded-md'>
+											Enviar
 										</button>
 									</BoxModel>
 								</div>
@@ -149,13 +152,13 @@ const NewAccount = () => {
 									<BoxModel title='Permissões'>
 										<div className='mb-4 mt-1'>
 											<label htmlFor='permissions' className='block text-sm font-bold textpri'>
-                                                Nivel de permissão
+												Nivel de permissão
 											</label>
 											<Field
 												as='select'
 												id='permissions'
 												name='permissions'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											>
 												<option disabled value='' label='Selecione o nivel de permissão' />
 												{permissionOptions.map((value) => (
@@ -169,13 +172,16 @@ const NewAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">A permissão é o nivel de quanto acesso possue no painel, para um "client" deixe o valor
+												padrão "1000" caso queira algum nivel administrativo coloque acima de
+												"2000", o limite de permissão é limitado ao seu nivel administrativo.</p>
 										</div>
 									</BoxModel>
 									<div className='mt-1'>
 										<BoxModel title='Senha'>
 											<div className='mb-4'>
 												<label htmlFor='password' className='block text-sm font-bold textpri'>
-                                                    Senha
+													Senha
 												</label>
 												<div className='flex'>
 													<Field
@@ -186,17 +192,17 @@ const NewAccount = () => {
 														onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 															setPassword(e.target.value);
 														}}
-														className='mt-1 p-2 w-full border rounded-md'
+														className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 													/>
 													<button
-														className='bg-blue-500 text-white px-4 py-2 rounded-md ml-1'
+														className='corpri textpri border border-gray-500 px-4 pb-1 pt-1 ml-1 rounded-md'
 														onClick={(e) => {
 															generatepass();
 															props.setFieldValue("password", password);
 															e.preventDefault();
 														}}
 													>
-                                                        Gerar
+														Gerar
 													</button>
 												</div>
 												<ErrorMessage
@@ -204,23 +210,14 @@ const NewAccount = () => {
 													component='div'
 													className='text-red-500 text-xs mt-1'
 												/>
+												<p className="textter text-sm mt-1">Uma senha de pelo menos 4 digitos, se possivel uma senha única e dificil, não "1234" ou "102030" etc.</p>
+
 											</div>
 										</BoxModel>
 									</div>
 								</div>
 							</div>
-							<div className='mt-1'>
-								<BoxModel title='Aviso sobre as permissôes' color='red' nopad={true}>
-									{/* <i className={`bx bx-error ml-1 mr-1`} style={{ color: "white", fontSize: '20px', }} /> */}
-									<div className='bg-red-500 rounded p-2'>
-										<span className='textpri font-semibold'>
-                                            A permissão é o nivel do usuário , para um usuário padrão deixe o valor
-                                            padrão "1000" caso queira algum nivel administrativo coloque acima de
-                                            "2000", o limite de permissão é limitado ao seu nivel administrativo.
-										</span>
-									</div>
-								</BoxModel>
-							</div>
+
 						</Form>
 					);
 				}}

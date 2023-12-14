@@ -88,7 +88,7 @@ const EditAccount = () => {
 	if (user && Number(id) === user.id) return <WarningContent title="Perfil Bloqueado" desc="Aviso de acesso bloqueado" message="Não é possivel editar seu proprio perfil na area administrativa, edite na area do client" />;
 
 	return (
-		<ContentBox title='Administração - Usuários - Novo usuário' nofooter={true}>
+		<ContentBox title='Administração - Usuários - Editar usuário' desc="Administração - Usuários - Editar usuário" nofooter={true} header>
 			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{(props) => {
 					return (
@@ -104,13 +104,14 @@ const EditAccount = () => {
 												type='text'
 												id='name'
 												name='name'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='name'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">Nome do usuário atual</p>
 										</div>
 
 										<div className='mb-4'>
@@ -121,13 +122,14 @@ const EditAccount = () => {
 												type='text'
 												id='email'
 												name='email'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='email'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">Email atual do usuário</p>
 										</div>
 
 										<div className='mb-4'>
@@ -144,7 +146,7 @@ const EditAccount = () => {
 														const seleted = setLang(e);
 														props.setFieldValue("lang", seleted);
 													}}
-													className='mt-1 p-2 w-full border rounded-md'
+													className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 												>
 													{website &&
 														website.langs.map((lang) => (
@@ -159,9 +161,11 @@ const EditAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">O Idioma que vai ser  usado nas respostas do backend e do frontend</p>
+
 										</div>
 
-										<button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md'>
+										<button type='submit' className='corpri textpri border border-gray-500 px-4 py-2 rounded-md'>
 											Enviar
 										</button>
 									</BoxModel>
@@ -177,7 +181,7 @@ const EditAccount = () => {
 												as='select'
 												id='permissions'
 												name='permissions'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 											>
 												<option disabled value='' label='Selecione o nivel de permissão' />
 												{permissionOptions.map((value) => (
@@ -191,19 +195,13 @@ const EditAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="textter text-sm mt-1">A permissão é o nivel de quanto acesso possue no painel, para um "client" deixe o valor
+												padrão "1000" caso queira algum nivel administrativo coloque acima de
+												"2000", o limite de permissão é limitado ao seu nivel administrativo.</p>
 										</div>
 									</BoxModel>
 									<div className='mt-1'>
 										<BoxModel title='Senha'>
-											<BoxModel color="red" noheader nopad>
-												<div className="flex flex-col bg-red-500">
-													<div className="flex font-bold items-center bg-red-900">
-														<i className="bx bx-error-alt ml-2" />
-														<span className="ml-2">Aviso</span>
-													</div>
-													<span className="textpri p-1 text-sm font-bold">Opicional, caso tenha esquecido a senha, é possivel troca-la.</span>
-												</div>
-											</BoxModel>
 											<div className='mb-4'>
 												<label htmlFor='password' className='block text-sm font-bold textpri'>
 													Senha
@@ -217,13 +215,12 @@ const EditAccount = () => {
 														onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 															setPassword(e.target.value);
 														}}
-														className='mt-1 p-2 w-full border rounded-md'
+														className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
 													/>
 													<button
-														className='bg-blue-500 text-white px-4 py-2 rounded-md ml-1'
+														className='corpri textpri border border-gray-500 px-4 pb-1 pt-1 ml-1 rounded-md'
 														onClick={(e) => {
 															generatepass();
-															//
 															props.setFieldValue("password", password);
 															e.preventDefault();
 														}}
@@ -236,22 +233,11 @@ const EditAccount = () => {
 													component='div'
 													className='text-red-500 text-xs mt-1'
 												/>
+												<p className="textter text-sm mt-1">Caso não queira atualizar a senha, basta deixar isso em branco, Uma senha de pelo menos 4 digitos, se possivel uma senha única e dificil, não "1234" ou "102030" etc.</p>
 											</div>
 										</BoxModel>
 									</div>
 								</div>
-							</div>
-							<div className='mt-1'>
-								<BoxModel title='Aviso sobre as permissôes' color='red' nopad={true}>
-									{/* <i className={`bx bx-error ml-1 mr-1`} style={{ color: "white", fontSize: '20px', }} /> */}
-									<div className='bg-red-500 rounded p-2'>
-										<span className='textpri font-semibold'>
-											A permissão é o nivel do usuário , para um usuário padrão deixe o valor
-											padrão "1000" caso queira algum nivel administrativo coloque acima de
-											"2000", o limite de permissão é limitado ao seu nivel administrativo.
-										</span>
-									</div>
-								</BoxModel>
 							</div>
 						</Form>
 					);

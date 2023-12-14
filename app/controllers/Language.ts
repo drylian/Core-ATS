@@ -27,38 +27,7 @@ const core = (...message: LogMessage[]) => Console("i18Alt", "red", "Avisos", me
  * @property {function(string, string): object} getNR - Função para obter um recurso de namespace.
  * @property {function(string, string): object} getNamespaceResource - Função para obter um recurso de namespace.
  */
-export type i18t = {
-    t(key: string, params?: Record<string, string>): string;
-    translate(key: string, params?: Record<string, string>): string;
-    lang: string;
-    language: string;
-    languages: string[];
-    langs: string[];
-    sl(lang: string | null): boolean;
-    setLanguage(lang: string | null): boolean;
-    getNR(namespace: string, i18next: boolean, lang?: string): object;
-    getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object;
-};
 
-/**
- * Middleware para configurar o i18Alt
- * @param i18n
- */
-export function i18AltMiddleware(i18n: i18t) {
-	return (req: Request, res: Response, next: NextFunction) => {
-		req.t = i18n.t;
-		req.translate = i18n.translate;
-		req.lang = i18n.lang;
-		req.language = i18n.language;
-		req.langs = i18n.langs;
-		req.languages = i18n.languages;
-		req.sl = i18n.sl;
-		req.setLanguage = i18n.setLanguage;
-		req.getNR = i18n.getNR;
-		req.getNamespaceResource = i18n.getNamespaceResource;
-		next();
-	};
-}
 /**
  * Classe para gerenciamento de internacionalização.
  */
@@ -245,4 +214,25 @@ export default class I18alt {
 			}),
 		};
 	}
+}
+export type i18t = InstanceType<typeof I18alt>;
+
+/**
+ * Middleware para configurar o i18Alt
+ * @param i18n
+ */
+export function i18AltMiddleware(i18n: i18t) {
+	return (req: Request, res: Response, next: NextFunction) => {
+		req.t = i18n.t;
+		req.translate = i18n.translate;
+		req.lang = i18n.lang;
+		req.language = i18n.language;
+		req.langs = i18n.langs;
+		req.languages = i18n.languages;
+		req.sl = i18n.sl;
+		req.setLanguage = i18n.setLanguage;
+		req.getNR = i18n.getNR;
+		req.getNamespaceResource = i18n.getNamespaceResource;
+		next();
+	};
 }

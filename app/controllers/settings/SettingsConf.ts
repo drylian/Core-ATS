@@ -104,8 +104,9 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		if (!c?.server?.accessTokenSecret)
 			jsonsv(root.configPATH + "/settings.json", { server: { accessTokenSecret: `accessToken_${gen(128)}` } });
 
-		if (!c?.server?.csrf?.cookie_secret)
-			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { cookie_secret: gen(128) } } });
+		if (!c?.server?.signature)
+			jsonsv(root.configPATH + "/settings.json", { server: { signature: gen(128) } });
+
 		if (!c?.server?.csrf?.secret)
 			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { secret: gen(128) } } });
 

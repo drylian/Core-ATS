@@ -1,7 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 import { store } from "../states";
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+import { useLocation, useNavigate } from "react-router-dom";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+const navegate = useNavigate();
+const loc = useLocation();
 const http: AxiosInstance = axios.create({
 	withCredentials: true,
 	timeout: 20000,
@@ -32,6 +35,10 @@ http.interceptors.response.use(
 		return resp;
 	},
 	(error) => {
+		if (error.response && error.response.status === 306) {
+			if (error.response.data.callback) return navegate("/auth/login?callback=" + error.response.data.callback)
+			else return navegate("/auth/login?callback=" + loc)
+		}
 		store.getActions().progress.setComplete();
 
 		if (error.response.data.type)

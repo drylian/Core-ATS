@@ -12,7 +12,6 @@ import { UserE } from "@/models/User";
  * @returns Html principal do sistema, usado para rederizar o React
  */
 export default function HtmlIndex(csrftoken: string, req: Request, manifest: string[], dev?: string) {
-    let data: unknown;
     const config: SettingsJson = storage.get("config");
     const language = req?.access.lang
         ? req?.access.lang
@@ -22,16 +21,8 @@ export default function HtmlIndex(csrftoken: string, req: Request, manifest: str
                 ? config.server.lang
                 : "pt-BR";
     const i18n = new I18alt(language);
-    try {
-        data = JSON.stringify(
-            ALTdcp(req.cookies["X-Application-Access"], config.server.accessTokenSecret, req.access.ip?.toString()),
-        );
-        if (data) delete (data as { uuid?: string }).uuid
-
-    } catch (e) {
-        data = false;
-    }
-
+    const user = req.access?.cookie ? req.access.cookie : null
+    if (user) delete (user as { uuid?: string }).uuid
     if (manifest.length === 0 && !dev) {
         return SenderError({ status: 500, message: i18n.t("http:errors.ReactResourcesNotFound") }, req);
     } else
@@ -50,7 +41,7 @@ export default function HtmlIndex(csrftoken: string, req: Request, manifest: str
                 <script>
                     window.CsrfToken = "${csrftoken}"
                     window.WebsiteConf = ${JSON.stringify(ApplicationConfigs().Website)};
-                    ${req.cookies["X-Application-Access"] && data ? `window.UserConf = ${data}` : ""}
+                    ${user ? `window.UserConf = ${JSON.stringify(user)}` : ""}
                     </script>
                 ${dev ? "<!-- Modo Desenvolvedor -->" : "<!-- Modo Produção --> \n" + manifest.join("\n")}
             </head>

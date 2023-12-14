@@ -20,7 +20,7 @@ const Layout = () => {
 					>
 						<React.Suspense fallback={<Loading />}>
 							<ProgressBar />
-							<Outlet />
+							<Outlet/>
 						</React.Suspense>
 					</div>
 				</div>
