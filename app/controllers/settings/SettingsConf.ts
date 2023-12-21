@@ -111,14 +111,9 @@ export default async function SettingsConf(core: LoggingsMethods) {
 			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { secret: gen(128) } } });
 
 		if (typeof c?.server?.csrf?.samesite !== "boolean")
-			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { samesite: false } } });
-		if (typeof c?.server?.csrf?.secure !== "boolean")
-			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { secure: false } } });
-		if (typeof c?.server?.csrf?.signed !== "boolean")
-			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { signed: false } } });
-		if (!c?.server?.csrf?.size) jsonsv(root.configPATH + "/settings.json", { server: { csrf: { size: 64 } } });
-		if (!c?.server?.csrf?.ignoreroutes)
-			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { ignoreroutes: "" } } });
+			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { samesite: true } } });
+		if (!c?.server?.csrf?.ignored)
+			jsonsv(root.configPATH + "/settings.json", { server: { csrf: { ignored: [""] } } });
 
 		// rele para garantir que tudo ta ok
 		const css: SettingsJson = json(root.configPATH + "/settings.json");

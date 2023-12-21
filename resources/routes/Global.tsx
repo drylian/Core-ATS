@@ -12,7 +12,7 @@ export default function GlobalRouter() {
 		<BrowserRouter>
 			<Routes>
 				{/* Rotas Globais */}
-				<Route path='/admin*' element={<RequireAuth Protected={2000} component={AdminController} />} />
+				<Route path='/admin/*' element={<RequireAuth Protected={2000} component={AdminController} />} />
 				<Route path='/' element={<Layout />}>
 					<Route path='' element={<Home />} />
 					<Route path='auth/login/' element={<RequireAuth component={Login} />} />

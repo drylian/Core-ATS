@@ -3,8 +3,8 @@
     "NotHaveAccessForRoute": "Você não possui autoridade o suficiente para usar esta rota.",
     "NotHaveTypeAcessForRoute": "{{type}} não encontrado, como você chegou até aqui?.",
     "NotHaveAccessToken": "para acessar api é necessario usar 'Client' ou 'Bearer' no começo do token exemplo 'Client Token123'.",
-    "NotHaveTypeAccessToken": "{{type}} ínvalido",
-    "TypeAccessNotValid": "Apenas token de '{{type}}' podem acessar os recursos dessa rota, token usado '{{checked}}'.",
+    "NotHaveTypeAccessToken": "O {{type}} não está cadastrado nesse painel",
+    "ClientRestrictedAccess": "Apenas clients podem acessar os recursos dessa rota., seja por client token ou client cookie",
     "BackToMainPage": "Voltar à página inicial.",
     "JsonViewerApi": "Resposta recebida da api na {{title}}",
     "api": {

@@ -4,14 +4,12 @@ import I18alt from "@/controllers/Language";
 import storage from "@/controllers/Storage";
 import { Request } from "express";
 import ApplicationConfigs from "@/controllers/express/ApplicationConfigs";
-import { ALTdcp } from "@/utils";
-import { UserE } from "@/models/User";
 
 /**
  *
  * @returns Html principal do sistema, usado para rederizar o React
  */
-export default function HtmlIndex(csrftoken: string, req: Request, manifest: string[], dev?: string) {
+export default function HtmlIndex(req: Request, manifest: string[], dev?: string) {
     const config: SettingsJson = storage.get("config");
     const language = req?.access.lang
         ? req?.access.lang
@@ -39,7 +37,6 @@ export default function HtmlIndex(csrftoken: string, req: Request, manifest: str
                 <title></title>
                 <!-- Server Params-->
                 <script>
-                    window.CsrfToken = "${csrftoken}"
                     window.WebsiteConf = ${JSON.stringify(ApplicationConfigs().Website)};
                     ${user ? `window.UserConf = ${JSON.stringify(user)}` : ""}
                     </script>

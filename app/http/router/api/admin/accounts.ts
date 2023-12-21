@@ -58,7 +58,7 @@ export default class AdminsAccounts extends Controller {
 				uuid: genv5(email, "users"),
 			});
 			core.log(`Novo usuário foi criado : "${newUser.username}"`);
-			await MakeActivity(req, "criou o usuário " + newUser.username, "ADMINISTRATION");
+			await MakeActivity(req, "criou o usuário " + newUser.username);
 
 			return res.status(200).json({ type: "success", message: "Usuário criado com sucesso." });
 		});
@@ -92,7 +92,7 @@ export default class AdminsAccounts extends Controller {
 
 			// Realiza a exclusão do usuário
 			await User.destroy({ where: { id: userId } });
-			await MakeActivity(req, `deletou o usuário do email "${userRecord.dataValues.email}" que tinha rank de permissão "${userRecord.dataValues.permissions}"`, "ADMINISTRATION");
+			await MakeActivity(req, `deletou o usuário do email "${userRecord.dataValues.email}" que tinha rank de permissão "${userRecord.dataValues.permissions}"`);
 
 			return res.status(200).sender({ message: "Usuário excluído com sucesso" });
 		});
@@ -131,8 +131,7 @@ export default class AdminsAccounts extends Controller {
 				if (req.access.user?.username === request.body.username)
 					await MakeActivity(
 						req,
-						`Atualizou as configurações de conta do email ${request.body.email}`,
-						"ADMINISTRATION",
+						`Atualizou as configurações de conta do email ${request.body.email}`
 					);
 
 				return res.status(200).sender({ message: "Usuário atualizado com sucesso" });

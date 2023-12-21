@@ -7,11 +7,11 @@ const Missing = () => {
 
 	return (
 		<div className='flex items-center justify-center h-screen '>
-			<div className='corpri p-8 rounded shadow-lg text-center'>
-				<h1 className='text-2xl font-bold textpri mb-4'>
+			<div className='bg-light-primary dark:bg-dark-primary duration-300 p-8 rounded shadow-lg text-center'>
+				<h1 className='text-2xl font-bold text-light-primary dark:text-dark-primary duration-300 mb-4'>
 					<Trans ns={"react:messages"} i18nKey={"PageNotFound"} />
 				</h1>
-				<p className='mb-6 textsec'>
+				<p className='mb-6 text-light-secondary dark:text-dark-secondary duration-300'>
 					<Trans ns={"react:messages"} i18nKey={"PageSolicitedNotFound"} />
 				</p>
 				<button

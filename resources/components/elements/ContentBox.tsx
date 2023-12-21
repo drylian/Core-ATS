@@ -11,11 +11,9 @@ export interface ContentBoxProps {
 	nofooter?: boolean;
 	title?: string;
 	className?: string;
-	header?: boolean
-	desc?:string
 }
 
-const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nofooter, desc, header = false }) => {
+const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nofooter }) => {
 	// Obter dados do site do armazenamento
 	const website = store.getState().website.data;
 
@@ -29,14 +27,6 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 	return (
 		<>
 			<ContentContainer css={tw`my-1 sm:my-1`} className={className}>
-				{header &&
-					<>
-					<div className="flex items-center p-2 corpri bg-opacity-75 rounded border-t-4 border-blue-500">
-					<h1 className="corpri font-bold text-lg">{title}</h1>
-						<h1 className="corpri font-bold text-base">{desc}</h1>
-					</div>
-					</>
-				}
 				<FlashMessageRender />
 				{children}
 			</ContentContainer>

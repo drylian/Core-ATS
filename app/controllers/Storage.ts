@@ -4,7 +4,7 @@ import User from "@/models/User";
 import _ from "lodash";
 import { Console, LogMessage } from "./loggings/OnlyConsole";
 
-class Storage {
+export class Storage {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private storage: { [key: string]: any } = {};
 	private expires: { [key: string]: number } = {};
@@ -59,16 +59,19 @@ class Storage {
 		return this.storage[chave] ? true : false;
 	}
 
-	public del(chave: string): void {
-		if (chave in this.storage) {
+	public del(chave: string, expecificate?: string): void {
+		if (expecificate && expecificate in this.storage[chave]) {
+			delete this.storage[chave][expecificate]
+		}
+		else if (chave in this.storage) {
 			delete this.storage[chave];
 		}
 	}
 	/**
-     * ### Cria uma chave temporaria de expiração.
-     * @param {string} chave Objeto que vai ter o temporizador.
-     * @param {string} time O tempo de expiração em "d","h","m".
-     */
+	 * ### Cria uma chave temporaria de expiração.
+	 * @param {string} chave Objeto que vai ter o temporizador.
+	 * @param {string} time O tempo de expiração em "d","h","m".
+	 */
 	public exp(chave: string, time: string): void {
 		if (this.expires[chave]) {
 			this.core("Chave ja configurada, pulando...");

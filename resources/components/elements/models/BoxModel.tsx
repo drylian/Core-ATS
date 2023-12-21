@@ -46,29 +46,29 @@ const BoxModel: React.FC<BoxModelProps> = ({
 	return (
 		<div className={className}>
 			<div className={`overflow-hidden border-t-4 rounded-md`} css={ColorSet(color)}>
-				{!noheader && <div className='header corpri text-white flex items-center rounded-t-md p-1'>
-					<h2 className='m-0 text-bold textpri text-base'>{title}</h2>
+				{!noheader && <div className='header bg-light-primary dark:bg-dark-primary duration-300 text-light-primary dark:text-dark-primary flex items-center rounded-t-md p-1'>
+					<h2 className='m-0 text-bold text-light-primary dark:text-dark-primary duration-300 text-lg'>{title}</h2>
 					{search !== undefined && setSearch && (
-						<p className='m-0 textter text-sm ml-4'>
+						<p className='m-0 text-light-tertiary dark:text-dark-tertiary duration-300 text-sm ml-4'>
 							{
 								<input
 									type='text'
 									placeholder='Perquisar...'
 									value={search}
 									onChange={(e) => setSearch(e.target.value)}
-									className='block p-2 w-full text-sm textpri corsec border duration-200 border-none rounded focus:border-blue-500'
+									className='block p-2 w-full text-sm text-light-primary dark:text-dark-primary bg-light-secondary dark:bg-dark-secondary border duration-300 border-none rounded focus:border-blue-500'
 								/>
 							}
 						</p>
 					)}
-					{desc && <p className='m-0 textter text-sm ml-4 hidden md:block '>{desc}</p>}
+					{desc && <p className='m-0 text-light-tertiary dark:text-dark-tertiary duration-300 text-sm ml-4 hidden md:block '>{desc}</p>}
 					{buttonSub && (
-						<button className='ml-auto px-4 py-2 corsec text-white rounded' onClick={onClick}>
+						<button className='ml-auto px-4 py-2 bg-light-secondary dark:bg-dark-secondary duration-300 text-white rounded' onClick={onClick}>
 							{buttonSub}
 						</button>
 					)}
 				</div>}
-				<div className={`overflow-auto rounded-b-md corter ${!nopad ? "p-2" : ""}`}>{children}</div>
+				<div className={`overflow-auto rounded-b-md bg-light-secondary dark:bg-dark-secondary duration-300 ${!nopad ? "p-2" : ""}`}>{children}</div>
 			</div>
 		</div>
 	);

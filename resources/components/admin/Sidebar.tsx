@@ -42,7 +42,7 @@ const App: React.FC<Props> = ({ open }) => {
 
 	return (
 		<div
-			className={` ${open ? "w-72" : "w-20 "} corpri p-4 relative duration-300 overflow-auto`}
+			className={` ${open ? "w-72" : "w-20 "} bg-light-primary dark:bg-dark-primary p-4 relative duration-300 overflow-auto`}
 			style={{
 				marginLeft: open ? "" : window.innerWidth < 768 ? "-80px" : "",
 			}}
@@ -58,33 +58,33 @@ const App: React.FC<Props> = ({ open }) => {
 					}}
 					alt='Logo'
 				/>
-				<span className={`textpri font-bold text-lg origin-left duration-200 ${!open && "scale-0"}`}>
+				<span className={`text-light-primary dark:text-dark-primary font-bold text-lg origin-left duration-300 ${!open && "scale-0"}`}>
 					Administração
 				</span>
 			</div>
 			<ul className='pt-2'>
 				{Menus.map(
 					(Menu, index) =>
-						// Verifique a permissão aqui
+						// Verifique a permissão aqui 
 						User &&
 						User.permissions &&
 						User.permissions >= Menu.permission && (
 							<Link to={Menu.path} key={index}>
 								<li
-									className={`flex duration-200 rounded-md p-2 cursor-pointer hover:bg-white hover:bg-opacity-20 textsec text-sm items-center gap-x-4 
+									className={`flex duration-300 rounded-md p-2 cursor-pointer hover:bg-white hover:bg-opacity-20 text-light-secondary dark:text-dark-secondary text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}
 			  ${currentPage === Menu.path ? "border-l-4 border-blue-500 shadow-md bg-white hover:border-blue-300 after:border-blue-500 bg-opacity-10" : "border-blue-400"}
               `}
 								>
 									{/* Use as classes do Boxicons para os ícones */}
 									<i
-										className={`bx ${Menu.icon}`}
+										className={`bx ${Menu.icon} text-light-primary dark:text-dark-primary duration-300`}
 										style={{
 											marginLeft: "6px",
 											fontSize: "20px",
 										}}
 									/>
-									<span className={`${!open && "scale-0"} origin-left duration-200`}>
+									<span className={`${!open && "scale-0"} text-light-primary dark:text-dark-primary origin-left duration-300`}>
 										{Menu.title}
 									</span>
 								</li>
@@ -93,16 +93,16 @@ const App: React.FC<Props> = ({ open }) => {
 				)}
 				{User && (
 					<BoxModel className={`${!open && "scale-0"
-						} duration-200 mt-3`} noheader nopad>
+						} duration-300 mt-3`} noheader nopad>
 						<div className="flex items-center justify-between p-2">
 							<div className="w-10 h-10 flex items-center justify-center border-4 border-blue-500 rounded-full">
-								<i className="bx bx-user" style={{ fontSize: '20px' }} />
+								<i className="bx bx-user text-light-primary dark:text-dark-primary duration-300" style={{ fontSize: '20px' }} />
 							</div>
 							<div>
-								<p className="text-xs textsec">
+								<p className="text-xs text-light-primary dark:text-dark-primary duration-300">
 									{User.email}
 								</p>
-								<p className="text-xs textter">
+								<p className="text-xs text-light-secondary dark:text-dark-secondary duration-300">
 									{User.permissions ?? 'N/A'}
 								</p>
 							</div>

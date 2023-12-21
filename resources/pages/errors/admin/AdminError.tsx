@@ -42,10 +42,10 @@ class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
 									style={{ marginLeft: "-1px", color: "red", fontSize: "200px" }}
 								/>
 								<div className='flex-1 justid shadow-md'>
-									<h1 className='text-2xl font-bold textpri mb-4'>
+									<h1 className='text-2xl font-bold text-light-primary dark:text-dark-primary duration-300 mb-4'>
 										<Trans ns={"react:messages"} i18nKey={"ErrorBoundaryReactTitle"} />
 									</h1>
-									<p className='mb-6 textsec'>
+									<p className='mb-6 text-light-secondary dark:text-dark-secondary duration-300'>
 										<Trans ns={"react:messages"} i18nKey={"ErrorBoundaryReact"} />
 									</p>
 								</div>

@@ -1,28 +1,28 @@
 import HtmlIndex from "@/http/pages/system/index.html";
 import express, { Application } from "express";
-import { generateCsrfToken } from "@/http/middlewares/Csrf";
 import configuractions from "@/controllers/settings/Default";
 import { json } from "@/utils";
 import path from "path";
 import I18alt from "@/controllers/Language";
 import SenderError from "@/http/pages/errors/Error.html";
+import HtmlController from "@/http/server/HtmlController";
 
 /**
  * Types do Manifest gerado pelo Vite, apenas os usados
  */
 type IndexHtmlEntry = {
-    assets: string[];
-    css: string[];
-    file: string;
-    isEntry: boolean;
-    src: string;
+	assets: string[];
+	css: string[];
+	file: string;
+	isEntry: boolean;
+	src: string;
 };
 
 /**
  * Manifest do Vite
  */
 type Manifest = {
-    "index.html": IndexHtmlEntry;
+	"index.html": IndexHtmlEntry;
 };
 
 /**
@@ -32,17 +32,17 @@ class ViteInjector {
 	private server: Application;
 
 	/**
-     * Construtor da classe ViteInjector.
-     * @param {Application} server - A instância do servidor Express.
-     */
+	 * Construtor da classe ViteInjector.
+	 * @param {Application} server - A instância do servidor Express.
+	 */
 	constructor(server: Application) {
 		this.server = server;
 	}
 
 	/**
-     * Configuração para desenvolvimento com Vite.
-     * @returns {Promise<void>}
-     */
+	 * Configuração para desenvolvimento com Vite.
+	 * @returns {Promise<void>}
+	 */
 	public async development(): Promise<void> {
 		const { createServer } = await import("vite");
 		const vite = await createServer({
@@ -51,25 +51,24 @@ class ViteInjector {
 		});
 		this.server.use(vite.middlewares);
 		this.server.use("*", async (req, res) => {
+			const html = new HtmlController(req)
 			try {
 				vite.transformIndexHtml(
 					req.originalUrl,
-					HtmlIndex(generateCsrfToken()(req, res, true), req, [], "dev"),
+					html.automatic(),
 				).then((html) => {
 					res.status(200).send(html);
 				});
 			} catch (e) {
-				res.status(500).send(
-					SenderError({ status: 500, message: new I18alt().t("http:errors.ReactResourcesNotFound") }, req),
-				);
+				res.status(500).send(html.error({ status: 500, message: new I18alt().t("http:errors.ReactResourcesNotFound") }));
 			}
 		});
 	}
 
 	/**
-     * Configuração para produção com Vite.
-     * @returns {Promise<void>}
-     */
+	 * Configuração para produção com Vite.
+	 * @returns {Promise<void>}
+	 */
 	public async production(): Promise<void> {
 		const ViteMinefest: Manifest = json(configuractions.rootPATH + "/http/public/manifest.json");
 		const { css, file } = ViteMinefest["index.html"];
@@ -79,8 +78,10 @@ class ViteInjector {
 		];
 		this.server.use("/assets", express.static(path.join(configuractions.rootPATH + "/http/public/assets")));
 		this.server.get("*", (req, res) => {
+			const html = new HtmlController(req, manifest)
+
 			if (req.accepts("html")) {
-				res.send(HtmlIndex(generateCsrfToken()(req, res, true), req, manifest));
+				res.send(html.automatic());
 			}
 		});
 	}

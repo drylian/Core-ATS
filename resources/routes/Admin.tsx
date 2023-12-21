@@ -15,6 +15,7 @@ import EditAccount from "../pages/admin/account/EditAccount";
 import ViewActivity from "../pages/admin/activity/ViewActivity";
 import Tokens from "../pages/admin/Tokens";
 import NewToken from "../pages/admin/tokens/NewToken";
+import Settings from "../pages/admin/Settings";
 
 const AdminController = () => {
 	return (
@@ -30,7 +31,8 @@ const AdminController = () => {
 
 				<Route path='tokens' element={<RequireAuth Protected={2000} component={Tokens} />} />
 				<Route path='tokens/new' element={<RequireAuth Protected={2000} component={NewToken} />} />
-
+				
+				<Route path='settings' element={<RequireAuth Protected={4000} component={Settings} />} />
 				<Route path='testes' element={<RequireAuth Protected={4000} component={Testes} />} />
 
 				<Route path='*' element={<RequireAuth Protected={2000} component={AdminMissing} />} />

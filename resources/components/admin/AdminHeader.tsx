@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { store } from "../../states";
+import LightSwitches from "../Themechanger";
 interface Props {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
@@ -7,9 +8,9 @@ interface Props {
 }
 const AdminHeader: React.FC<Props> = ({ open, setOpen, fixed }) => {
 	const website = store.getState().website.data;
-	const headerClassName = `corpri textpri p-6 flex items-center justify-between ${fixed ? "fixed top-0 left-0 w-full z-50" : ""
+	const headerClassName = `bg-light-primary dark:bg-dark-primary text-light-primary dark:text-dark-primary duration-300 p-6 flex items-center justify-between ${fixed ? "fixed top-0 left-0 w-full z-50" : ""
 		}`;
-	
+
 	return (
 		<>
 			<header className={headerClassName}>
@@ -22,7 +23,8 @@ const AdminHeader: React.FC<Props> = ({ open, setOpen, fixed }) => {
 							fontSize: "30px",
 						}}
 					/>
-					<span className='textpri font-bold text-lg'>{website?.title}</span>
+					<span className='text-light-primary dark:text-dark-primary font-bold text-lg duration-300'>{website?.title}</span>
+					<LightSwitches />
 				</div>
 			</header>
 			{fixed ? <div className='h-20'></div> : null}

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { ErrType, SettingsJson } from "@/interfaces";
-import SenderError from "@/http/pages/errors/Error.html";
-import JsonViewer from "@/http/pages/system/Json.html";
 import storage from "../Storage";
+import HtmlController from "@/http/server/HtmlController";
 
 interface Params<T> {
 	message?: string;
@@ -34,18 +33,19 @@ export default async function ResponseSender<T>(req: Request, res: Response, par
 	const messages = message ? message : "Algo desconhecido aconteceu.";
 	switch (req.accepts(["html", "json", "txt"])) {
 		case "html":
+			const html = new HtmlController(req)
 			if (err) {
-				res.send(SenderError({ message: "Internal Server Error", status: 500, lang: req.language }, req));
+				res.status(500).send(html.error({ message: "Internal Server Error", status: 500, err: err }));
 			} else if (list) {
-				res.send(JsonViewer(QueryedData(list, Number(req.query.page)), req, "list"));
+				res.status(200).send(html.json(QueryedData(list, Number(req.query.page))));
 			} else if (json) {
-				res.send(JsonViewer(params.json, req));
+				res.status(200).send(html.json(json));
 			} else if (res.statusCode) {
-				res.send(SenderError({ message: messages, status: res.statusCode, lang: req.language }, req));
+				res.send(html.error({ message: messages, status: res.statusCode }));
 			} else if (req.statusCode) {
-				res.send(SenderError({ message: messages, status: req.statusCode, lang: req.language }, req));
+				res.send(html.error({ message: messages, status: req.statusCode }));
 			} else {
-				res.send(SenderError({ message: messages, status: 500, lang: req.language }, req));
+				res.send(html.error({ message: messages, status: 500 }));
 			}
 			break;
 		case "json":

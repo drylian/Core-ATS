@@ -57,7 +57,7 @@ export default class AdminsTokens extends Controller {
                 uuid: genv5(token, "tokens"),
             });
             core.log(`Novo token foi criado "${token.substring(0, 20)}" com o rank de permissão "${permissions}"`);
-            await MakeActivity(req, `criou um novo token "${token.substring(0, 20)}" que tem de permissão "${permissions}"`, "ADMINISTRATION");
+            await MakeActivity(req, `criou um novo token "${token.substring(0, 20)}" que tem de permissão "${permissions}"`);
 
             return res.status(200).json({ type: "success", message: "Token criado com sucesso.", data: { token: token } });
         });
@@ -91,7 +91,7 @@ export default class AdminsTokens extends Controller {
 
             // Realiza a exclusão do usuário
             await Token.destroy({ where: { id: TokenId } });
-            await MakeActivity(req, `deletou um o token "${TokenRecord.dataValues.token.substring(0, 20)}" que tinha a permissão de "${TokenRecord.dataValues.permissions}"`, "ADMINISTRATION",
+            await MakeActivity(req, `deletou um o token "${TokenRecord.dataValues.token.substring(0, 20)}" que tinha a permissão de "${TokenRecord.dataValues.permissions}"`
             );
             return res.status(200).sender({ message: "Token excluído com sucesso" });
         });

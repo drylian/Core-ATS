@@ -20,7 +20,7 @@
     "src": "../node_modules/boxicons/fonts/boxicons.woff2"
   },
   "index.css": {
-    "file": "assets/index-6b1ea1dc.css",
+    "file": "assets/index-74b44a9d.css",
     "src": "index.css"
   },
   "index.html": {
@@ -32,9 +32,9 @@
       "assets/boxicons-3fe502d8.svg"
     ],
     "css": [
-      "assets/index-6b1ea1dc.css"
+      "assets/index-74b44a9d.css"
     ],
-    "file": "assets/index-53dbda33.js",
+    "file": "assets/index-fee6f386.js",
     "isEntry": true,
     "src": "index.html"
   }

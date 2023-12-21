@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Rota de autenticação
 router.post("/:type", async (Request: Request, Response: Response) => {
-	const { req, res } = await Authenticator(Request, Response, 1000, "UserAPI");
+	const { req, res } = await Authenticator(Request, Response, 1000, true);
 	const type = req.params.type;
 	const i18n = new I18alt();
 	if (req.access.lang) i18n.setLanguage(req.access.lang);

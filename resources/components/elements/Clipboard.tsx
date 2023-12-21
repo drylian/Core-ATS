@@ -35,7 +35,7 @@ const ClibBoardBox: React.FC<ClibBoardBoxProps> = ({ title, text, setCliped }) =
   }, [cliped, setCliped]);
 
   return (
-    <div className="rounded flex border-gray-500 corsec border items-center" style={{ cursor: "pointer" }} onClick={handleCopyClick}>
+    <div className="rounded flex border-gray-500 bg-light-secondary dark:bg-dark-secondary duration-300 border items-center" style={{ cursor: "pointer" }} onClick={handleCopyClick}>
       <div className="border-gray-500 rounded border p-3">
         {cliped ? (
           <i className="bx bx-check" />

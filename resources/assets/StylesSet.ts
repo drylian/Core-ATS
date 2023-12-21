@@ -7,31 +7,27 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins" , sans-serif;
+    /* Colors */
+    --lightcorpri: ${(props) => props.theme.light.color.primary};
+    --lightcorsec:  ${(props) => props.theme.light.color.secondary};
+    --lightcorter:  ${(props) => props.theme.light.color.tertiary};
+    --lighttextpri:  ${(props) => props.theme.light.text.primary};
+    --lighttextsec:  ${(props) => props.theme.light.text.secondary};
+    --lighttextter:  ${(props) => props.theme.light.text.tertiary};
+    
+    --darkcorpri:  ${(props) => props.theme.dark.color.primary};
+    --darkcorsec:  ${(props) => props.theme.dark.color.secondary};
+    --darkcorter:  ${(props) => props.theme.dark.color.tertiary};
+    --darktextpri: ${(props) => props.theme.dark.text.primary};
+    --darktextsec:  ${(props) => props.theme.dark.text.secondary};
+    --darktextter: ${(props) => props.theme.dark.text.tertiary};
     }
     body {
         font-family: 'Roboto', sans-serif;
         background: ${(props) => props.theme.background};
-        background-color: ${(props) => props.theme.corter};
+        background-color: ${(props) => props.theme.selected};
         color: #cccccc;
         letter-spacing: 0.015em;
-    }
-    .textpri {
-        color: ${(props) => props.theme.textpri};
-    }
-    .textsec {
-        color: ${(props) => props.theme.textsec};
-    }
-    .textter {
-        color: ${(props) => props.theme.textter};
-    }
-    .corpri {
-        background-color: ${(props) => props.theme.corpri};
-    }
-    .corsec {
-        background-color: ${(props) => props.theme.corsec};
-    }
-    .corter {
-        background-color: ${(props) => props.theme.corter};
     }
     
     h1, h2 h3, h4 h5, h6 {

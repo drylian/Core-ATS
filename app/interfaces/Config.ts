@@ -37,10 +37,7 @@ export interface SettingsJson {
         csrf: {
             secret: string;
             samesite: boolean;
-            secure: boolean;
-            signed: boolean;
-            size: number;
-            ignoreroutes: string;
+            ignored: string[];
         };
         signature:string;
         cors: {

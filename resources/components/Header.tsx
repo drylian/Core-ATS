@@ -21,7 +21,7 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 		setShowDropdown(!showDropdown);
 	};
 
-	const headerClassName = `corpri text-white p-4 flex items-center justify-between ${
+	const headerClassName = `bg-light-primary dark:bg-dark-primary duration-300 text-light-primary dark:text-dark-primary p-4 flex items-center justify-between ${
 		fixed ? "fixed top-0 left-0 w-full z-50" : ""
 	}`;
 
@@ -30,20 +30,20 @@ const Header = ({ fixed = false }: { fixed?: boolean }) => {
 			<header className={headerClassName}>
 				<div className='flex items-center space-x-2'>
 					<img src='/img/favicon.png' alt='Logo' className='w-10 h-10' />
-					<span className='textpri font-bold text-lg'>{website?.title}</span>
+					<span className='text-light-primary dark:text-dark-primary duration-300 font-bold text-lg'>{website?.title}</span>
 				</div>
 				{loggedIn && user ? (
 					<div className='relative'>
 						<button
 							onClick={toggleDropdown}
-							className='corter flex items-center space-x-2 px-4 py-2 border border-white rounded-lg hover:bg-gray-300 hover:text-clay-800'
+							className='bg-light-tertiary dark:bg-dark-tertiary duration-300 flex items-center space-x-2 px-4 py-2 border border-white rounded-lg hover:bg-gray-300 hover:text-clay-800'
 						>
 							<i className='bx bxs-user-circle'></i>
 							<span>{user?.username}</span>
 							<i className={`bx ${showDropdown ? "bx-chevron-up" : "bx-chevron-down"}`}></i>
 						</button>
 						{showDropdown && (
-							<div className='absolute right-0 mt-2 corter textpri border border-gray-300 rounded-lg shadow-md'>
+							<div className='absolute right-0 mt-2 bg-light-tertiary dark:bg-dark-tertiary duration-300 text-light-primary dark:text-dark-primary border border-gray-300 rounded-lg shadow-md'>
 								<Link
 									to='/account/settings'
 									onClick={() => {

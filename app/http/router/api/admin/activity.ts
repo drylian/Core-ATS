@@ -1,6 +1,7 @@
 import Authenticator from "@/controllers/express/Authorization";
 import Controller from "@/http/Controller";
 import Activity from "@/models/Activity";
+import path from "path";
 export default class AdminActivity extends Controller {
 	constructor() {
 		super();
@@ -8,14 +9,17 @@ export default class AdminActivity extends Controller {
 			const { res } = await Authenticator(Request, Response, 4000);
 			const data = await Activity.findAll({
 				where: {
-					useruuid: "ADMINISTRATION",
+					admin: true,
 				},
 			});
 			if (data) {
-				const modifiedData = data.map((activity) => ({
-					userid: activity.userid,
-					username: activity.username,
+				const modifiedData = data.map(({ dataValues: activity }) => ({
+					type: activity.type,
+					identification: activity.identification,
+					identity: activity.identity,
 					action: activity.action,
+					path: activity.path,
+					requested: activity.requested,
 					ip: activity.ip,
 					create_at: activity.createdAt,
 				}));
@@ -23,33 +27,29 @@ export default class AdminActivity extends Controller {
 			}
 			return res.status(200).sender({ json: [] });
 		});
-		this.get("/activity/:id", async (Request, Response) => {
-			const userid = Request.params.id;
+		this.get("/activity/:type/:id", async (Request, Response) => {
+			const type = Request.params.id;
+			const id = Request.params.id;
 			const { res } = await Authenticator(Request, Response, 4000);
+			if (!type || !["user", "client", "authorization", "system"].includes(type)) {
+				return res.status(400).sender({ message: 'Apenas os tipos "user", "client", "authorization" e "system" possuem atividades, tente novamente em /activity/"user" ou "authorization" ou "system"' })
+			}
 			const data = await Activity.findAll({
 				where: {
-					useruuid: "ADMINISTRATION",
+					admin: true,
 				},
 			});
-			if (data && userid !== "system") {
+			if (data) {
 				const filteredData = data
-					.filter((activity) => activity.userid === Number(userid))
+					.filter((activity) => activity.type === type)
+					.filter((activity) => activity.identification === (type === "system" ? "system" : id))
 					.map((activity) => ({
-						userid: activity.userid,
-						username: activity.username,
+						type: activity.type,
+						identification: activity.identification,
+						identity: activity.identity,
 						action: activity.action,
-						ip: activity.ip,
-						create_at: activity.createdAt,
-					}));
-
-				return res.status(200).sender({ json: filteredData });
-			} else if (data && userid === "system") {
-				const filteredData = data
-					.filter((activity) => activity.userid === -10)
-					.map((activity) => ({
-						userid: activity.userid,
-						username: activity.username,
-						action: activity.action,
+						path: activity.path,
+						requested: activity.requested,
 						ip: activity.ip,
 						create_at: activity.createdAt,
 					}));

@@ -1,15 +1,15 @@
 import axios from "axios";
 
 interface RegisterResponse {
-    complete?: boolean;
-    message?: string;
+	complete?: boolean;
+	message?: string;
 }
 
 interface RegisterParams {
-    username: string;
-    password: string;
-    email: string;
-    lang: string;
+	username: string;
+	password: string;
+	email: string;
+	lang: string;
 }
 
 const registerUser = ({ username, password, email, lang }: RegisterParams): Promise<RegisterResponse> => {

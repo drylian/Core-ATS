@@ -3,8 +3,6 @@ import { SettingsJson } from "@/interfaces";
 import { NextFunction, Request, Response } from "express";
 import User, { UserE } from "@/models/User";
 import { ALTcpt, ALTdcp, AlTexp, gen } from "@/utils";
-import SenderError from "../pages/errors/Error.html";
-import I18alt from "@/controllers/Language";
 import Loggings from "@/controllers/Loggings";
 
 /**
@@ -24,7 +22,7 @@ export function CookieController() {
         /**
          * Retorno para caso esteja acessando por Bearer ou não está logado
          */
-        if (!req.signedCookies["X-Application-Access"] || !req.signedCookies["X-Application-Refresh"]) return next();
+        if (!req.signedCookies["X-Application-Access"] && !req.signedCookies["X-Application-Refresh"]) return next();
 
         try {
             /**
@@ -55,6 +53,32 @@ export function CookieController() {
                 req.access.ip?.toString(),
             );
 
+            if (refresh && !access) {
+
+                const { Access, Refresh, UserResources } = await RefreshUpdate(refresh.data.remember, req.access.ip?.toString(), config)
+                if (!Access || !Refresh || !UserResources) {
+                    /**
+                     * Acontecer isso significa que ou o usuário está com um vencido, ou o token foi modificado/alterado.
+                     */
+                    res.clearCookie("X-Application-Access");
+                    res.clearCookie("X-Application-Refresh");
+                    console.log("recebeu a resposta esperada")
+                    if (req.accepts("text/html")) {
+                        return res.status(302).redirect("/auth/login?callback=" + req.originalUrl);
+                    } else {
+                        return res.status(302).json({ system:"ReloadPage" })
+                    }
+                } else {
+                    /**
+                     * Seta os novos tokens 
+                     */
+                    res.cookie("X-Application-Access", Access, { signed: true, maxAge: AlTexp("15m"), httpOnly: true });
+                    res.cookie("X-Application-Refresh", Refresh, { signed: true, maxAge: AlTexp("90d"), httpOnly: true });
+                    // seta o acesso do usuário
+                    req.access.cookie = UserResources;
+                    return next();
+                }
+            }
             /**
              * Verificando se access está vencido, 
              * se não verifica se ele tem pelo menos 10m 
@@ -89,30 +113,6 @@ export function CookieController() {
                 req.access.cookie = access.data
                 return next();
             }
-            if (refresh) {
-                const { Access, Refresh, UserResources } = await RefreshUpdate(refresh.data.remember, req.access.ip?.toString(), config)
-                if (!Access || !Refresh || !UserResources) {
-                    /**
-                     * Acontecer isso significa que ou o usuário está com um vencido, ou o token foi modificado/alterado.
-                     */
-                    res.clearCookie("X-Application-Access");
-                    res.clearCookie("X-Application-Refresh");
-                    if (req.accepts("text/html")) {
-                        return res.status(302).redirect("/auth/login?callback=" + req.originalUrl);
-                    } else {
-                        return res.status(302).json({ redirect: "/auth/login", callback: req.originalUrl.startsWith("/api") ? null : req.originalUrl })
-                    }
-                } else {
-                    /**
-                     * Seta os novos tokens 
-                     */
-                    res.cookie("X-Application-Access", Access, { signed: true, maxAge: AlTexp("15m"), httpOnly: true });
-                    res.cookie("X-Application-Refresh", Refresh, { signed: true, maxAge: AlTexp("90d"), httpOnly: true });
-                    // seta o acesso do usuário
-                    req.access.cookie = UserResources;
-                    return next();
-                }
-            }
         } catch (e) {
             /**
              * Caso de Erro em algo, ele Reseta completamente a solicitação , 
@@ -138,7 +138,7 @@ async function RefreshUpdate(remember: string, ip: string | undefined, config: S
         const data: UserE = HaveUser.dataValues
         delete data.password;
         delete data.id;
-        delete (data as {remember?:string}).remember;
+        delete (data as { remember?: string }).remember;
 
 
         let newRemember: string = "" + gen(64), existRemember;

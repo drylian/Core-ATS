@@ -88,7 +88,7 @@ const EditAccount = () => {
 	if (user && Number(id) === user.id) return <WarningContent title="Perfil Bloqueado" desc="Aviso de acesso bloqueado" message="Não é possivel editar seu proprio perfil na area administrativa, edite na area do client" />;
 
 	return (
-		<ContentBox title='Administração - Usuários - Editar usuário' desc="Administração - Usuários - Editar usuário" nofooter={true} header>
+		<ContentBox title='Administração - Usuários - Editar usuário' nofooter={true}>
 			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{(props) => {
 					return (
@@ -97,43 +97,43 @@ const EditAccount = () => {
 								<div className='flex-1 p-1'>
 									<BoxModel title='Informações'>
 										<div className='mb-4'>
-											<label htmlFor='name' className='block text-sm font-bold textpri'>
+											<label htmlFor='name' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Usuário
 											</label>
 											<Field
 												type='text'
 												id='name'
 												name='name'
-												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
+												className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='name'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
-											<p className="textter text-sm mt-1">Nome do usuário atual</p>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">Nome do usuário atual</p>
 										</div>
 
 										<div className='mb-4'>
-											<label htmlFor='email' className='block text-sm font-bold textpri'>
+											<label htmlFor='email' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Email
 											</label>
 											<Field
 												type='text'
 												id='email'
 												name='email'
-												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
+												className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='email'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
-											<p className="textter text-sm mt-1">Email atual do usuário</p>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">Email atual do usuário</p>
 										</div>
 
 										<div className='mb-4'>
-											<label htmlFor='lang' className='block text-sm font-bold textpri'>
+											<label htmlFor='lang' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Idioma
 											</label>
 											<div className='flex'>
@@ -146,7 +146,7 @@ const EditAccount = () => {
 														const seleted = setLang(e);
 														props.setFieldValue("lang", seleted);
 													}}
-													className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
+													className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 												>
 													{website &&
 														website.langs.map((lang) => (
@@ -161,11 +161,11 @@ const EditAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
-											<p className="textter text-sm mt-1">O Idioma que vai ser  usado nas respostas do backend e do frontend</p>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">O Idioma que vai ser  usado nas respostas do backend e do frontend</p>
 
 										</div>
 
-										<button type='submit' className='corpri textpri border border-gray-500 px-4 py-2 rounded-md'>
+										<button type='submit' className='bg-light-primary dark:bg-dark-primary duration-300 text-light-primary dark:text-dark-primary border border-gray-500 px-4 py-2 rounded-md'>
 											Enviar
 										</button>
 									</BoxModel>
@@ -174,14 +174,14 @@ const EditAccount = () => {
 								<div className='flex-1 p-1'>
 									<BoxModel title='Permissões'>
 										<div className='mb-4 mt-1'>
-											<label htmlFor='permissions' className='block text-sm font-bold textpri'>
+											<label htmlFor='permissions' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Nivel de permissão
 											</label>
 											<Field
 												as='select'
 												id='permissions'
 												name='permissions'
-												className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
+												className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 											>
 												<option disabled value='' label='Selecione o nivel de permissão' />
 												{permissionOptions.map((value) => (
@@ -195,7 +195,7 @@ const EditAccount = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
-											<p className="textter text-sm mt-1">A permissão é o nivel de quanto acesso possue no painel, para um "client" deixe o valor
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">A permissão é o nivel de quanto acesso possue no painel, para um "client" deixe o valor
 												padrão "1000" caso queira algum nivel administrativo coloque acima de
 												"2000", o limite de permissão é limitado ao seu nivel administrativo.</p>
 										</div>
@@ -203,7 +203,7 @@ const EditAccount = () => {
 									<div className='mt-1'>
 										<BoxModel title='Senha'>
 											<div className='mb-4'>
-												<label htmlFor='password' className='block text-sm font-bold textpri'>
+												<label htmlFor='password' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 													Senha
 												</label>
 												<div className='flex'>
@@ -215,10 +215,10 @@ const EditAccount = () => {
 														onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 															setPassword(e.target.value);
 														}}
-														className='mt-1 p-1 w-full corsec border rounded-md border-gray-500'
+														className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 													/>
 													<button
-														className='corpri textpri border border-gray-500 px-4 pb-1 pt-1 ml-1 rounded-md'
+														className='bg-light-primary dark:bg-dark-primary text-light-primary dark:text-dark-primary duration-300 border border-gray-500 px-4 pb-1 pt-1 ml-1 rounded-md'
 														onClick={(e) => {
 															generatepass();
 															props.setFieldValue("password", password);
@@ -233,7 +233,7 @@ const EditAccount = () => {
 													component='div'
 													className='text-red-500 text-xs mt-1'
 												/>
-												<p className="textter text-sm mt-1">Caso não queira atualizar a senha, basta deixar isso em branco, Uma senha de pelo menos 4 digitos, se possivel uma senha única e dificil, não "1234" ou "102030" etc.</p>
+												<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">Caso não queira atualizar a senha, basta deixar isso em branco, Uma senha de pelo menos 4 digitos, se possivel uma senha única e dificil, não "1234" ou "102030" etc.</p>
 											</div>
 										</BoxModel>
 									</div>

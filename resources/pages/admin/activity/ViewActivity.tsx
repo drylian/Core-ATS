@@ -54,22 +54,22 @@ const ViewActivity = () => {
                                         <i className="bx bx-user" style={{ fontSize: '50px' }} />
                                     </div>
                                     <div>
-                                        <p className="text-lg font-semibold textpri">
+                                        <p className="text-lg font-semibold text-light-primary dark:text-dark-primary duration-300">
                                             <strong>Usuário:</strong> {user?.username ?? 'N/A'}
                                         </p>
-                                        <p className="text-sm textsec">
+                                        <p className="text-sm text-light-secondary dark:text-dark-secondary duration-300">
                                             <strong>E-mail:</strong> {user.email}
                                         </p>
-                                        <p className="text-xs textter">
+                                        <p className="text-xs text-light-tertiary dark:text-dark-tertiary duration-300">
                                             <strong>Rank de permissão:</strong> {user.permissions ?? 'N/A'}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="mt-4">
-                                    <p className="text-xs textter">
+                                    <p className="text-xs text-light-tertiary dark:text-dark-tertiary duration-300">
                                         <strong>Idioma:</strong> {user.lang ?? 'N/A'}
                                     </p>
-                                    <p className="text-xs textter">
+                                    <p className="text-xs text-light-tertiary dark:text-dark-tertiary duration-300">
                                         <strong>Status:</strong> {user.suspended ? 'Suspenso' : 'Normal'}
                                     </p>
                                     {user.suspended && (
@@ -100,24 +100,24 @@ const ViewActivity = () => {
                                     <div key={index}
                                         className='rounded-lg overflow-hidden shadow-md bg-white bg-opacity-10 p-1 mb-1'
                                     >
-                                        {activity.userid !== -1 && activity.userid !== -10 && <p className="text-base font-bold textsec">
+                                        {activity.userid !== -1 && activity.userid !== -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
                                             <i className="bx bx-user" />{" "}
                                             <Link to={`/admin/accounts/${activity.userid}/edit`} className="text-blue-500 hover:text-blue-800">
                                                 {activity.username}
                                             </Link>{" "}
                                             - <small className="text text-xs">{activity.ip}</small>
                                         </p>}
-                                        {activity.userid === -1 && <p className="text-base font-bold textsec">
+                                        {activity.userid === -1 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
                                             <i className="bx bx-user" />{" "}{activity.username + " "} - <small className="text text-xs">{activity.ip}</small>
                                         </p>}
-                                        {activity.userid === -10 && <p className="text-base font-bold textsec">
+                                        {activity.userid === -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
                                             <i className="bx bx-cog" />{" "}{activity.username + " - "}
                                             <small className="text text-xs">{activity.ip}</small>
                                         </p>}
-                                        <p className='mb-1 textter font-bold text-xs '>
+                                        <p className='mb-1 text-light-tertiary dark:text-dark-tertiary duration-300 font-bold text-xs '>
                                             <i className='bx bx-book-content' />{' '}<span>{activity.action}</span>
                                         </p>
-                                        <p className='mb-1 text-sm textsec'><i className="bx bx-time" /> {' '}
+                                        <p className='mb-1 text-sm text-light-secondary dark:text-dark-secondary duration-300'><i className="bx bx-time" /> {' '}
                                             {activity.create_at
                                                 ? Math.abs(differenceInHours(new Date(activity.create_at), new Date())) > 48
                                                     ? format(new Date(activity.create_at), "'dia' d 'de' MMMM yyyy', ás' HH:mm", { locale: ptBR })

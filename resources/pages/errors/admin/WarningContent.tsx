@@ -17,8 +17,8 @@ const WarningContent: React.FC<WarningProps> = ({ title, desc, message }) => {
                             style={{ marginLeft: "-1px", color: "red", fontSize: "200px" }}
                         />
                         <div className='flex-1 shadow-md'>
-                            <h1 className='text-2xl font-bold textpri mb-4'>{title}</h1>
-                            <p className='mb-6 textsec'>
+                            <h1 className='text-2xl font-bold text-light-primary dark:text-dark-primary duration-300 mb-4'>{title}</h1>
+                            <p className='mb-6 text-light-secondary dark:text-dark-secondary duration-300'>
                                 {message}
                             </p>
                         </div>

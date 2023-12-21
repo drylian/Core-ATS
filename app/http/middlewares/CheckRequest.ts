@@ -14,17 +14,11 @@ export default function checkRequest() {
         req.checked = "user";
       } else if (req.headers.authorization !== undefined && req.headers.authorization.startsWith("Client")) {
         req.checked = "client";
-      } else {
-        req.checked = "guest";
       }
       next();
     } else {
-      if (req.accepts("html")) {
-        return res.status(302).redirect("/auth/login?callback=" + req.originalUrl);
-      } else if (req.accepts("json")) {
-        return res.status(400).json({ message: req.t("http:messages.NotHaveAccessToken") });
-      }
-      return res.status(401).sender({ message: req.t("http:messages.NotHaveAccessToken") });
+      req.checked = "guest";
+      next();
     }
   };
 }

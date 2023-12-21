@@ -1,14 +1,14 @@
 import axios from "axios";
 
 interface LoginResponse {
-    complete?: boolean;
+	complete?: boolean;
 }
 
 interface LoginParams {
-    email: string;
-    password: string;
-    remember_me: boolean;
-    lang: string;
+	email: string;
+	password: string;
+	remember_me: boolean;
+	lang: string;
 }
 
 const loginUser = ({ email, password, remember_me, lang }: LoginParams): Promise<LoginResponse> => {

@@ -6,7 +6,7 @@ import ImageViewer from "@/http/pages/system/Image.html";
 
 const router = express.Router();
 
-router.get("/image/:image", (req, res) => {
+router.get("/:image", (req, res) => {
 	const imageName = req.params.image;
 	const size = req.query.size || 200;
 	const imagePath = path.join(configuractions.routesPATH, "static", "img", `${imageName}.png`);

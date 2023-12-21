@@ -6,15 +6,16 @@ export default class ClientActivity extends Controller {
 	constructor() {
 		super();
 		this.get("/activity", async (Request, Response) => {
-			const { req, res } = await Authenticator(Request, Response, 1000);
+			const { req, res } = await Authenticator(Request, Response, 1000, true);
 			const i18n = new I18alt();
 			if (req.access.lang) i18n.setLanguage(req.access.lang);
-			if (!req.access.uuid)
+			if (!req.access.user || !req.access.user?.id)
 				return res.status(400).sender({ message: i18n.t("react:messages.NotAccessActivity") });
 
 			const data = await Activity.findAll({
 				where: {
-					useruuid: req.access.uuid,
+					type: "user",
+					identification: String(req.access.user.id),
 				},
 			});
 			if (data) {

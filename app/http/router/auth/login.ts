@@ -41,7 +41,7 @@ router.post("/", async (req: Request, res: Response) => {
 						ip: req.access.ip?.toString(),
 						expires: "90d",
 					}),
-					{ signed:true, maxAge: AlTexp("90d"), httpOnly: true },
+					{ signed: true, maxAge: AlTexp("90d"), httpOnly: true },
 				);
 			}
 			res.cookie(
@@ -50,9 +50,11 @@ router.post("/", async (req: Request, res: Response) => {
 					ip: req.access.ip?.toString(),
 					expires: remember_me ? "15m" : "1h",
 				}),
-				{ signed:true, maxAge: AlTexp(remember_me ? "15m" : "1h"), httpOnly: true },
+				{ signed: true, maxAge: AlTexp(remember_me ? "15m" : "1h"), httpOnly: true },
 			);
-			await MakeActivity(req, "react:auth.MakedLogin", UserData.uuid);
+			req.access.user = UserData
+			req.access.auth = true
+			await MakeActivity(req, "react:auth.MakedLogin");
 
 			return res.status(200).json({
 				message: i18n.t("react:auth.WelcomeBack", { Username: UserData.username }),

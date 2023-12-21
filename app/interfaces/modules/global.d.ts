@@ -69,6 +69,7 @@ declare global {
              * Configuração de Authorização, retorna alguns params uteis que podem ser usados no request
              */
             access: {
+                auth?:boolean;
                 user?: UserE;
                 permissions?: number;
                 type?: "user" | "token";

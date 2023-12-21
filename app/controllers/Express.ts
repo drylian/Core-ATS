@@ -22,7 +22,7 @@ import { CookieController } from "@/http/middlewares/CookieController";
 import http from "http";
 import { Server } from "socket.io";
 import ServerUptime from "@/http/sockets/ServerUptime";
-
+import compression from "compression"
 class Express {
 	public express: express.Application;
 	public server: http.Server;
@@ -54,6 +54,7 @@ class Express {
 		/**
          * Middlewares padrões
          */
+		this.express.disable("x-powered-by")
 		this.express.use(MorganLogs(this.apache));
 		this.express.use(Helmet());
 		this.express.use(express.json());
@@ -64,6 +65,7 @@ class Express {
 		this.express.use(i18AltRequests(this.i18n));
 		this.express.use(CookieController());
 		this.express.use(Credentials());
+		this.express.use(compression());
 		/**
          * Core Middlewares
          */
@@ -75,7 +77,7 @@ class Express {
 
 	private routers(): void {
 		new LanguageRequests(this.express);
-		new ApplicationRoutes(this.express, this.core);
+		new ApplicationRoutes(this.express);
 	}
 
 	public async listen() {

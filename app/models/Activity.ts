@@ -18,16 +18,19 @@ import { DataTypes, Model } from "sequelize";
  * @property {DATE} create_at - Não foi encontrado um "comment" sobre oque é essa propriedade
  *
  */
-export interface ActivityI {
-    id?: number | null;
-	userid?: number;
-    useruuid?: string;
-    action: string;
-    username?: string;
-    ip?: string;
-    createdAt?: string | null;
-}
 
+export type ActivityI = {
+	id?: number | null;
+	identification: string;
+	identity:string;
+	type: "user" | "client" | "authorization" | "guest"| "system" | "administration";
+	action: string;
+	path?: string;
+	ip?: string;
+	requested: "success" | "error";
+	createdAt?: string;
+	admin?:boolean
+};
 /**
  * @class Activity
  * @description Classe que representa o modelo de "Activity" no banco de dados.
@@ -36,12 +39,16 @@ export interface ActivityI {
  */
 class Activity extends Model<ActivityI> implements ActivityI {
 	public id?: number | null;
-	public useruuid?: string;
-	public userid?: number;
+	public identification!: string;
+	public identity!: string;
+	public type!: "user" | "client" | "authorization" | "guest" | "system";
 	public action!: string;
-	public username?: string;
+	public path?: string;
 	public ip?: string;
+	public requested!: "success" | "error"
 	public createdAt?: string;
+	public admin?:boolean;
+
 }
 
 /**
@@ -55,19 +62,19 @@ Activity.init(
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		useruuid: {
+		identification: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		userid: {
-			type: DataTypes.INTEGER,
+		identity: {
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		action: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		username: {
+		type: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
@@ -75,13 +82,26 @@ Activity.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		path: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		}, 
+		requested: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		admin: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false,
+		}
 	},
 	{
 		sequelize, // sequelize configurado
 		modelName: "Activity", // sequelize configurado
 		tableName: "activitys", // Tabela do banco de dados (sempre em letras minúsculas).
-	},
+	}
 );
+
 
 /**
  * @typedef ActivityType

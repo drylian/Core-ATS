@@ -1,39 +1,73 @@
 import { Application } from "express";
 import imagemRoute from "@/http/router/image";
+import captchaRoute from "@/http/router/captcha";
+
 import registerRoute from "@/http/router/auth/register";
 import changeRoute from "@/http/router/auth/change";
 import loginRoute from "@/http/router/auth/login";
 import logoutRoute from "@/http/router/auth/logout";
-import testRoute from "@/http/router/test";
-
-import Protect from "@/http/Protect";
+import AdminsAccounts from "@/http/router/api/admin/accounts";
+import AdminApplication from "./router/api/admin/application";
+import AdminActivity from "./router/api/admin/activity";
+import ClientActivity from "./router/api/client/activity";
+import AdminsTokens from "./router/api/admin/tokens";
 import CheckRequest from "@/http/middlewares/CheckRequest";
-import { Csrf } from "@/http/middlewares/Csrf";
 import { LoggingsMethods } from "@/controllers/Loggings";
+import ALTCsrf from "@/utils/ALTCsrf";
+import type { ALTCsrfType } from "@/utils/ALTCsrf";
+import { SettingsJson } from "@/interfaces";
+import storage from "@/controllers/Storage";
+
 class ApplicationRoutes {
 	private server: Application;
-	private core: LoggingsMethods;
+	private csrf: ALTCsrfType;
 
-	constructor(server: Application, core: LoggingsMethods) {
+	constructor(server: Application) {
+		const config: SettingsJson = storage.get("config");
+
 		this.server = server;
-		this.core = core;
+		this.csrf = new ALTCsrf({
+			secret: config.server.csrf.secret,
+			ignores: {
+				routes: config.server.csrf.ignored
+			},
+			csrf: { sender: "Custom", name: "X-Application-Csrf-Token", Custom: (req, res) => res.status(403).sender({ message: req.t("http:errors.AccessCSRFError") }) },
+			cookie: { secure: config.server.protocol !== "https" ? false : true, signed: true }
+		})
 		this.routers();
 	}
 
 	private routers(): void {
-		// API Routes
-		this.server.use("/api/", imagemRoute);
-		this.server.use("/", testRoute);
+		/**
+		 * Rotas independentes
+		 */
+		this.server.use("/api/image", imagemRoute);
+		this.server.use("/captcha", captchaRoute);
+		this.server.use("*", (req, res, next) => {
+			if (req.accepts("text/html")) {
+				this.csrf.CreateToken(req, res, true);
+			}
+			next()
+		});
 
-		// Protected Routes
-		this.server.use("/api", CheckRequest(), Csrf(this.core), new Protect().Routers());
+		/**
+		 * Rotas principais
+		 */
+		this.server.use("/api", CheckRequest(), this.csrf.ProtectionMiddleware());
+		this.server.use("/api/admin", new AdminsAccounts().route);
+		this.server.use("/api/admin", new AdminsTokens().route);
+		this.server.use("/api/admin", new AdminApplication().route);
+		this.server.use("/api/admin", new AdminActivity().route);
+		this.server.use("/api/client", new ClientActivity().route);
 
-		// Auth Routes
+		/**
+		 * Rotas de Auth
+		 */
+		this.server.use("/auth*", CheckRequest(), this.csrf.ProtectionMiddleware())
 		this.server.use("/auth/login", loginRoute);
 		this.server.use("/auth/register", registerRoute);
 		this.server.use("/auth/logout", logoutRoute);
-
-		this.server.use("/auth/change", CheckRequest(), Csrf(this.core), changeRoute);
+		this.server.use("/auth/change", changeRoute);
 	}
 }
 

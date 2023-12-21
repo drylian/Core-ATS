@@ -32,4 +32,8 @@ const hashmd5 = (response: object) => {
 	return crypto.createHash("md5").update(JSON.stringify(response)).digest("hex");
 };
 
-export { gen, gex, hashmd5 };
+const verifhash = (response: object, compare: string): boolean => {
+	const generatedHash = hashmd5(response);
+	return generatedHash === compare;
+  };
+export { gen, gex, hashmd5,verifhash };

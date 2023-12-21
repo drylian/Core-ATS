@@ -84,7 +84,7 @@ const Accounts = () => {
 															<td>{user.suspended ? "Suspenso" : "Ativo"}</td>
 															<td>
 																{User && user.id !== User.id ? <i
-																	className='bx bx-dots-vertical-rounded textpri'
+																	className='bx bx-dots-vertical-rounded text-light-primary dark:text-dark-primary duration-300'
 																	onClick={() => {
 																		toggleDropdown(user.id);
 																	}}
@@ -92,9 +92,9 @@ const Accounts = () => {
 																		cursor: "pointer",
 																	}}
 																></i> : <i
-																	className='bx bx-dots-vertical-rounded textter'
+																	className='bx bx-dots-vertical-rounded text-light-tertiary dark:text-dark-tertiary duration-300'
 																></i>}
-																{User && user.id !== User.id && <div className={`absolute duration-200 right-0 mt-2 origin-top corter textpri border border-gray-300 rounded-lg shadow-md ${showDropdown[user.id] === true ? "" : "scale-0"}`}>
+																{User && user.id !== User.id && <div className={`absolute duration-300 right-0 mt-2 origin-top bg-light-tertiary dark:bg-dark-tertiary text-light-primary dark:text-dark-primary border border-gray-300 rounded-lg shadow-md ${showDropdown[user.id] === true ? "" : "scale-0"}`}>
 																	<Link
 																		to={`/admin/accounts/${user.id}/edit`}
 																		onClick={() => {

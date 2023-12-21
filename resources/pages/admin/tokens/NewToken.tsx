@@ -55,10 +55,10 @@ const NewToken = () => {
 	return (
 		<ContentBox title='Administração - Usuários - Novo usuário' nofooter={true}>
 			<FloatBoxModel show={show} setShow={setShow}>
-				<p className="text-lg font-bold textpri mb-2">Token Criado com Sucesso</p>
+				<p className="text-lg font-bold text-light-primary dark:text-dark-primary duration-300 mb-2">Token Criado com Sucesso</p>
 				<div className='border-b border-gray-400 w-full mb-2' />
 
-				<p className="text-sm mb-2 textter">Copie o token abaixo, pois ele não será mostrado completo novamente. Caso o perca, precisará gerar um novo token.</p>
+				<p className="text-sm mb-2 text-light-tertiary dark:text-dark-tertiary duration-300">Copie o token abaixo, pois ele não será mostrado completo novamente. Caso o perca, precisará gerar um novo token.</p>
 				<ClibBoardBox text={cliptext} />
 				<button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShow(false)}>
 					Fechar
@@ -72,7 +72,7 @@ const NewToken = () => {
 								<div className='flex-1 p-1'>
 									<BoxModel title='Informações'>
 										<div className='mb-4'>
-											<label htmlFor='memo' className='block text-sm font-bold textpri'>
+											<label htmlFor='memo' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Identificação
 											</label>
 											<Field
@@ -89,7 +89,7 @@ const NewToken = () => {
 										</div>
 
 										<div className='mb-4'>
-											<label htmlFor='lang' className='block text-sm font-bold textpri'>
+											<label htmlFor='lang' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Idioma
 											</label>
 											<div className='flex'>
@@ -129,7 +129,7 @@ const NewToken = () => {
 								<div className='flex-1 p-1'>
 									<BoxModel title='Permissões'>
 										<div className='mb-4 mt-1'>
-											<label htmlFor='permissions' className='block text-sm font-bold textpri'>
+											<label htmlFor='permissions' className='block text-sm font-bold text-light-primary dark:text-dark-primary duration-300'>
 												Nivel de permissão
 											</label>
 											<Field
@@ -158,7 +158,7 @@ const NewToken = () => {
 								<BoxModel title='Aviso sobre as permissôes' color='red' nopad={true}>
 									{/* <i className={`bx bx-error ml-1 mr-1`} style={{ color: "white", fontSize: '20px', }} /> */}
 									<div className='bg-red-500 rounded p-2'>
-										<span className='textpri font-semibold'>
+										<span className='text-light-primary dark:text-dark-primary duration-300 font-semibold'>
 											A permissão é o nivel do usuário , para um usuário padrão deixe o valor
 											padrão "1000" caso queira algum nivel administrativo coloque acima de
 											"2000", o limite de permissão é limitado ao seu nivel administrativo.

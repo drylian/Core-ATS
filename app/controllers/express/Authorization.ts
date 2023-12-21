@@ -11,7 +11,7 @@ export default function Authenticator(
 	req: Request,
 	res: Response,
 	permission: number,
-	type?: "UserAPI" | "ClientToken",
+	clientOnly: boolean = false,
 ): Promise<{ req: Request; res: Response }> {
 	const i18n = new i18alt();
 	const core = new Loggings("Authorization", "cyan");
@@ -51,6 +51,10 @@ export default function Authenticator(
 				}
 				resolve({ req, res });
 			} else if (req.checked === "authorization") {
+				if (clientOnly) return res.status(401).sender({
+					message: i18n.t("http:messages.ClientRestrictedAccess"),
+				});
+				
 				let token: string;
 
 				if (req.headers.authorization !== null && typeof req.headers.authorization === "string")
