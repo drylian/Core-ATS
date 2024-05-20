@@ -17,7 +17,7 @@ export function CookieController() {
         req.access.ip = req.headers["x-forwarded-for"] ?? req.ip ?? req.socket.remoteAddress;
 
         // configurações do painel
-        const config: SettingsJson = storage.get("config");
+        const config: SettingsJson = storage.get("settings");
 
         /**
          * Retorno para caso esteja acessando por Bearer ou não está logado
@@ -28,7 +28,7 @@ export function CookieController() {
             /**
              * Access que é o token de acesso
              */
-            let access: { data: UserE, expires: number } | null = null
+            let access: { data: UserE, expires: number| undefined } | null = null
 
             /**
              * Refresh que é o token de renovação, para renovar o acesso
@@ -62,11 +62,10 @@ export function CookieController() {
                      */
                     res.clearCookie("X-Application-Access");
                     res.clearCookie("X-Application-Refresh");
-                    console.log("recebeu a resposta esperada")
                     if (req.accepts("text/html")) {
                         return res.status(302).redirect("/auth/login?callback=" + req.originalUrl);
                     } else {
-                        return res.status(302).json({ system:"ReloadPage" })
+                        return res.status(302).json({ system: "ReloadPage" })
                     }
                 } else {
                     /**
@@ -74,8 +73,10 @@ export function CookieController() {
                      */
                     res.cookie("X-Application-Access", Access, { signed: true, maxAge: AlTexp("15m"), httpOnly: true });
                     res.cookie("X-Application-Refresh", Refresh, { signed: true, maxAge: AlTexp("90d"), httpOnly: true });
-                    // seta o acesso do usuário
-                    req.access.cookie = UserResources;
+                    /**
+                     * Declara o Cookie inicial
+                     */
+                    req.declares = { cookie: UserResources, type: "Cookie" };
                     return next();
                 }
             }
@@ -85,14 +86,22 @@ export function CookieController() {
              * e se existir refresh, ele atualiza o access com + 15h de duração.
              */
             if (access) {
-                const TimerOfUpdate = new Date(Date.now() + AlTexp("10m")).getTime();
+                /**
+                 * Session Route, para Auth como Discord etc
+                 */
+                if(!access.expires) {
+                    req.declares = { cookie: access.data, type: "Cookie"  };
+                    return next();
+                }
+                const time =Date.now() + AlTexp("10m")
+                const TimerOfUpdate = new Date(time).getTime();
                 const AccessExpires = new Date(access.expires).getTime();
                 if (AccessExpires <= TimerOfUpdate) {
                     if (refresh) {
                         const { Access, Refresh, UserResources } = await RefreshUpdate(refresh.data.remember, req.access.ip?.toString(), config)
                         if (!Access || !Refresh || !UserResources) {
                             /**
-                             * Acontecer isso significa que ou o usuário está com um vencido, ou o token foi modificado/alterado
+                             * Acontecer isso significa que ou o usuário está com um vencido, ou o token foi modificado/adulterado
                              */
                             res.clearCookie("X-Application-Access");
                             res.clearCookie("X-Application-Refresh");
@@ -103,14 +112,18 @@ export function CookieController() {
                              */
                             res.cookie("X-Application-Access", Access, { signed: true, maxAge: AlTexp("15m"), httpOnly: true });
                             res.cookie("X-Application-Refresh", Refresh, { signed: true, maxAge: AlTexp("90d"), httpOnly: true });
-                            // seta o acesso do usuário
-                            req.access.cookie = UserResources;
+                            /**
+                             * Declara o Cookie inicial
+                             */
+                            req.declares = { cookie: UserResources, type: "Cookie"  };
                             return next();
                         }
                     }
                 }
-                // seta o acesso do usuário
-                req.access.cookie = access.data
+                /**
+                 * Declara o Cookie inicial
+                 */
+                req.declares = { cookie: access.data, type: "Cookie" };
                 return next();
             }
         } catch (e) {

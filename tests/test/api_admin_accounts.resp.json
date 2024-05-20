@@ -1,0 +1,137 @@
+{
+  "type": "success",
+  "status": 200,
+  "timestamp": 1704149183901,
+  "data": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "lang": "pt-BR",
+      "permissions": 10000,
+      "remember": "62643958-6b72-4cda-a163-ad2b9276b5d6",
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 3,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.com",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 4,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.coms",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 5,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 6,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comsss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 7,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 8,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comsssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 9,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 10,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comsssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 11,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comssssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 12,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comsssssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 13,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comssssssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    },
+    {
+      "id": 14,
+      "username": "daniel",
+      "email": "danielolxlol@gmail.comsssssssssss",
+      "lang": "pt-BR",
+      "permissions": 9000,
+      "remember": null,
+      "suspended": null,
+      "suspendedReason": null
+    }
+  ]
+}

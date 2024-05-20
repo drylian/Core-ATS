@@ -1,17 +1,21 @@
-import Authenticator from "@/controllers/express/Authorization";
 import Controller from "@/http/Controller";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
 import Activity from "@/models/Activity";
-import path from "path";
+const PERMISSION = 4000
 export default class AdminActivity extends Controller {
 	constructor() {
 		super();
 		this.get("/activity", async (Request, Response) => {
-			const { res } = await Authenticator(Request, Response, 4000);
-			const data = await Activity.findAll({
+			const { res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
+			const datas = await Activity.findAll({
 				where: {
 					admin: true,
 				},
 			});
+			const data = datas.filter((data) => {
+				return data.dataValues.requested !== "error";
+			  });
+			  
 			if (data) {
 				const modifiedData = data.map(({ dataValues: activity }) => ({
 					type: activity.type,
@@ -27,12 +31,12 @@ export default class AdminActivity extends Controller {
 			}
 			return res.status(200).sender({ json: [] });
 		});
-		this.get("/activity/:type/:id", async (Request, Response) => {
-			const type = Request.params.id;
+		this.get("/activity/:type/:id?", async (Request, Response) => {
+			const type = Request.params.type;
 			const id = Request.params.id;
-			const { res } = await Authenticator(Request, Response, 4000);
-			if (!type || !["user", "client", "authorization", "system"].includes(type)) {
-				return res.status(400).sender({ message: 'Apenas os tipos "user", "client", "authorization" e "system" possuem atividades, tente novamente em /activity/"user" ou "authorization" ou "system"' })
+			const { res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
+			if (!type || type && !["user", "authorization", "system"].includes(type)) {
+				return res.status(400).sender({ message: 'Apenas os tipos "user", "authorization" e "system" possuem atividades, tente novamente em /activity/"user" ou "authorization" ou "system"' })
 			}
 			const data = await Activity.findAll({
 				where: {

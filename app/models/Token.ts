@@ -13,14 +13,14 @@ import { DataTypes, Model } from "sequelize";
  *
  * @property {number | null} id - Não foi encontrado um "comment" sobre oque é essa propriedade
  * @property {string} token - Não foi encontrado um "comment" sobre oque é essa propriedade
- * @property {number | null} permission - Não foi encontrado um "comment" sobre oque é essa propriedade
+ * @property {0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null} permission - Não foi encontrado um "comment" sobre oque é essa propriedade
  * @property {number} uuid - Não foi encontrado um "comment" sobre oque é essa propriedade
  *
  */
 export interface TokenI {
 	id: number | null;
 	token: string;
-	permissions: number | null;
+	permissions: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null;
 	uuid: string;
 	lang: string;
 	memo: string;
@@ -32,13 +32,13 @@ export interface TokenI {
  * Define as propriedades do modelo "Token" e sua relação com o banco de dados.
  * @property {number | null} id - Não foi encontrado um "comment" sobre oque é essa propriedade
  * @property {string} token - Não foi encontrado um "comment" sobre oque é essa propriedade
- * @property {number | null} permission - Não foi encontrado um "comment" sobre oque é essa propriedade
+ * @property {0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null} permission - Não foi encontrado um "comment" sobre oque é essa propriedade
  * @property {number} uuid - Não foi encontrado um "comment" sobre oque é essa propriedade
  */
 class Token extends Model<TokenI> implements TokenI {
 	public id!: number | null;
 	public token!: string;
-	public permissions!: number | null;
+	public permissions!: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null;
 	public uuid!: string;
 	public lang!: string;
 	public memo!: string;

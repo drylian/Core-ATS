@@ -16,7 +16,7 @@ type meta = {
 
 // Função para criar um visualizador de JSON
 export default function JsonViewer<T>(jsonData: T, req: Request, type?: "list") {
-	const config: SettingsJson = storage.get("config");
+	const config: SettingsJson = storage.get("settings");
 	const color: ColorJson = storage.get("color");
 	const language = req?.access.lang
 		? req?.access.lang

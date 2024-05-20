@@ -37,6 +37,10 @@ module.exports = {
 					secondary: "var(--darktextsec)",
 					tertiary: "var(--darktextter)",
 				}
+			},
+			backgroundImage: {
+				'dark-image': "var(--darkbackgroundimg)",
+				'light-image': "var(--lightbackgroundimg)",
 			}
 		},
 	},

@@ -10,7 +10,7 @@ import ApplicationConfigs from "@/controllers/express/ApplicationConfigs";
  * @returns Html principal do sistema, usado para rederizar o React
  */
 export default function HtmlIndex(req: Request, manifest: string[], dev?: string) {
-    const config: SettingsJson = storage.get("config");
+    const config: SettingsJson = storage.get("settings");
     const language = req?.access.lang
         ? req?.access.lang
         : req?.language

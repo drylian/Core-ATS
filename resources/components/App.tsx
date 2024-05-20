@@ -10,12 +10,14 @@ import Loading from "./elements/Loading";
 import { UserData } from "../states/user";
 import i18n from "../i18n";
 import ErrorBoundary from "../pages/errors/ErrorBoundary";
+import SocketConnect from "../Socket";
 
 interface ExtWindow extends Window {
-    WebsiteConf?: WebsiteConf;
-    UserConf?: UserData;
+	WebsiteConf?: WebsiteConf;
+	UserConf?: UserData;
 }
-function App() {
+
+function App() {	
 	const { WebsiteConf, UserConf } = window as ExtWindow;
 	if (!store.getState().website.data) {
 		store.getActions().website.setWebsite(WebsiteConf!);
@@ -24,6 +26,9 @@ function App() {
 		i18n.changeLanguage(UserConf.lang || "pt-BR");
 
 		store.getActions().user.setUserData(UserConf!);
+	}
+	if(!store.getState().socket.socket) {
+		store.getState().socket.socket = SocketConnect(store.getState().website.data?.socket)
 	}
 	const theme = Theme(store.getState()?.website?.data);
 	return (

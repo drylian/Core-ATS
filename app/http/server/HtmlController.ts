@@ -11,7 +11,20 @@ import { i18t } from "@/controllers/Language";
 import JsonBody from "./json/json.body";
 import QueryModal from "./json/QueryModal";
 import LightJson from "./json/lightjson";
-
+import User, { UserE } from "@/models/User";
+import { ALTcpt } from "@/utils";
+async function Check(uuid?: string): Promise<UserE | null> {
+    if (uuid) {
+        const user = await User.findOne({ where: { uuid: uuid } });
+        if (user) {
+            return user.dataValues
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
 class HtmlController {
     private html: string;
     private config: SettingsJson;
@@ -21,7 +34,7 @@ class HtmlController {
     private mode: boolean;
     private manifest: string[] | undefined
     constructor(req: Request, manifest?: string[]) {
-        this.config = storage.get("config")
+        this.config = storage.get("settings")
         this.color = storage.get("color")
         this.request = req
         this.manifest = manifest
@@ -30,20 +43,20 @@ class HtmlController {
         this.html = this.render.html
     }
 
-    public automatic(): string {
+    public async automatic(res: Response): Promise<string> {
         if (this.mode && !this.manifest) {
             return this.error(this.render.i18n.t("http:errors.ReactResourcesNotFound"));
         }
         if (this.mode && this.manifest && this.manifest.length > 0) {
-            return this.client(true, this.manifest);
+            return await this.client(res, true, this.manifest);
         }
         if (!this.mode) {
-            return this.client(false);
+            return await this.client(res, false);
         }
         return this.error(this.render.i18n.t("http:errors.ReactResourcesNotFound"));
     }
 
-    public client(mode: boolean, manifest?: string[]): string {
+    public async client(res: Response, mode: boolean, manifest?: string[]): Promise<string> {
         /**
          * Body Render
          */
@@ -54,20 +67,37 @@ class HtmlController {
         /**
          * Rederiza o cookie do usuário, para passar ao state do react
          */
-        const user = this.request.access?.cookie ? this.request.access.cookie : null
-        if (user) delete (user as { uuid?: string }).uuid
+        const user = this.request.declares?.cookie ? this.request.declares?.cookie : null
+        /**
+         * Verifica se o usuário está existe no banco de dados,
+         */
+        let checked = undefined
+        let socketToken = undefined
+        if (user && user.uuid) {
+            checked = await Check(user.uuid)
+            if (checked) {
+                socketToken = ALTcpt(checked, this.config.server.socketSignature)
+            }
+            delete (checked as { uuid?: string }).uuid
+            delete (checked as { password?: string }).password
+        }
+        if (!checked && user) {
+            res.clearCookie("X-Application-Access");
+            res.clearCookie("X-Application-Refresh");
+            res.redirect("/auth/login");
+        }
         this.html = this.html.replace("<!--Server Params-->",
             `<!-- Server Response : ${new Date().getTime()}-->
          <script nonce="${this.request.access.nonce}" >
-             window.WebsiteConf = ${JSON.stringify(ApplicationConfigs().Website)};
-             ${user ? `window.UserConf = ${JSON.stringify(user)}` : ""}
+             window.WebsiteConf = ${JSON.stringify(ApplicationConfigs({ socket: socketToken }).Website)};
+             ${checked ? `window.UserConf = ${JSON.stringify(checked)}` : ""}
          </script>
          `)
 
         if (mode && manifest) {
             this.html = this.html.replace("<!--Server Manifest-->", manifest.join("\n"))
         } else {
-            this.html = this.html.replace("<!--Server Manifest-->", "")
+            this.html = this.html.replace("<!--Server Manifest-->", "<!--Server Development Mode-->")
         }
         return this.html
     }

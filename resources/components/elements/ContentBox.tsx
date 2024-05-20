@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import { store } from "../../states";
 import ContentContainer from "./ContentContainer";
 import tw from "twin.macro";
-import FlashMessageRender from "../FlashMessageRender";
+import NotificationController from "../NotificationController";
 /* eslint-disable  react/no-unknown-property */
 
 // Definir PropTypes
@@ -27,7 +27,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({ title, className, children, nof
 	return (
 		<>
 			<ContentContainer css={tw`my-1 sm:my-1`} className={className}>
-				<FlashMessageRender />
+				<NotificationController />
 				{children}
 			</ContentContainer>
 			{!nofooter && (

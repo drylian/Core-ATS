@@ -39,7 +39,7 @@ export default class I18alt {
      * Cria uma instância da classe I18alt.
      */
 	constructor(lang?: string) {
-		this.config = storage.get("config");
+		this.config = storage.get("settings");
 		this.currentLang = lang || this.config?.server?.lang || DefaultLang;
 	}
 

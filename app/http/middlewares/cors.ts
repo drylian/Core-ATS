@@ -8,7 +8,7 @@ import I18alt from "@/controllers/Language";
 export default function Cors() {
 	return (req: Request, res: Response, next: NextFunction) => {
 		const i18n = new I18alt();
-		const valores: SettingsJson = storage.get("config");
+		const valores: SettingsJson = storage.get("settings");
 		if (valores.server.cors.active) {
 			cors<Request>({
 				origin(requestOrigin, callback) {
@@ -17,7 +17,7 @@ export default function Cors() {
 						if (!valores.server.cors.allowedroutes) {
 							valores.server.cors.allowedroutes = [];
 						}
-						valores.server.cors.allowedroutes.push(`${valores.server.url}:${valores.server.port}`);
+						valores.server.cors.allowedroutes.push(`${valores.server.url}`);
 					}
 
 					const origin = requestOrigin

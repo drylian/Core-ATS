@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { store } from "../../states";
 import logout from "../../axios/auth/logout";
@@ -13,24 +13,26 @@ interface Menu {
 }
 
 interface Props {
+	setOpen:Dispatch<SetStateAction<boolean>>
 	open: boolean;
+	mobile: boolean;
+	tablet: boolean;
 }
 
-const App: React.FC<Props> = ({ open }) => {
+const App: React.FC<Props> = ({ open, mobile, tablet,setOpen }) => {
 	const nav = useNavigate();
 	const location = useLocation();
 	const [currentPage, setCurrentPage] = useState("");
-
-	useEffect(() => {
-		// Atualiza o estado currentPage sempre que a localização mudar
-		setCurrentPage(location.pathname);
-	}, [location]);
+		useEffect(() => {
+			// Atualiza o estado currentPage sempre que a localização mudar
+			setCurrentPage(location.pathname);
+		}, [location]);
 
 	const User = store.getState().user.data;
 	// const website = store.getState().website.data;
 	const Menus: Menu[] = [
 		{ title: "Retornar", icon: "bx-arrow-back", permission: 0, path: "/" },
-		{ title: "Dashboard", icon: "bxs-dashboard", permission: 2, path: "/admin" },
+		{ title: "Dashboard", icon: "bxs-dashboard", permission: 2, path: "/admin/settings" },
 		{ title: "Atividades", icon: "bxs-chart", permission: 2, path: "/admin/activity" },
 		{ title: "Usuários", icon: "bxs-user", permission: 2, path: "/admin/accounts" },
 		{ title: "Tokens", icon: "bx bx-network-chart", permission: 2, path: "/admin/tokens" },
@@ -44,7 +46,7 @@ const App: React.FC<Props> = ({ open }) => {
 		<div
 			className={` ${open ? "w-72" : "w-20 "} bg-light-primary dark:bg-dark-primary p-4 relative duration-300 overflow-auto`}
 			style={{
-				marginLeft: open ? "" : window.innerWidth < 768 ? "-80px" : "",
+				marginLeft: open ? "" : (mobile || tablet) ? "-80px" : "",
 			}}
 		>
 			<div className='flex gap-x-4 items-center'>
@@ -71,6 +73,9 @@ const App: React.FC<Props> = ({ open }) => {
 						User.permissions >= Menu.permission && (
 							<Link to={Menu.path} key={index}>
 								<li
+									onClick={()=> {
+										(mobile || tablet) ? setOpen(false) : null
+									}}
 									className={`flex duration-300 rounded-md p-2 cursor-pointer hover:bg-white hover:bg-opacity-20 text-light-secondary dark:text-dark-secondary text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${index === 0 && "bg-light-white"}
 			  ${currentPage === Menu.path ? "border-l-4 border-blue-500 shadow-md bg-white hover:border-blue-300 after:border-blue-500 bg-opacity-10" : "border-blue-400"}

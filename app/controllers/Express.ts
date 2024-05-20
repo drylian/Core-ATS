@@ -18,11 +18,13 @@ import { Connections } from "@/http/middlewares/Connections";
 import { ApplicationRoutes } from "@/http/Application";
 import { ViteInjector } from "./express/vite/ViteInjector";
 import { LanguageRequests } from "@/http/router/base/Languages";
-import { CookieController } from "@/http/middlewares/CookieController";
+import { CookieController } from "@/http/controllers/CookieController";
 import http from "http";
 import { Server } from "socket.io";
 import ServerUptime from "@/http/sockets/ServerUptime";
 import compression from "compression"
+import SocketUserLoad from "@/http/sockets/middlewares/UserAuth";
+import OnlineUsersSystem from "@/http/sockets/OnlineUsers";
 class Express {
 	public express: express.Application;
 	public server: http.Server;
@@ -36,7 +38,7 @@ class Express {
 		this.i18n = new i18alt();
 		this.apache = new Loggings("Apache-Logs", "blue");
 		storage.rel("config");
-		this.config = storage.get("config");
+		this.config = storage.get("settings");
 		this.core.log("Iniciando Rotas do painel.");
 		this.express = express();
 		this.server = http.createServer(this.express);
@@ -46,14 +48,21 @@ class Express {
 		this.sockets();
 	}
 	private sockets(): void {
+		this.io.use(SocketUserLoad)
 		this.io.sockets.on("connection", function (socket) {
+			// OnlineUsersSystem(socket);
 			ServerUptime(socket);
 		});
 	}
 	private middlewares(): void {
 		/**
-         * Middlewares padrões
-         */
+		 * Middlewares padrões
+		 */
+		this.express.use((req, res, next) => {
+			const start = new Date().getTime();
+			res.locals.ping = start
+			next();
+		})
 		this.express.disable("x-powered-by")
 		this.express.use(MorganLogs(this.apache));
 		this.express.use(Helmet());
@@ -67,8 +76,8 @@ class Express {
 		this.express.use(Credentials());
 		this.express.use(compression());
 		/**
-         * Core Middlewares
-         */
+		 * Core Middlewares
+		 */
 		this.express.use(SenderSettings()); // adiciona o res.sender
 		this.express.use(Cors()); // sender necessario
 		this.express.use(Protocols()); // sender necessario
@@ -78,6 +87,13 @@ class Express {
 	private routers(): void {
 		new LanguageRequests(this.express);
 		new ApplicationRoutes(this.express);
+		const rotas = this.express._router.stack
+			.filter((rota: any) => rota.route)
+			.map((rota: any) => rota.route.path);
+
+		// Exiba a contagem e as rotas
+		console.log(`Número total de rotas: ${rotas.length}`);
+		console.log('Rotas registradas:', rotas);
 	}
 
 	public async listen() {

@@ -5,12 +5,12 @@ import LoggingsConf from "@/controllers/settings/LoggingsConf";
 import SettingsConf from "@/controllers/settings/SettingsConf";
 import DatabaseConf from "@/controllers/settings/DatabaseConf";
 import ColorConf from "@/controllers/settings/ColorConf";
+import DiscordConf from "./settings/DiscordConf";
 
 const core = new Loggings("Settings", "magenta");
 
 const Settings = async () => {
 	core.sys("Iniciando verificações das pastas do painel.");
-	core.sys("Iniciando verificações das pastas do painel.", ["teste", "teste"], { teste: "teste" });
 
 	if (!dirEX(root.loggingsPATH)) {
 		core.sys("Pasta de loggings não existe, criando uma.");
@@ -29,6 +29,7 @@ const Settings = async () => {
 	await SettingsConf(core);
 	await DatabaseConf(core);
 	await ColorConf(core);
+	await DiscordConf(core);
 
 	core.sys("Configurações do painel forão verificadas e aprovadas.");
 };

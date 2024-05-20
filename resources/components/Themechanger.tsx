@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { store } from '../states';
 
 interface LightSwitchProps {
   checked: boolean;
@@ -7,7 +8,7 @@ interface LightSwitchProps {
 
 const LightSwitch: React.FC<LightSwitchProps> = ({ checked, onChange }) => {
   return (
-    <div className="flex flex-col justify-center ml-3" onClick={() =>{onChange(!checked)}}>
+    <div className="flex flex-col justify-center ml-3" onClick={() => { onChange(!checked) }}>
       <label className="relative cursor-pointer p-2" htmlFor="light-switch">
         {checked ? (<svg className={'hidden dark:block'} width="16" height="16" xmlns="http://www.w3.org/2000/svg">
           <path className="fill-slate-300" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z" />
@@ -29,14 +30,30 @@ const LightSwitches: React.FC = () => {
   );
 
   const handleSwitchChange = (checked: boolean) => {
+    const website = store.getState().website.data
     const updatedSwitch = document.querySelector('.light-switch') as HTMLInputElement;
 
     if (checked) {
       document.documentElement.classList.add('dark');
+      document.body.classList.remove('bg-light-primary');
+      document.body.classList.remove('bg-light-image');
+
+      document.body.classList.add('bg-dark-primary')
+      document.body.classList.add('bg-dark-image')
+
       localStorage.setItem('dark-mode', 'true');
+      document.body.style.background = website?.colors[checked ? "black" : "white"]?.background || ""
+
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('dark-mode', 'false');
+      document.body.classList.remove('bg-dark-primary');
+      document.body.classList.remove('bg-dark-image');
+
+      document.body.classList.add('bg-light-primary')
+      document.body.classList.add('bg-light-image')
+
+      document.body.style.background = website?.colors[checked ? "black" : "white"]?.background || ""
+      ipcRenderer.send('SettingsChange', {dark:false});
     }
 
     if (updatedSwitch) {

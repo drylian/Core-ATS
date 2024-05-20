@@ -35,7 +35,7 @@ const LoginForm: React.FC = () => {
 				{(formik) => (
 					<Form className='space-y-6'>
 						<div>
-							<label htmlFor='username' className='block text-sm font-medium leading-6 text-gray-900'>
+							<label htmlFor='username' className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary duration-300'>
 								<Trans ns='react:auth' i18nKey={"EmailAddress"} />
 							</label>
 							<div className='mt-2'>
@@ -46,9 +46,9 @@ const LoginForm: React.FC = () => {
 									autoComplete='email'
 									placeholder={t("InputMail")}
 									required
-									className={`block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+									
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
+
 								/>
 								<ErrorMessage name='email' component='div' className='text-red-500 text-xs mt-1' />
 							</div>
@@ -56,11 +56,11 @@ const LoginForm: React.FC = () => {
 
 						<div>
 							<div className='flex items-center justify-between'>
-								<label htmlFor='password' className='block text-sm font-medium leading-6 text-gray-900'>
+								<label htmlFor='password' className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary duration-300'>
 									<Trans ns='react:auth' i18nKey={"Password"} />
 								</label>
 								<div className='text-sm'>
-									<a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500'>
+									<a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500 '>
 										<Trans ns='react:auth' i18nKey={"ForgotPassword"} />?
 									</a>
 								</div>
@@ -73,15 +73,14 @@ const LoginForm: React.FC = () => {
 									placeholder={t("InputPass")}
 									autoComplete='current-password'
 									required
-									className={`block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
+
 								/>
 								<ErrorMessage name='password' component='div' className='text-red-500 text-xs mt-1' />
 							</div>
 						</div>
 						<div className='mb-2'>
-							<label htmlFor='remember_me' className='flex items-center text-gray-700'>
+							<label htmlFor='remember_me' className='flex items-center text-light-primary dark:text-dark-primary  duration-300'>
 								<Field type='checkbox' name='remember_me' className='mr-2' />
 								<span className='ml-1'>
 									<Trans ns='react:auth' i18nKey={"Remember"} />

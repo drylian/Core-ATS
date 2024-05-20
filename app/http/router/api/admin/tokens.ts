@@ -1,4 +1,3 @@
-import Authenticator from "@/controllers/express/Authorization";
 import Controller from "@/http/Controller";
 import Token, { TokenI } from "@/models/Token";
 import { gen, genv5 } from "@/utils";
@@ -6,13 +5,14 @@ import bcrypt from "bcrypt";
 import Loggings from "@/controllers/Loggings";
 import I18alt from "@/controllers/Language";
 import MakeActivity from "@/controllers/database/MakeActivity";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
 const core = new Loggings("Administração", "green");
 const PERMISSION = 3000; // Permissão padrão para api/admin/tokens
 export default class AdminsTokens extends Controller {
     constructor() {
         super();
         this.get("/tokens", async (Request, Response) => {
-            const { res } = await Authenticator(Request, Response, PERMISSION);
+            const { res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
             const Tokens = await Token.findAll();
             // Verifique se existem tokens
             if (Tokens.length === 0) {
@@ -31,13 +31,19 @@ export default class AdminsTokens extends Controller {
             return res.status(200).sender({ json: modifiedData });
         });
         this.put("/tokens/new", async (Request, Response) => {
-            const { req, res } = await Authenticator(Request, Response, PERMISSION);
+            const { req, res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
             const i18n = new I18alt();
             i18n.setLanguage(req.access.lang);
             const { lang, permissions, memo } = req.body;
 
-            if (!lang || !permissions || !memo)
-                return res.status(400).json({ type: "error", message: "Params Obrigatorío não encontrado." });
+            if (!lang || !permissions || !memo) {
+                await MakeActivity(req, `Request falhou , Params Obrigatoríos não encontrados"`, false);
+
+                return res.status(400).json({ type: "error", message: "Params Obrigatoríos não encontrados." });
+            }
+            if(Number(permissions) >= Number(req.access.permissions)) {
+				return res.status(401).json({ type: "warn", message: "Não é possivel criar um token com uma permissão maior ou igual a sua." });
+			}
             let token: string, existingToken;
             do {
                 // Gera um novo token
@@ -64,9 +70,10 @@ export default class AdminsTokens extends Controller {
 
         this.get("/tokens/:id", async (Request, Response) => {
             const Tokenid = Request.params.id;
-            const { res } = await Authenticator(Request, Response, PERMISSION);
+            const { req,res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
             const TokenRecord = await Token.findOne({ where: { id: Tokenid } });
             if (!TokenRecord) {
+                await MakeActivity(req, `Token não encontrado(GET)`, false);
                 return res.status(404).sender({ message: "Token Não encontrado" });
             }
             let TokenData: TokenI = TokenRecord.dataValues;
@@ -77,17 +84,20 @@ export default class AdminsTokens extends Controller {
 
         this.delete("/tokens/:id/delete", async (Request, Response) => {
             const TokenId = Request.params.id;
-            const { req, res } = await Authenticator(Request, Response, PERMISSION);
+            const { req, res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only: ["Administration", "Cookie"]  }).auth();
 
             // Verifica se o usuário existe antes de excluí-lo
             const TokenRecord = await Token.findOne({ where: { id: TokenId } });
             if (!TokenRecord) {
+                await MakeActivity(req, `Token não encontrado(DELETE)`, false);
                 return res.status(404).sender({ message: "Token não encontrado" });
             }
-            if ((req.access.permissions ?? 0) < (TokenRecord.dataValues.permissions ?? PERMISSION)) {
+            if ((req.access.permissions ?? 0) <= (TokenRecord.dataValues.permissions ?? PERMISSION)) {
+                await MakeActivity(req, `tentou deletar "${TokenRecord.dataValues.memo}" que tinha uma permissão maior que a dele "${req.access.permissions}"`, false);
+
                 return res.status(401).sender({ message: "Não é possivel deletar um token com uma permissão maior que a sua." });
             }
-            if (req.access.tokenref === TokenRecord.dataValues.token) return res.status(404).sender({ message: "É impossivel um token deletar a si mesmo na api administrativa, delete esse token usando um Administrador com as permissões necessarias." });
+            if (req.access.token?.token === TokenRecord.dataValues.token) return res.status(404).sender({ message: "É impossivel um token deletar a si mesmo na api administrativa, delete esse token usando um Administrador com as permissões necessarias." });
 
             // Realiza a exclusão do usuário
             await Token.destroy({ where: { id: TokenId } });

@@ -1,0 +1,41 @@
+{
+  "message": "Request failed with status code 403",
+  "name": "AxiosError",
+  "stack": "AxiosError: Request failed with status code 403\n    at settle (C:\\Users\\Drylian\\Documents\\GitHub\\Core-ATS\\tests\\test\\node_modules\\axios\\dist\\node\\axios.cjs:1967:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\Drylian\\Documents\\GitHub\\Core-ATS\\tests\\test\\node_modules\\axios\\dist\\node\\axios.cjs:3062:11)\n    at IncomingMessage.emit (node:events:526:35)\n    at endReadableNT (node:internal/streams/readable:1408:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)",
+  "config": {
+    "transitional": {
+      "silentJSONParsing": true,
+      "forcedJSONParsing": true,
+      "clarifyTimeoutError": false
+    },
+    "adapter": [
+      "xhr",
+      "http"
+    ],
+    "transformRequest": [
+      null
+    ],
+    "transformResponse": [
+      null
+    ],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "maxBodyLength": -1,
+    "env": {},
+    "headers": {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer core_uDPL3sfAHrXNCuFFwmOecNf8beeA6Wi6",
+      "User-Agent": "axios/1.6.2",
+      "Content-Length": "93",
+      "Accept-Encoding": "gzip, compress, deflate, br"
+    },
+    "method": "put",
+    "url": "http://localhost:3000/api/admin/accounts/new",
+    "data": "{\"email\":\"novo_usuario@example.com\",\"password\":\"senha_segura\",\"permissions\":3000,\"lang\":\"en\"}"
+  },
+  "code": "ERR_BAD_REQUEST",
+  "status": 403
+}

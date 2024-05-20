@@ -20,6 +20,11 @@ const RegisterForm: React.FC = () => {
 		confirmPassword: "",
 		termsofservice: false,
 	};
+	const DiscordResponse = new URLSearchParams(window.location.search).get("Err");
+
+	if(DiscordResponse){
+		setErrMsg(DiscordResponse)
+	}
 
 	const validationSchema = Yup.object().shape({
 		username: Yup.string()
@@ -49,7 +54,7 @@ const RegisterForm: React.FC = () => {
 					<Form className='space-y-6'>
 						<div className='flex flex-wrap mb-4'>
 							<div className='w-full md:w-1/2 md:pr-2 mb-4 md:mb-0'>
-								<label htmlFor='username' className='block text-sm font-medium leading-6 text-gray-900'>
+								<label htmlFor='username' className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary  duration-300'>
 									<Trans ns='react:auth' i18nKey={"Username"} />
 								</label>
 								<Field
@@ -58,14 +63,12 @@ const RegisterForm: React.FC = () => {
 									placeholder={t("InputUsername")}
 									autoComplete='current-username'
 									required
-									className='block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500 text-light-primary dark:text-dark-primary'
 								/>
 								<ErrorMessage name='username' component='div' className='text-red-500 text-sm' />
 							</div>
 							<div className='w-full md:w-1/2 md:pr-2 mb-4 md:mb-0'>
-								<label htmlFor='email' className='block text-sm font-medium leading-6 text-gray-900'>
+								<label htmlFor='email' className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary  duration-300'>
 									<Trans ns='react:auth' i18nKey={"EmailAddress"} />
 								</label>
 								<Field
@@ -74,16 +77,15 @@ const RegisterForm: React.FC = () => {
 									placeholder={t("InputMail")}
 									autoComplete='current-email'
 									required
-									className='block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500 text-light-primary dark:text-dark-primary'
+
 								/>
 								<ErrorMessage name='email' component='div' className='text-red-500 text-sm' />
 							</div>
 						</div>
 						<div className='flex flex-wrap mb-4'>
 							<div className='w-full md:w-1/2 md:pr-2 mb-4 md:mb-0'>
-								<label htmlFor='password' className='block text-sm font-medium leading-6 text-gray-900'>
+								<label htmlFor='password' className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary  duration-300'>
 									<Trans ns='react:auth' i18nKey={"Password"} />
 								</label>
 								<Field
@@ -93,16 +95,15 @@ const RegisterForm: React.FC = () => {
 									placeholder={t("InputPass")}
 									autoComplete='current-password'
 									required
-									className={`block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500 text-light-primary dark:text-dark-primary'
+
 								/>
 								<ErrorMessage name='password' component='div' className='text-red-500 text-xs mt-1' />
 							</div>
 							<div className='w-full md:w-1/2 md:pr-2 mb-4 md:mb-0'>
 								<label
 									htmlFor='confirmPassword'
-									className='block text-sm font-medium leading-6 text-gray-900'
+									className='block text-sm font-medium leading-6 text-light-primary dark:text-dark-primary  duration-300'
 								>
 									<Trans ns='react:auth' i18nKey={"ConfirmPassword"} />
 								</label>
@@ -113,9 +114,8 @@ const RegisterForm: React.FC = () => {
 									placeholder={t("InputConfirmPass")}
 									autoComplete='current-confirmPassword'
 									required
-									className={`block px-3 w-full rounded-md border-0 py-1.5 
-                                    text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+									className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500 text-light-primary dark:text-dark-primary'
+
 								/>
 								<ErrorMessage
 									name='confirmPassword'
@@ -125,7 +125,7 @@ const RegisterForm: React.FC = () => {
 							</div>
 						</div>
 						<div className='mb-2'>
-							<label htmlFor='termsofservice' className='block text-gray-700'>
+							<label htmlFor='termsofservice' className='block text-light-primary dark:text-dark-primary  duration-300'>
 								<Field type='checkbox' name='termsofservice' className='mr-2' />
 								<Trans ns='react:auth' i18nKey={"AgreeTerms"} />{" "}
 								<span className='line'>

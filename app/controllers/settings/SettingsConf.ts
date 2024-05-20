@@ -4,7 +4,7 @@ import { LoggingsMethods } from "@/controllers/Loggings";
 import { ErrType, SettingsJson } from "@/interfaces";
 
 export default async function SettingsConf(core: LoggingsMethods) {
-	core.sys("tentando configurar as [Configurações principais].blue do painel [2/4]");
+	core.sys("tentando configurar as [Configurações principais].blue do painel [2/5]");
 	try {
 		const qprefix = async (config: string, padrao?: string) => {
 			if (config === "server_title") {
@@ -73,6 +73,8 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		const c: SettingsJson = json(root.configPATH + "/settings.json");
 
 		if (!c?.mode) jsonsv(root.configPATH + "/settings.json", { mode: "pro" });
+		if (typeof c?.server?.register !== "boolean")
+			jsonsv(root.configPATH + "/settings.json", { server: { register: true } });
 		if (!c?.proxy?.pterodactyl)
 			jsonsv(root.configPATH + "/settings.json", { proxy: { pterodactyl: "localhost:3000" } });
 		if (!c?.proxy?.phpmyadmin)
@@ -103,7 +105,8 @@ export default async function SettingsConf(core: LoggingsMethods) {
 			jsonsv(root.configPATH + "/settings.json", { server: { refreshTokenSecret: `refreshToken_${gen(128)}` } });
 		if (!c?.server?.accessTokenSecret)
 			jsonsv(root.configPATH + "/settings.json", { server: { accessTokenSecret: `accessToken_${gen(128)}` } });
-
+		if (!c?.server?.socketSignature)
+			jsonsv(root.configPATH + "/settings.json", { server: { socketSignature: `socketToken_${gen(128)}` } });
 		if (!c?.server?.signature)
 			jsonsv(root.configPATH + "/settings.json", { server: { signature: gen(128) } });
 
@@ -144,14 +147,14 @@ export default async function SettingsConf(core: LoggingsMethods) {
 		 */
 		if (typeof css?.smtp?.active !== "boolean")
 			jsonsv(root.configPATH + "/settings.json", { smtp: { active: false } });
-		if (css?.smtp?.host) jsonsv(root.configPATH + "/settings.json", { smtp: { host: "mailer.smtp.com" } });
-		if (css?.smtp?.port) jsonsv(root.configPATH + "/settings.json", { smtp: { port: 465 } });
+		if (!css?.smtp?.host) jsonsv(root.configPATH + "/settings.json", { smtp: { host: "mailer.smtp.com" } });
+		if (!css?.smtp?.port) jsonsv(root.configPATH + "/settings.json", { smtp: { port: 465 } });
 		if (typeof css?.smtp?.secure !== "boolean")
 			jsonsv(root.configPATH + "/settings.json", { smtp: { secure: false } });
-		if (css?.smtp?.username)
+		if (!css?.smtp?.username)
 			jsonsv(root.configPATH + "/settings.json", { smtp: { username: "Username Mailer Or Email Mailer" } });
-		if (css?.smtp?.password) jsonsv(root.configPATH + "/settings.json", { smtp: { password: "Password Mailer" } });
-		if (css?.smtp?.from) jsonsv(root.configPATH + "/settings.json", { smtp: { from: "Core Panel" } });
+		if (!css?.smtp?.password) jsonsv(root.configPATH + "/settings.json", { smtp: { password: "Password Mailer" } });
+		if (!css?.smtp?.from) jsonsv(root.configPATH + "/settings.json", { smtp: { from: "Core Panel" } });
 		core.sys("Configurações principais do painel - [OK].green ");
 	} catch (e) {
 		core.sys("[Erro nas principais do painel].red : " + (e as ErrType).message);

@@ -35,7 +35,7 @@ export default function StartSettings() {
 	watcher.on("change", (filePath) => {
 		if (path.extname(filePath) === ".json" && !ignoresConfs.includes(path.basename(filePath, ".json"))) {
 			const data: object = json(filePath);
-			if (path.basename(filePath, ".json") === "settings") storage.set("config", { ...data }, true);
+			if (path.basename(filePath, ".json") === "settings") storage.set("settings", { ...data }, true);
 			storage.set(path.basename(filePath, ".json"), { ...data }, true);
 			// Console("Configurações", "blue", `${path.relative(directoryToWatch, filePath).replace('.json', '').replace(/[/\\]/g, ' -> ')}`, [`foi alterado, salvando`])
 		}

@@ -3,18 +3,20 @@ import bcrypt from "bcrypt";
 import User, { UserE } from "@/models/User";
 import { ALTcpt, AlTexp } from "@/utils";
 import Loggings from "@/controllers/Loggings";
-import { v4 as uuidv4 } from "uuid"; // Importa a função uuidv4 para gerar UUIDs
+import { v4 as uuidv4 } from "uuid"; 
 import { ErrType, SettingsJson } from "@/interfaces";
 import storage from "@/controllers/Storage";
 import I18alt from "@/controllers/Language";
-import MakeActivity from "@/controllers/database/MakeActivity";
+import { UserActivity } from "@/controllers/database/MakeActivity";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
 
 const core = new Loggings("Login", "green");
 const router = express.Router();
 
 // Rota de autenticação
-router.post("/", async (req: Request, res: Response) => {
-	const config: SettingsJson = storage.get("config");
+router.post("/", async (Request: Request, Response: Response) => {
+	const { req, res } = await new AuthenticatorController(Request, Response, { only: ["Guest"] }).auth();
+	const config: SettingsJson = storage.get("settings");
 	const i18n = new I18alt();
 	// Verifique se os campos necessários estão presentes no corpo da solicitação
 	const { email, password, remember_me = false, lang } = req.body;
@@ -53,8 +55,7 @@ router.post("/", async (req: Request, res: Response) => {
 				{ signed: true, maxAge: AlTexp(remember_me ? "15m" : "1h"), httpOnly: true },
 			);
 			req.access.user = UserData
-			req.access.auth = true
-			await MakeActivity(req, "react:auth.MakedLogin");
+			await UserActivity(req, "react:auth.MakedLogin", true)
 
 			return res.status(200).json({
 				message: i18n.t("react:auth.WelcomeBack", { Username: UserData.username }),

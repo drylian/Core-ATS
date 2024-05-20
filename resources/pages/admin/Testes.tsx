@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import CaptchaBox from "../../components/elements/models/CaptchaBox";
+import React from "react";
+import { SquareLoading } from "../../components/elements/models/SquareModel";
 
 const Test: React.FC = () => {
-	const [code, SetCode] = useState<string | null>(null)
 	return (
 		<>
-			<div className="flex-1">
-			<CaptchaBox code={SetCode}/>
-			{code}
-			</div>
+			
+			<SquareLoading/>
+
 		</>
 	);
 };

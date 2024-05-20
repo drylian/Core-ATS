@@ -55,7 +55,7 @@ class ViteInjector {
 			try {
 				vite.transformIndexHtml(
 					req.originalUrl,
-					html.automatic(),
+					await html.automatic(),
 				).then((html) => {
 					res.status(200).send(html);
 				});
@@ -77,11 +77,11 @@ class ViteInjector {
 			...css.map((cssFile: string) => `<link rel="stylesheet" href="/${cssFile}" />`),
 		];
 		this.server.use("/assets", express.static(path.join(configuractions.rootPATH + "/http/public/assets")));
-		this.server.get("*", (req, res) => {
+		this.server.get("*", async (req, res) => {
 			const html = new HtmlController(req, manifest)
 
 			if (req.accepts("html")) {
-				res.send(html.automatic());
+				res.send(await html.automatic());
 			}
 		});
 	}

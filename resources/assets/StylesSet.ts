@@ -14,18 +14,20 @@ const GlobalStyle = createGlobalStyle`
     --lighttextpri:  ${(props) => props.theme.light.text.primary};
     --lighttextsec:  ${(props) => props.theme.light.text.secondary};
     --lighttextter:  ${(props) => props.theme.light.text.tertiary};
-    
+    --lightbackgroundimg: ${(props) => props.theme.light.background};
+
     --darkcorpri:  ${(props) => props.theme.dark.color.primary};
     --darkcorsec:  ${(props) => props.theme.dark.color.secondary};
     --darkcorter:  ${(props) => props.theme.dark.color.tertiary};
     --darktextpri: ${(props) => props.theme.dark.text.primary};
     --darktextsec:  ${(props) => props.theme.dark.text.secondary};
     --darktextter: ${(props) => props.theme.dark.text.tertiary};
+    --darkbackgroundimg: ${(props) => props.theme.dark.background};
+
     }
     body {
         font-family: 'Roboto', sans-serif;
         background: ${(props) => props.theme.background};
-        background-color: ${(props) => props.theme.selected};
         color: #cccccc;
         letter-spacing: 0.015em;
     }

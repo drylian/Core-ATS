@@ -6,25 +6,33 @@ export default function Theme(website: WebsiteConf | undefined) {
 	// Determinar a cor do texto com base nas configurações de cores do site
 	const color = website?.colors
 	const selected = website?.colors[theme]
-	let backgroundImage = "";
+	document.body.classList.add('duration-300')
+
 	if (theme === "black") {
 		document.documentElement.classList.add('dark');
+		document.body.classList.add('bg-dark-primary')
 		localStorage.setItem('dark-mode', 'true');
-	  } else {
+	} else {
 		document.documentElement.classList.remove('dark');
+		document.body.classList.add('bg-light-primary')
 		localStorage.setItem('dark-mode', 'false');
-	  }
-	// Determinar imagem de fundo ou cor
-	if (website?.colors[theme]?.background.startsWith("http://") || website?.colors[theme]?.background.startsWith("https://")) {
-		backgroundImage = `url(${website?.colors[theme]?.background})`;
-	} else if (website?.colors[theme]?.background.startsWith("/")) {
-		backgroundImage = `url('${website?.colors[theme]?.background}')`;
-	} else if (website?.colors[theme] && /^#[0-9a-fA-F]+$/.test(website?.colors[theme]?.background)) {
-		backgroundImage = website?.colors[theme]?.background;
-	} else { 
-		backgroundImage = "#FFF";
 	}
-	console.log(color)
+	// Determinar imagem de fundo ou cor
+	function getBackimage(theme: "black" | "white") {
+		let image
+		if (website?.colors[theme]?.background.startsWith("http://") || website?.colors[theme]?.background.startsWith("https://")) {
+			image = `url(${website?.colors[theme]?.background})`;
+		} else if (website?.colors[theme]?.background.startsWith("/")) {
+			image = `url('${website?.colors[theme]?.background}')`;
+		} else if (website?.colors[theme] && /^#[0-9a-fA-F]+$/.test(website?.colors[theme]?.background)) {
+			image = website?.colors[theme]?.background;
+		} else {
+			image = "#FFF";
+		}
+		return image
+	}
+
+	document.body.style.background = website?.colors[theme]?.background || ""
 	return {
 		dark: {
 			color: {
@@ -36,7 +44,8 @@ export default function Theme(website: WebsiteConf | undefined) {
 				primary: color?.black.text.primary,
 				secondary: color?.black.text.secondary,
 				tertiary: color?.black.text.tertiary,
-			}
+			},
+			background: getBackimage("black")
 		},
 		light: {
 			color: {
@@ -48,10 +57,11 @@ export default function Theme(website: WebsiteConf | undefined) {
 				primary: color?.white.text.primary,
 				secondary: color?.white.text.secondary,
 				tertiary: color?.white.text.tertiary,
-			}
+			},
+			background: getBackimage("white")
 		},
-		selected:selected?.color.primary,
-		background: backgroundImage,
+		selected: selected?.color.primary,
+		background: getBackimage(theme)
 	};
 }
 

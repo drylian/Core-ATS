@@ -6,7 +6,7 @@ import { NextFunction, Request, Response } from "express";
  */
 export function Protocols() {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const config: SettingsJson = storage.get("config");
+		const config: SettingsJson = storage.get("settings");
 		if (config.server.protocol === req.protocol.toLocaleLowerCase() || config.server.protocol === "http/https") {
 			next();
 		} else {

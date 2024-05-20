@@ -1,20 +1,56 @@
 {
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
   "compilerOptions": {
-    "skipLibCheck": true, // Ignora a verificação de tipos em arquivos de declaração, no caso externas
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "declaration": false,
+    "sourceMap": false,
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "target": "ES2017",
-    "module": "NodeNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "CommonJS",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "resolveJsonModule": true,
-    "strict": true, 
-    "outDir": "dist",
+    "strict": true,
+    "outDir": "temp",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./app/*"],
-      
+      "@/*": [
+        "./app/*"
+      ],
     },
-    "types":[ "node"],
+    "types": [
+      "node"
+    ],
   },
-  "include": ["app", "resources/**/*"],
-  "exclude": ["node_modules","resources", "**/*.spec.ts", "dist"],
-  "references": [{ "path": "./resources/tsconfig.json" }]
+  "include": [
+    "app",
+    "resources/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "resources",
+    "**/*.spec.ts",
+    "dist"
+  ],
+  "references": [
+    {
+      "path": "./resources/tsconfig.json"
+    }
+  ]
 }

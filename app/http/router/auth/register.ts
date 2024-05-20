@@ -4,17 +4,23 @@ import User from "@/models/User";
 import Loggings from "@/controllers/Loggings";
 const core = new Loggings("Registro", "green");
 import { genv5 } from "@/utils";
-import { ErrType } from "@/interfaces";
+import { ErrType, SettingsJson } from "@/interfaces";
 import I18alt from "@/controllers/Language";
-import MakeActivity from "@/controllers/database/MakeActivity";
+import { UserActivity } from "@/controllers/database/MakeActivity";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
+import storage from "@/controllers/Storage";
 
 const router = express.Router();
 
 // Rota de registro
-router.post("/", async (req, res) => {
+router.post("/", async (Request, Response) => {
+	const { req, res } = await new AuthenticatorController(Request, Response, { only: ["Guest"] }).auth();
 	const { username, email, password, lang } = req.body;
 	const i18n = new I18alt();
-
+	const config:SettingsJson = storage.get("settings")
+	if(!config.server.register) {
+		return res.status(401).sender({ message: "Register System are disabled." });
+	}
 	if (lang) i18n.setLanguage(lang);
 
 	try {
@@ -44,8 +50,7 @@ router.post("/", async (req, res) => {
 
 		core.log(`Novo usuário foi criado : "${newUser.username}"`);
 		req.access.user = newUser.dataValues
-		req.access.auth = true
-		await MakeActivity(req, "react:auth.SuccessCreatedUser");
+		await UserActivity(req, "react:auth.SuccessCreatedUser", true)
 
 		return res.status(200).json({ type: "success", complete: true, message: i18n.t("react:auth.SuccessCreatedUser") });
 	} catch (error) {

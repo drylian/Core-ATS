@@ -5,12 +5,12 @@ import storage from "@/controllers/Storage";
 
 export default function Credentials() {
 	return async (req: Request, res: Response, next: NextFunction) => {
-		const valores: SettingsJson = storage.get("config");
+		const valores: SettingsJson = storage.get("settings");
 		if (valores?.server?.cors) {
 			if (!valores.server.cors.allowedroutes) {
 				valores.server.cors.allowedroutes = [];
 			}
-			valores.server.cors.allowedroutes.push(`${valores.server.url}:${valores.server.port}`);
+			valores.server.cors.allowedroutes.push(`${valores.server.url}`);
 		}
 		const origin = req.headers.origin
 			? req.headers.origin
@@ -23,13 +23,12 @@ export default function Credentials() {
 			valores.server.port,
 		);
 
-		if (origin && typeof origin === "string" && allowedOrigins.indexOf(origin) !== -1) {
+		if (origin && typeof origin === "string" && allowedOrigins.includes(origin)) {
 			res.header("Access-Control-Allow-Credentials", "true");
 		} else if (Array.isArray(origin)) {
 			origin.forEach((originItem) => {
 				if (typeof originItem === "string" && allowedOrigins.includes(originItem)) {
 					res.header("Access-Control-Allow-Credentials", "true");
-					return;
 				}
 			});
 		}

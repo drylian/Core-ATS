@@ -1,14 +1,13 @@
-import { load } from "cheerio";
 import { SettingsJson } from "@/interfaces";
 import I18alt from "@/controllers/Language";
 import storage from "@/controllers/Storage";
 import { Request } from "express";
 /**
  *
- * @returns Html principal do sistema, usado para rederizar o React
+ * @returns Html principal do sistema, usado para rederizar o React e o sistema
  */
 export default function render(req: Request) {
-    const config: SettingsJson = storage.get("config");
+    const config: SettingsJson = storage.get("settings");
     const language = req?.access.lang
         ? req?.access.lang
         : req?.language
@@ -22,7 +21,7 @@ export default function render(req: Request) {
         <html lang="${language}">
             <head>
                 <meta charset="UTF-8" />
-                <link rel="icon" type="image/png" href="${config.server.logo || "/img/favicon.png"}" />
+                <link rel="icon" type="image/png" href="${config.server.logo || "/img/logo.jpg"}" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="description" content="${i18n.t("meta.description")}.">
                 <meta name="keywords" content="${i18n.t("meta.keywords")}.">

@@ -1,15 +1,14 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User from "@/models/User";
-import Authenticator from "@/controllers/express/Authorization";
 import I18alt from "@/controllers/Language";
-// import { rcore as core } from "@/controllers/Express";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
 
 const router = express.Router();
-
+const PERMISSION = 1000
 // Rota de autenticação
 router.post("/:type", async (Request: Request, Response: Response) => {
-	const { req, res } = await Authenticator(Request, Response, 1000, true);
+	const { req, res } = await new AuthenticatorController(Request, Response, { permission: PERMISSION, only:["Cookie"] }).auth();
 	const type = req.params.type;
 	const i18n = new I18alt();
 	if (req.access.lang) i18n.setLanguage(req.access.lang);
@@ -27,8 +26,8 @@ router.post("/:type", async (Request: Request, Response: Response) => {
 		const userRecord = await User.findOne({ where: { username } });
 		if (userRecord && bcrypt.compareSync(password, userRecord.password)) {
 			/**
-             * Atualiza a senha atual
-             */
+			 * Atualiza a senha atual
+			 */
 			await User.update({ password: hashedPassword }, { where: { uuid: userRecord.uuid } });
 			return res
 				.status(200)
@@ -43,8 +42,8 @@ router.post("/:type", async (Request: Request, Response: Response) => {
 		const userRecord = await User.findOne({ where: { email } });
 		if (userRecord && bcrypt.compareSync(password, userRecord.password)) {
 			/**
-             * Atualiza o email atual
-             */
+			 * Atualiza o email atual
+			 */
 			await User.update({ email: newemail }, { where: { uuid: userRecord.uuid } });
 			return res.status(200).json({
 				type: "success",

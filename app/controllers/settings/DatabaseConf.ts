@@ -4,7 +4,7 @@ import { LoggingsMethods } from "@/controllers/Loggings";
 import { ErrType, SettingsJson } from "@/interfaces";
 
 export default async function DatabaseConf(core: LoggingsMethods) {
-	core.sys("tentando configurar o [Banco de dados].blue do painel [3/4]");
+	core.sys("tentando configurar o [Banco de dados].blue do painel [3/5]");
 
 	try {
 		const qprefix = async (config: string) => {

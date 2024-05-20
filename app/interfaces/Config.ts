@@ -10,6 +10,16 @@ export interface SettingsJson {
         settings: string;
         tokens: string;
     };
+    discord: {
+        token: string;
+        active: boolean;
+        auth: {
+            active: boolean;
+            client: string;
+            secret: string;
+            callback: string;
+        }
+    }
     proxy: {
         pterodactyl: string;
         phpmyadmin: string;
@@ -24,6 +34,7 @@ export interface SettingsJson {
         from: string;
     };
     server: {
+        register:boolean;
         port: string;
         url: string;
         title: string;
@@ -34,12 +45,13 @@ export interface SettingsJson {
         lang: string;
         refreshTokenSecret: string;
         accessTokenSecret: string;
+        socketSignature:string;
         csrf: {
             secret: string;
             samesite: boolean;
             ignored: string[];
         };
-        signature:string;
+        signature: string;
         cors: {
             active: boolean;
             allowedroutes: string[];

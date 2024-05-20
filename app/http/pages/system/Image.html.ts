@@ -7,7 +7,7 @@ import { Request } from "express";
 // Função para criar um visualizador de imagem
 export default function ImageViewer<T>(Imagem: T, req: Request) {
 	const i18n = new I18alt();
-	const config: SettingsJson = storage.get("config");
+	const config: SettingsJson = storage.get("settings");
 	const color: ColorJson = storage.get("color");
 
 	return `

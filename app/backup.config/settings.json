@@ -13,7 +13,7 @@
     "username": "Username Mailer Or Email Mailer",
     "password": "Password Mailer",
     "secure": true,
-    "active": true,
+    "active": false,
     "host": "mailer.smtp.com"
   },
   "server": {
@@ -25,19 +25,25 @@
     "refreshTokenSecret": "refreshToken_AgkVUirnZzkEjUOqAHYifjVFlpBaF8QyKXwxpxdbSNi8EVay5JYLPDyMrw00tg1dfRbOepcuAlBkaGnuZsIAepVj3ioKYiDKIRZK1PSLuZdwBnZsRObW3ejvp1RnWGHN",
     "accessTokenSecret": "accessToken_cIzhMf1Fxw7d8klPFoQRWGP8D4z6p4v9Rg6uJgfAdwnIYYFNxy2GJSd1mbqiqlac3n44FsJeCocuTD8sPdyaSbUhW69ni04UZlohl2UBuGEZtn2ufWxfsIou4CMlPazR",
     "csrf": {
-      "cookie_secret": "grnqvGwI8n6SLg8ZMFK3iLVW39804ldgJ7TdZsC5gfTpOdfLJByDIQrCrVtVAvvz5buiPTuarHCzLrwxSTRrfen8PJ9Ijzx0AKaeI7Ts9MLDGhXYBXeQMxMEcRlaxdHr",
+      "cookie_secret": "r5x3XeWwe4lBlBmvd3XIvaWM2sDdhvPkiFWP9Q3cJK4PCI6h7iZNlveB5N9Iw4fvPZ5c6C4MAYr5UO0ZhAseCOuUGlAD0XOOaHWCgJ6RfUPqv2PD3JYQQmc4zoXkb2Q8",
       "secret": "mDCcaOCIEj4l95Wkf9U7tqOZYWQ2Lr1lVGBjrNI6A30IzJIKkR7yf3MuIeVC4b7YaM4gpGZ71CA2yVemshvRruHqUYS6Q12Y0PuBZ1feQ8FzMzRI7Nu9mQyn2Y53zwRi",
       "samesite": false,
       "secure": false,
-      "signed": false,
-      "size": 64,
-      "ignoreroutes": ""
+      "ignored": [
+        ""
+      ]
     },
     "cors": {
-      "allowedroutes": "http://localhost,localhost,127.0.0.1",
+      "allowedroutes": [
+        "http://localhost",
+        "localhost",
+        "127.0.0.1",
+        "br.alternight.com.br"
+      ],
       "active": true
     },
-    "lang": "pt-BR"
+    "lang": "pt-BR",
+    "signature": "pk21DBWTTHGkII9jzOtxWzd5iQaROexX4PHkLr0PdcDEUwcB9WTwQvcM9gA438ZOU981IkbYlB0AFYJSTL88jyH5JwreNMoeO5S0rCsze2Li7HSK0G0zBX9pr7yd7lzi"
   },
   "database": {
     "dialect": "sqlite"

@@ -79,13 +79,14 @@ const NewToken = () => {
 												type='text'
 												id='memo'
 												name='memo'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 											/>
 											<ErrorMessage
 												name='memo'
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">uma identificação unica que será visualmente usada para reconhecer esse token.</p>
 										</div>
 
 										<div className='mb-4'>
@@ -102,7 +103,7 @@ const NewToken = () => {
 														const seleted = setLang(e);
 														props.setFieldValue("lang", seleted);
 													}}
-													className='mt-1 p-2 w-full border rounded-md'
+													className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 												>
 													<option disabled value='' label='Selecione a lingua do usuário' />
 													{website &&
@@ -118,6 +119,7 @@ const NewToken = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">O Idioma que vai ser usado nas respostas da api.</p>
 										</div>
 
 										<button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md'>
@@ -136,7 +138,7 @@ const NewToken = () => {
 												as='select'
 												id='permissions'
 												name='permissions'
-												className='mt-1 p-2 w-full border rounded-md'
+												className='mt-1 p-1 w-full bg-light-secondary dark:bg-dark-secondary duration-300 border rounded-md border-gray-500'
 											>
 												<option disabled value='' label='Selecione o nivel de permissão' />
 												{permissionOptions.map((value) => (
@@ -150,21 +152,12 @@ const NewToken = () => {
 												component='div'
 												className='text-red-500 text-xs mt-1'
 											/>
+											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">A permissão é o nivel de quanto acesso possue no painel, para um "client" deixe o valor
+												padrão "1000" caso queira algum nivel administrativo coloque acima de
+												"2000", o limite de permissão é limitado ao seu nivel administrativo.</p>
 										</div>
 									</BoxModel>
 								</div>
-							</div>
-							<div className='mt-1'>
-								<BoxModel title='Aviso sobre as permissôes' color='red' nopad={true}>
-									{/* <i className={`bx bx-error ml-1 mr-1`} style={{ color: "white", fontSize: '20px', }} /> */}
-									<div className='bg-red-500 rounded p-2'>
-										<span className='text-light-primary dark:text-dark-primary duration-300 font-semibold'>
-											A permissão é o nivel do usuário , para um usuário padrão deixe o valor
-											padrão "1000" caso queira algum nivel administrativo coloque acima de
-											"2000", o limite de permissão é limitado ao seu nivel administrativo.
-										</span>
-									</div>
-								</BoxModel>
 							</div>
 						</Form>
 					);

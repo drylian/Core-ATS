@@ -15,13 +15,13 @@ const ViewActivity = () => {
     const [user, setUser] = useState<UserE | null>(null);
 
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const { id } = useParams();
-    if (!id) {
+    const { id,type } = useParams();
+    if (!type || type && !["user","authorization", "system"].includes(type)) {
         return <AdminMissing />;
     }
 
     const handleClick = () => {
-        activity(id)
+        activity(type as "user" | "authorization" | "system" , id)
             .then((response) => {
                 setData(response);
             })
@@ -30,7 +30,7 @@ const ViewActivity = () => {
             });
     };
     const getUser = () => {
-        getAccount(id).then((response) => {
+        getAccount(id as string).then((response) => {
             setUser(response);
         })
             .catch((err) => {
@@ -38,14 +38,14 @@ const ViewActivity = () => {
             });
     }
 
-
     if (!data) handleClick();
-    if (id && id !== "system" && !user) getUser()
+    if(type && type === "user" && !user) getUser()
 
     return (
         <ContentBox title={`Administração - Atividades - ${id !== "system" ? id : "Sistema"}`} nofooter={true}>
             <div className="flex flex-col sm:flex-row p-3 overflow-y-auto">
                 {user ? (
+                    // Usuario Box
                     <BoxModel className="p-1" noheader nopad>
                         <>
                             <div className="p-3 rounded shadow-md">
@@ -86,7 +86,7 @@ const ViewActivity = () => {
                     search={searchTerm}
                     setSearch={setSearchTerm}
                     className="p-1 flex-1"
-                    desc={id === "system" ? "Registros de atividades do sistema" : ""}
+                    desc={type === "system" ? "Registros de atividades do sistema" : ""}
                 >
                     <QueryModal data={data ?? []} search={searchTerm} limit={5}>
                         {({ query }: { query: AdminActivity[] | undefined }) => (
@@ -100,18 +100,18 @@ const ViewActivity = () => {
                                     <div key={index}
                                         className='rounded-lg overflow-hidden shadow-md bg-white bg-opacity-10 p-1 mb-1'
                                     >
-                                        {activity.userid !== -1 && activity.userid !== -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+                                        {activity.type === "user" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
                                             <i className="bx bx-user" />{" "}
-                                            <Link to={`/admin/accounts/${activity.userid}/edit`} className="text-blue-500 hover:text-blue-800">
-                                                {activity.username}
+                                            <Link to={`/admin/accounts/${activity.identification}/edit`} className="text-blue-500 hover:text-blue-800">
+                                                {activity.identity}
                                             </Link>{" "}
                                             - <small className="text text-xs">{activity.ip}</small>
                                         </p>}
-                                        {activity.userid === -1 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
-                                            <i className="bx bx-user" />{" "}{activity.username + " "} - <small className="text text-xs">{activity.ip}</small>
+                                        {activity.type === "authorization" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+                                            <i className="bx bx-network-chart" />{" "}{activity.identity + " "} - <small className="text text-xs">{activity.ip}</small>
                                         </p>}
-                                        {activity.userid === -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
-                                            <i className="bx bx-cog" />{" "}{activity.username + " - "}
+                                        {activity.type === "system" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+                                            <i className="bx bx-cog" />{" "}{activity.identity + " - "}
                                             <small className="text text-xs">{activity.ip}</small>
                                         </p>}
                                         <p className='mb-1 text-light-tertiary dark:text-dark-tertiary duration-300 font-bold text-xs '>

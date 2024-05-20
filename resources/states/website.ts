@@ -22,6 +22,7 @@ export interface ColorJson {
 }
 
 export interface WebsiteConf {
+    socket:string;
     title: string;
     url: string;
     port: string;
@@ -29,6 +30,10 @@ export interface WebsiteConf {
     colors: ColorJson;
     langs: Array<string>;
     languages: { [key: string]: string };
+    auth:{
+        discord:boolean;
+        register:boolean;
+    }
 }
 export interface WebsiteStore {
     data?: WebsiteConf;

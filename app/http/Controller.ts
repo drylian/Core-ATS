@@ -5,10 +5,10 @@ import SenderError from "./pages/errors/Error.html";
 import i18alt from "@/controllers/Language";
 
 interface ErrorController {
-    name?: string;
-    message?: string;
-    stack?: string;
-    code?: string | number;
+	name?: string;
+	message?: string;
+	stack?: string;
+	code?: string | number;
 }
 
 export class ControllerRouterError extends Error {
@@ -20,7 +20,7 @@ export class ControllerRouterError extends Error {
 
 	constructor(err: ErrorController, req: Request, res: Response) {
 		super(err.message);
-		this.config = storage.get("config");
+		this.config = storage.get("settings");
 		this.i18n = new i18alt();
 		this.code = err.code ?? "unknown";
 		this.stack = err.stack ?? this.stack;
@@ -42,27 +42,27 @@ export class ControllerRouterError extends Error {
 		};
 
 		switch (accepts) {
-		case "html":
-			this.res.send(
-				SenderError(
-					isDevMode ? errorResponse : { message: this.message, status: 500, lang: this.req.language },
-					this.req,
-				),
-			);
-			break;
-		case "json":
-			this.res.json(
-				isDevMode
-					? { status: this.res.statusCode || this.req.statusCode, timestamp: Date.now() }
-					: {
-						status: this.res.statusCode || this.req.statusCode,
-						timestamp: Date.now(),
-						message: this.message,
-					},
-			);
-			break;
-		default:
-			this.res.type("txt").send(this.i18n.t("http:errors.InternalServerError"));
+			case "html":
+				this.res.send(
+					SenderError(
+						isDevMode ? errorResponse : { message: this.message, status: 500, lang: this.req.language },
+						this.req,
+					),
+				);
+				break;
+			case "json":
+				this.res.json(
+					isDevMode
+						? { status: this.res.statusCode || this.req.statusCode, timestamp: Date.now() }
+						: {
+							status: this.res.statusCode || this.req.statusCode,
+							timestamp: Date.now(),
+							message: this.message,
+						},
+				);
+				break;
+			default:
+				this.res.type("txt").send(this.i18n.t("http:errors.InternalServerError"));
 		}
 	}
 }
@@ -85,7 +85,8 @@ class Controller {
 		next?: NextFunction,
 	) {
 		try {
-			await handler(req, res, next);
+			
+			handler(req, res, next);
 		} catch (err) {
 			const errr = {
 				message: (err as ErrorController).message,

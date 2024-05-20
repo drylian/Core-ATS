@@ -1,3 +1,4 @@
+import { TokenI } from "@/models/Token";
 import { UserE } from "@/models/User";
 
 interface Params<T> {
@@ -52,7 +53,7 @@ declare global {
              * Define o idioma atual.
              * @param {string} lang - O idioma a ser definido como idioma atual.
              */
-            setLanguage(lang:string | undefined): boolean;
+            setLanguage(lang: string | undefined): boolean;
             /**
              * ( Alias do getNamespaceResource ) Obtem um json do namespace selecionado.
              * @param {string} namespace - o namespace selecionado.
@@ -66,22 +67,32 @@ declare global {
              */
             getNamespaceResource(namespace: string, i18next: boolean, lang?: string): object;
             /**
-             * Configuração de Authorização, retorna alguns params uteis que podem ser usados no request
+             * Declaração inicial da Authorização
+             */
+            declares: {
+                cookie?: UserE;
+                token?: string;
+                type?: "Client" | "Administration" | "Cookie" | "Guest";
+            }
+            /**
+             * Configuração de Authorização, retorna params que foram validados e verificados
              */
             access: {
-                auth?:boolean;
+                /**
+                 * Configurações Pessoais
+                 */
                 user?: UserE;
-                permissions?: number;
-                type?: "user" | "token";
-                tokenref?:string;
+                token?: TokenI;
+                /**
+                 * Configurações gerais
+                 */
+                permissions?: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000;
                 uuid?: string;
                 lang?: string;
                 ip?: string | string[] | undefined;
                 nonce?: string;
-                id?:number | null;
-                cookie?: UserE;
+                id?: number | null;
             };
-            checked: "user"| "client" | "authorization" | "guest";
         }
         interface Response {
             sender<T>(params: Params<T>): void;

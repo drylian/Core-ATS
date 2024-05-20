@@ -43,7 +43,7 @@ function jsonsv<Datatype>(local: string, data: Datatype): void {
 		// Escreve a string JSON no arquivo
 		fs.writeFileSync(local, jsonData, "utf-8");
 	} catch (error) {
-		console.error("Erro ao salvar o arquivo:", error);
+		console.error("Erro ao salvar o arquivo:" + local + " ,error :", error);
 	}
 }
 

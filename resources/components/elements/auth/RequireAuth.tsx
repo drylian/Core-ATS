@@ -5,18 +5,18 @@ import Suspended from "../../../pages/errors/Suspended";
 import { store } from "../../../states";
 
 interface RequireAuthProps {
-    Protected?: number;
-    component: React.ComponentType;
+	Protected?: number;
+	component: React.ComponentType;
 }
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ Protected = 0, component: Component, ...props }) => {
 	const location = useLocation();
-
+	const website = store.getState().website.data
 	const user = store.getState().user.data;
 
 	/**
-     * Se existir user.username
-     */
+	 * Se existir user.username
+	 */
 
 	if (user?.username && (user.suspended === true || user.suspendedReason)) {
 		return <Suspended reason={user.suspendedReason} />;
@@ -27,13 +27,13 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ Protected = 0, component: Com
 	}
 
 	/**
-     * Se não tiver logado,e estiver em uma area que precisa ta logado
-     */
-	if (!user && location.pathname !== "/auth/login" && location.pathname !== "/auth/register") {
+	 * Se não tiver logado,e estiver em uma area que precisa ta logado
+	 */
+	if (!user && location.pathname !== "/auth/login" && (website?.auth.register ? location.pathname !== "/auth/register" : true)) {
 		return <Navigate to={`/auth/login?callback=${location.pathname}`} />;
 	}
 
-	if (!user && (location.pathname === "/auth/login" || location.pathname === "/auth/register")) {
+	if (!user && (location.pathname === "/auth/login" || (website?.auth.register ? location.pathname === "/auth/register" : false))) {
 		return <Component {...props} />;
 	}
 

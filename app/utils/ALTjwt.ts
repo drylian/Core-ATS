@@ -77,7 +77,7 @@ export function AlTexp(expires: string): number {
  * @param {string} cryptKey - A chave de criptografia.
  * @returns {T | null} - Os dados descriptografados ou `false` se o token expirou.
  */
-export function ALTdcp<T>(token: string, cryptKey: string, ip: string | undefined): T {
+export function ALTdcp<T>(token: string, cryptKey: string, ip?: string | undefined): T {
 	try {
 		// Decodificar o token hexadecimal
 		const wordArray = CryptoJS.enc.Hex.parse(token);

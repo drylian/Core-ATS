@@ -15,7 +15,7 @@ export interface ErrorParamsProps {
     status: number;
 }
 export default function (i18n:i18t, params: ErrorParamsProps) {
-    const config: SettingsJson = storage.get("config");
+    const config: SettingsJson = storage.get("settings");
     let code: string, title: string;
 
     switch (params.status) {

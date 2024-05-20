@@ -9,7 +9,7 @@ export default class Mailer {
 	private core: Loggings;
 	private conter: number;
 	constructor() {
-		this.config = storage.get("config");
+		this.config = storage.get("settings");
 		this.core = new Loggings("Mailer", "gray");
 		this.conter = 0;
 		this.transporter = nodemailer.createTransport({

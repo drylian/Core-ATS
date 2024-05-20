@@ -1,12 +1,12 @@
 import I18alt from "@/controllers/Language";
-import Authenticator from "@/controllers/express/Authorization";
 import Controller from "@/http/Controller";
+import AuthenticatorController from "@/http/controllers/AuthenticatorController";
 import Activity from "@/models/Activity";
 export default class ClientActivity extends Controller {
 	constructor() {
 		super();
 		this.get("/activity", async (Request, Response) => {
-			const { req, res } = await Authenticator(Request, Response, 1000, true);
+			const { req, res } = await new AuthenticatorController(Request, Response, { only: ["Cookie"], permission:1000 }).auth();
 			const i18n = new I18alt();
 			if (req.access.lang) i18n.setLanguage(req.access.lang);
 			if (!req.access.user || !req.access.user?.id)

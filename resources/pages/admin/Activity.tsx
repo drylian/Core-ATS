@@ -41,27 +41,31 @@ const AdminActivitys = () => {
 									? new Date(b.create_at).getTime() - new Date(a.create_at).getTime()
 									: 0;
 							}).map((activity, index) =>
-							(<>
+							(<> 
 								<div key={index}
 									className='rounded-lg overflow-hidden shadow-md bg-white bg-opacity-10 p-1 mb-1'
 								>
-									{activity.userid !== -1 && activity.userid !== -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+									{activity.type === "user" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
 										<i className="bx bx-user" />{" "}
-										<Link to={`/admin/activity/${activity.userid}/view`} className="text-blue-500 hover:text-blue-800">
-											{activity.username}
+										<Link to={`/admin/activity/user/${activity.identification}/view`} className="text-blue-500 hover:text-blue-800 duration-300">
+											{activity.identity}
 										</Link>{" "}
 										- <small className="text text-xs">{activity.ip}</small>
 									</p>}
-									{activity.userid === -1 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
-										<i className="bx bx-user" />{" "}{activity.username+ " "} - <small className="text text-xs">{activity.ip}</small>
-									</p>}
-									{activity.userid === -10 && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+									{activity.type === "authorization" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
+										<i className="bx bx-network-chart" />{" "}
+											<Link to={`/admin/activity/authorization/${activity.identification}/view`} className="text-blue-500 hover:text-blue-800 duration-300">
+												{activity.identity}
+											</Link>{" "}
+											- <small className="text text-xs">{activity.ip}</small>
+										</p>}
+									{activity.type === "system" && <p className="text-base font-bold text-light-secondary dark:text-dark-secondary duration-300">
 										<i className="bx bx-cog" />{" "}
-										<Link to={`/admin/activity/system/view`} className="text-gray-500 hover:text-gray-400">
-											{activity.username}
-										</Link>{" "}
-										- <small className="text text-xs">{activity.ip}</small>
-									</p>}
+										<Link to={`/admin/activity/system/view`} className="text-gray-500 hover:text-gray-600 duration-300">
+												{activity.identity}
+											</Link>{" "}
+											- <small className="text text-xs">{activity.ip}</small>
+										</p>}
 									<p className='mb-1 text-light-tertiary dark:text-dark-tertiary duration-300 font-bold text-xs '>
 										<i className='bx bx-book-content' />{' '}<span>{activity.action}</span>
 									</p>

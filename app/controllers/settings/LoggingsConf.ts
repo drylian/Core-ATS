@@ -4,7 +4,7 @@ import root from "@/controllers/settings/Default";
 import { LoggingsMethods } from "@/controllers/Loggings";
 
 export default async function LoggingsConf(core: LoggingsMethods) {
-	core.sys("tentando configurar as [loggings].blue do painel [1/4]");
+	core.sys("tentando configurar as [loggings].blue do painel [1/5]");
 	try {
 		if (!dirEX(root.configPATH + "/loggings.json")) {
 			core.sys("Não foi possivel encontrar o arquivo de configuração de loggings, criando.");

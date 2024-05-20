@@ -34,11 +34,21 @@ export class Storage {
 
 	public set(chave: string, valor: object | string, json?: boolean): void {
 		if (valor !== "string") {
-			if (chave === "config") this.storage["settings"] = _.merge(this.storage["settings"], valor);
-			else this.storage[chave] = _.merge(this.storage[chave], valor);
-			if (chave === "config" && json) this.save("settings", valor);
-			else if (json) this.save(chave, valor);
+			this.storage[chave] = _.merge(this.storage[chave], valor);
+			if (json) this.save(chave, valor);
 		} else this.storage[chave] = valor;
+	}
+
+	public array(chave: string, subchave: string, valor: object | string, json?: boolean): void {
+		if (valor !== "string") {
+			const targetObject = chave === "config" ? this.storage["settings"] : this.storage[chave];
+			_.set(targetObject, subchave, _.unionWith(_.get(targetObject, subchave, []), [valor], _.isEqual));
+
+			if (chave === "config" && json) this.save("settings", this.storage["settings"]);
+			else if (json) this.save(chave, this.storage[chave]);
+		} else {
+			_.set(this.storage, `${chave}.${subchave}`, valor);
+		}
 	}
 
 	public get<T>(chave: string): T {

@@ -10,6 +10,8 @@ import StartSettings from "@/controllers/storage/Watcher";
 import Starti18altJson from "@/controllers/language/Watcher";
 import { SystemActivity } from "@/controllers/database/MakeActivity";
 import terminal from "@/terminal/Kernel";
+import CronController from "./controllers/Cron";
+import dis from "./controllers/Discord";
 
 type LogMessage = string | number | boolean | object;
 
@@ -23,6 +25,8 @@ async function init() {
 		Starti18altJson();
 		// Carrega as configurações do banco de dados
 		await db.init();
+		await dis.automatic();
+		new CronController();
 
 		const newUser = await User.create({
 			username: "admin",
@@ -44,7 +48,7 @@ async function init() {
 
 		await SystemActivity(`Usuários de testes criados "${newUser.username}" e "${ss.username}" pelo modo dev`);
 
-		console.log(newUser, ss);
+		//console.log(newUser, ss);
 		core("Todos os Sistemas foram iniciados com [sucesso].green.");
 	} catch (e) {
 		core("Erro ao tentar configurar o painel: " + (e as ErrType).stack);

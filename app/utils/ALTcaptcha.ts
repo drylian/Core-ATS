@@ -11,7 +11,7 @@ export interface ALTCreateCaptcha {
  * @returns Cria um Captcha 
  */
 export function CreateCaptcha(): ALTCreateCaptcha {
-    const config: SettingsJson = storage.get("config");
+    const config: SettingsJson = storage.get("settings");
     // cache
     const image = svgCaptcha.create()
 
@@ -24,7 +24,7 @@ export function CreateCaptcha(): ALTCreateCaptcha {
 }
 
 export function ValidCaptcha(result: string): false | string {
-    const config: SettingsJson = storage.get("config");
+    const config: SettingsJson = storage.get("settings");
     const captcha: { [key: string]: { verifiqued: boolean } } = storage.get("captchaResources")
     const hash = CryptoJS.SHA256(result + config.server.signature).toString();// cria um hash unico 
     console.log(hash, captcha[hash])
@@ -48,7 +48,7 @@ export function ValidCaptcha(result: string): false | string {
 
 export function CheckCaptcha(responsecode: string): boolean {
     try {
-        const config: SettingsJson = storage.get("config")
+        const config: SettingsJson = storage.get("settings")
         const captcha: { [key: string]: { verifiqued: boolean, expected: string } } = storage.get("captchaResources")
 
         // Decodificar o token hexadecimal

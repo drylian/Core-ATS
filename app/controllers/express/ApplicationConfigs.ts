@@ -1,8 +1,8 @@
 import { ColorJson, SettingsJson } from "@/interfaces";
 import storage from "@/controllers/Storage";
 import I18alt from "../Language";
-export default function ApplicationConfigs() {
-	const config: SettingsJson = storage.get("config");
+export default function ApplicationConfigs(args?:object) {
+	const config: SettingsJson = storage.get("settings");
 	const colors: ColorJson = storage.get("color");
 	const i18n = new I18alt();
 	const languages: { [key: string]: string } = {};
@@ -11,7 +11,6 @@ export default function ApplicationConfigs() {
 		const language = i18n.t("language.language", { lang: lang });
 		languages[lang] = language;
 	});
-	console.log(languages);
 	const data = {
 		Website: {
 			title: config.server.title,
@@ -19,8 +18,13 @@ export default function ApplicationConfigs() {
 			port: config.server.port,
 			mode: config.mode,
 			colors: { ...colors },
+			auth:{
+				discord:config.discord.auth.active,
+				register:config.server.register
+			},
 			langs,
 			languages,
+			...args
 		},
 	};
 

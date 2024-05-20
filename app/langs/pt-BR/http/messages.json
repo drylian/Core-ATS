@@ -7,6 +7,7 @@
     "ClientRestrictedAccess": "Apenas clients podem acessar os recursos dessa rota., seja por client token ou client cookie",
     "BackToMainPage": "Voltar à página inicial.",
     "JsonViewerApi": "Resposta recebida da api na {{title}}",
+    "RouteNotYetTractable":"Está rota ainda não é tratavel pelo nosso painel.",
     "api": {
         "Listtype": "Lista",
         "ResourcesNotFound": "Recurso não encontrado.",

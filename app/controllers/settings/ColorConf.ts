@@ -4,7 +4,7 @@ import { LoggingsMethods } from "@/controllers/Loggings";
 import { ColorJson, ErrType } from "@/interfaces";
 
 export default async function ColorConf(core: LoggingsMethods) {
-	core.sys("tentando configurar as [Colores do Frontend].blue do painel [4/4]");
+	core.sys("tentando configurar as [Colores do Frontend].blue do painel [4/5]");
 
 	try {
 		if (!dirEX(root.configPATH + "/color.json")) {

@@ -19,7 +19,7 @@ interface Params {
 }
 export default function SenderError(params: Params, req: Request) {
 	let code: string, title: string;
-	const config: SettingsJson = storage.get("config");
+	const config: SettingsJson = storage.get("settings");
 	const color: ColorJson = storage.get("color");
 	const language = req?.access.lang
 		? req?.access.lang

@@ -8,7 +8,7 @@ import { NextFunction, Request, Response } from "express";
  */
 export function SenderSettings() {
 	return (req: Request, res: Response, next: NextFunction) => {
-		const config: SettingsJson = storage.get("config");
+		const config: SettingsJson = storage.get("settings");
 		if (config.server.protocol !== "https") {
 			res.header({ "Content-Security-Policy": "" });
 			res.sender = async (params) => {

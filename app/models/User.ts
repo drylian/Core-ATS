@@ -13,7 +13,7 @@ export interface UserI {
     email: string;
     lang: string | null;
     password: string;
-    permissions: number | null;
+    permissions: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null;
     uuid: string;
     remember: string | null;
     suspended: boolean | null;
@@ -26,7 +26,7 @@ export interface UserE {
     email: string;
     lang: string | null;
     password?: string;
-    permissions: number | null;
+    permissions: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null;
     uuid: string;
     remember: string | null;
     suspended: boolean | null;
@@ -39,7 +39,7 @@ class User extends Model<UserI> implements UserI {
 	public email!: string;
 	public lang!: string | null;
 	public password!: string;
-	public permissions!: number | null;
+	public permissions!: 0 | 1000 | 2000 | 3000 | 4000 | 5000 | 6000 | 7000 | 8000 | 9000 | 10000 | null;
 	public uuid!: string;
 	public remember!: string | null;
 	public suspended!: boolean | null;

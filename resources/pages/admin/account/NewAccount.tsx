@@ -1,4 +1,4 @@
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import ContentBox from "../../../components/elements/ContentBox";
 import BoxModel from "../../../components/elements/models/BoxModel";
@@ -29,10 +29,10 @@ const validationSchema = Yup.object({
 	lang: Yup.string().required("Linguagem é obrigatório"),
 });
 
-const onSubmit = (values: FormData) => {
-	newAccount(values);
-	// Lógica de envio dos dados, por exemplo, chamar uma API
-	console.log("Valores do formulário:", values);
+const onSubmit = (values: FormData, formik: FormikHelpers<FormData>) => {
+	newAccount(values)
+		.then(() => formik.setSubmitting(false))
+		.catch(() => formik.setSubmitting(false));
 };
 /* eslint-disable  react/prop-types  */ //setValue do formik
 /* eslint-disable  react/no-unescaped-entities */ // " dos span"
@@ -141,9 +141,8 @@ const NewAccount = () => {
 											/>
 											<p className="text-light-tertiary dark:text-dark-tertiary duration-300 text-sm mt-1">O Idioma que vai ser  usado nas respostas do backend e do frontend</p>
 										</div>
-
-										<button type='submit' className='bg-light-primary dark:bg-dark-primary text-light-primary dark:text-dark-primary duration-300 border border-gray-500 px-4 py-2 rounded-md'>
-											Enviar
+										<button type='submit' className='bg-light-primary dark:bg-dark-primary text-light-primary dark:text-dark-primary duration-300 border border-gray-500 px-4 py-2 rounded-md' disabled={props.isSubmitting}>
+											{props.isSubmitting ?<svg className="animate-spin h-5 w-5 mr-3 " viewBox="0 0 24 24"/> : 'Criar Usuário'}
 										</button>
 									</BoxModel>
 								</div>
